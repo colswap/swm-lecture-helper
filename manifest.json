@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "SWM Lecture Helper",
+  "version": "1.0.0",
+  "description": "SW마에스트로 멘토링/특강 검색, 필터, 즐겨찾기, 알림",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": ["https://swmaestro.ai/*"],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [{
+    "matches": [
+      "https://swmaestro.ai/sw/mypage/mentoLec/list.do*"
+    ],
+    "js": ["lib/storage.js", "content/content.js"],
+    "css": ["content/content.css"],
+    "run_at": "document_idle"
+  }, {
+    "matches": [
+      "https://swmaestro.ai/sw/mypage/mentoLec/view.do*"
+    ],
+    "js": ["lib/storage.js", "content/detail.js"],
+    "run_at": "document_idle"
+  }],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

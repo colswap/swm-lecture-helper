@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <h1>SWM Lecture Helper</h1>
+    <span id="syncInfo" class="sync-info">--</span>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="강연/멘토 검색..." autofocus>
+  </div>
+
+  <div class="filters">
+    <input type="date" id="filterDate" title="날짜 필터">
+    <select id="filterStatus">
+      <option value="">전체 상태</option>
+      <option value="A" selected>접수중</option>
+      <option value="C">마감</option>
+    </select>
+    <select id="filterCategory">
+      <option value="">전체 분류</option>
+      <option value="MRC020">멘토 특강</option>
+      <option value="MRC010">자유 멘토링</option>
+    </select>
+    <select id="filterLocation">
+      <option value="">전체 장소</option>
+      <option value="online">비대면</option>
+      <option value="offline">대면</option>
+    </select>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="search">검색</button>
+    <button class="tab" data-tab="favorites">즐겨찾기</button>
+  </div>
+
+  <div id="resultCount" class="result-count"></div>
+  <div id="results" class="results"></div>
+
+  <div class="footer">
+    <button id="syncBtn" class="sync-btn">전체 동기화</button>
+    <button id="syncDetailBtn" class="sync-btn detail" title="검색 결과의 상세정보(장소 등) 수집">상세 수집</button>
+  </div>
+
+  <script src="../lib/storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
