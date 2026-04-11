@@ -311,22 +311,40 @@
 
   // --- 초기 실행 ---
 
-  // 1. 현재 페이지 파싱
-  const currentPageData = parseCurrentPage();
-  const calendarData = parseCalendarData();
+  // 목록 페이지인 경우 현재 페이지 파싱
+  const isListPage = location.href.includes('mentoLec/list.do');
+  if (isListPage) {
+    const currentPageData = parseCurrentPage();
+    const calendarData = parseCalendarData();
 
-  // 캘린더 데이터를 먼저 저장 (날짜 정보 포함)
-  if (Object.keys(calendarData).length > 0) {
-    await SWM.saveLectures(calendarData);
+    if (Object.keys(calendarData).length > 0) {
+      await SWM.saveLectures(calendarData);
+    }
+    if (Object.keys(currentPageData).length > 0) {
+      await SWM.saveLectures(currentPageData);
+    }
+    console.log(`SWM Helper: ${Object.keys(currentPageData).length} rows + ${Object.keys(calendarData).length} calendar items parsed`);
   }
-  // 테이블 데이터 저장 (더 상세하므로 덮어씀)
-  if (Object.keys(currentPageData).length > 0) {
-    await SWM.saveLectures(currentPageData);
+
+  // 로그인 상태 감지 → 자동 동기화
+  // 로그아웃 상태면 "로그인" 링크가 보임, 로그인 상태면 "로그아웃" 링크가 보임
+  const isLoggedIn = !!document.querySelector('a[href*="logout.do"]');
+
+  if (isLoggedIn) {
+    const meta = await SWM.getMeta();
+    const lectures = await SWM.getLectures();
+    const hoursSinceSync = meta.lastFullSync
+      ? (Date.now() - new Date(meta.lastFullSync).getTime()) / (60 * 60 * 1000)
+      : Infinity;
+
+    // 데이터 없거나 1시간 이상 경과 시 자동 동기화
+    if (Object.keys(lectures).length === 0 || hoursSinceSync > 1) {
+      console.log('SWM Helper: 로그인 감지, 자동 동기화 시작');
+      await fullSync(status => console.log('SWM Helper:', status));
+    }
   }
 
-  console.log(`SWM Helper: ${Object.keys(currentPageData).length} rows + ${Object.keys(calendarData).length} calendar items parsed`);
-
-  // 2. 메시지 리스너 (팝업 ↔ content script 통신)
+  // 메시지 리스너 (팝업 ↔ content script 통신)
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === 'FULL_SYNC') {
       fullSync(status => {

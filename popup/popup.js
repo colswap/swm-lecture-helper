@@ -199,21 +199,26 @@
     }
   });
 
+  // swmaestro.ai 탭 찾기 (아무 페이지든 OK)
+  async function findSwmTab() {
+    // 현재 탭 먼저 확인
+    const [active] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (active?.url?.includes('swmaestro.ai')) return active;
+
+    // 모든 탭에서 swmaestro.ai 탭 찾기
+    const tabs = await chrome.tabs.query({ url: 'https://swmaestro.ai/*' });
+    return tabs[0] || null;
+  }
+
   // 전체 동기화
   syncBtn.addEventListener('click', async () => {
     syncBtn.disabled = true;
     syncBtn.textContent = '동기화 중...';
 
-    // content script에 메시지 보내기
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-    if (!tab || !tab.url?.includes('swmaestro.ai')) {
-      // swmaestro.ai 탭이 없으면 새 탭 열기 안내
-      syncBtn.textContent = 'swmaestro.ai 페이지를 열어주세요';
-      setTimeout(() => {
-        syncBtn.textContent = '전체 동기화';
-        syncBtn.disabled = false;
-      }, 2000);
+    const tab = await findSwmTab();
+    if (!tab) {
+      syncBtn.textContent = 'swmaestro.ai를 아무 페이지나 열어주세요';
+      setTimeout(() => { syncBtn.textContent = '전체 동기화'; syncBtn.disabled = false; }, 2500);
       return;
     }
 
@@ -222,19 +227,17 @@
       if (response?.success) {
         syncBtn.textContent = `완료! ${response.count}개`;
         allLectures = await SWM.getLectures();
+        const meta = await SWM.getMeta();
+        syncInfo.textContent = `${Object.keys(allLectures).length}개 | 방금`;
         doSearch();
       } else {
         syncBtn.textContent = '실패 (로그인 확인)';
       }
     } catch (e) {
-      // content script가 없는 경우 — 직접 페이지 이동 필요
-      syncBtn.textContent = '멘토링 페이지를 먼저 방문하세요';
+      syncBtn.textContent = 'swmaestro.ai 페이지를 새로고침 해주세요';
     }
 
-    setTimeout(() => {
-      syncBtn.textContent = '전체 동기화';
-      syncBtn.disabled = false;
-    }, 2500);
+    setTimeout(() => { syncBtn.textContent = '전체 동기화'; syncBtn.disabled = false; }, 2500);
   });
 
   // 상세 수집
@@ -251,8 +254,8 @@
     syncDetailBtn.disabled = true;
     syncDetailBtn.textContent = `수집 중... (${needDetail.length}개)`;
 
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (!tab || !tab.url?.includes('swmaestro.ai')) {
+    const tab = await findSwmTab();
+    if (!tab) {
       syncDetailBtn.textContent = 'swmaestro.ai 필요';
       setTimeout(() => { syncDetailBtn.textContent = '상세 수집'; syncDetailBtn.disabled = false; }, 2000);
       return;
@@ -264,7 +267,7 @@
       allLectures = await SWM.getLectures();
       doSearch();
     } catch (e) {
-      syncDetailBtn.textContent = '멘토링 페이지 필요';
+      syncDetailBtn.textContent = '페이지 새로고침 필요';
     }
 
     setTimeout(() => {
