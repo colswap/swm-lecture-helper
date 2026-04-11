@@ -1,17 +1,48 @@
-// content.js — 목록 페이지 파싱 + 전체 동기화
+// content.js — swmaestro.ai 전체에서 동작. 동기화 + 파싱.
 
-(async function() {
+(function() {
   'use strict';
 
-  // 현재 페이지의 테이블에서 강연 데이터 파싱
+  // ★ 메시지 리스너를 제일 먼저 등록 (절대 실패하지 않는 동기 코드)
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.type === 'FULL_SYNC') {
+      fullSync(status => {
+        chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status }).catch(() => {});
+      }).then(result => {
+        sendResponse({ success: !!result, count: result ? Object.keys(result).length : 0 });
+      }).catch(e => {
+        console.error('SWM Helper: fullSync error', e);
+        sendResponse({ success: false, error: e.message });
+      });
+      return true;
+    }
+
+    if (msg.type === 'FETCH_DETAILS') {
+      fetchDetails(msg.sns, status => {
+        chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status }).catch(() => {});
+      }).then(count => {
+        sendResponse({ success: true, count });
+      }).catch(e => {
+        console.error('SWM Helper: fetchDetails error', e);
+        sendResponse({ success: false, error: e.message });
+      });
+      return true;
+    }
+
+    if (msg.type === 'PING') {
+      sendResponse({ alive: true });
+    }
+  });
+
+  console.log('SWM Helper: content script loaded on', location.href);
+
+  // --- 함수 정의 ---
+
   function parseCurrentPage() {
     const lectures = {};
-    const rows = document.querySelectorAll('.boardlist .t tbody tr, table.t tbody tr');
+    const rows = document.querySelectorAll('table.t tbody tr');
 
     rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      if (cells.length < 8) return;
-
       const titleCell = row.querySelector('td.tit');
       if (!titleCell) return;
 
@@ -22,85 +53,55 @@
       if (!snMatch) return;
       const sn = snMatch[1];
 
-      // 제목
       const title = link.textContent.trim();
-
-      // 카테고리 추출 (제목에서 [자유 멘토링] 또는 [멘토 특강] 등)
       const catMatch = title.match(/^\[([^\]]+)\]/);
-      let category = '';
-      let categoryNm = '';
+      let category = '', categoryNm = '';
       if (catMatch) {
         categoryNm = catMatch[1];
         category = categoryNm.includes('특강') ? 'MRC020' : 'MRC010';
       }
 
-      // 상태
       const statusEl = titleCell.querySelector('.color-red') || titleCell.querySelector('.ab');
       const statusText = statusEl?.textContent?.trim() || '';
       const status = statusText.includes('접수중') ? 'A' : 'C';
 
-      // PC 전용 셀들에서 데이터 추출
       const pcCells = row.querySelectorAll('td.pc_only');
-      // pcCells 순서: NO, 접수기간, 진행날짜, 모집인원, 개설승인, 상태, 작성자, 등록일
-
       let regPeriod = '', lecDate = '', lecTime = '', countCurrent = 0, countMax = 0;
       let approval = '', mentor = '', regDate = '';
 
       if (pcCells.length >= 8) {
-        // 접수기간 (두 번째 pc_only = index 1, 링크 안에 있음)
         const regLink = pcCells[1]?.querySelector('a');
         regPeriod = (regLink || pcCells[1])?.textContent?.replace(/\s+/g, ' ')?.trim() || '';
 
-        // 진행날짜 + 시간
         const dateCell = pcCells[2];
         if (dateCell) {
           const dateText = dateCell.textContent.replace(/\s+/g, ' ').trim();
-          const dateMatch = dateText.match(/(\d{4}-\d{2}-\d{2})\(.\)/);
-          const timeMatch = dateText.match(/(\d{2}:\d{2})\s*~\s*(\d{2}:\d{2})/);
-          lecDate = dateMatch ? dateMatch[1] : '';
-          lecTime = timeMatch ? `${timeMatch[1]} ~ ${timeMatch[2]}` : '';
+          const dateM = dateText.match(/(\d{4}-\d{2}-\d{2})\(.\)/);
+          const timeM = dateText.match(/(\d{2}:\d{2})\s*~\s*(\d{2}:\d{2})/);
+          lecDate = dateM ? dateM[1] : '';
+          lecTime = timeM ? `${timeM[1]} ~ ${timeM[2]}` : '';
         }
 
-        // 모집인원
         const countText = pcCells[3]?.textContent?.replace(/\s+/g, '')?.trim() || '';
-        const countMatch = countText.match(/(\d+)\/(\d+)/);
-        if (countMatch) {
-          countCurrent = parseInt(countMatch[1]);
-          countMax = parseInt(countMatch[2]);
-        }
+        const cM = countText.match(/(\d+)\/(\d+)/);
+        if (cM) { countCurrent = parseInt(cM[1]); countMax = parseInt(cM[2]); }
 
-        // 개설승인
         approval = pcCells[4]?.textContent?.trim() || '';
-
-        // 상태 (pcCells[5] — 중복이지만 확인용)
-
-        // 작성자
         mentor = pcCells[6]?.textContent?.trim() || '';
-
-        // 등록일
         regDate = pcCells[7]?.textContent?.trim() || '';
       }
 
       lectures[sn] = {
-        sn,
-        title,
-        category,
-        categoryNm,
-        status,
-        mentor,
-        regPeriod,
-        lecDate,
-        lecTime,
+        sn, title, category, categoryNm, status, mentor,
+        regPeriod, lecDate, lecTime,
         count: { current: countCurrent, max: countMax },
-        approval,
-        regDate
+        approval, regDate
       };
     });
 
     return lectures;
   }
 
-  // 캘린더 JS 데이터 파싱 (날짜 + 제목 + 카테고리 매핑)
   function parseCalendarData() {
     const lectures = {};
     const scripts = document.querySelectorAll('script');
@@ -123,7 +124,6 @@
           const snMatch = urlMatch[1].match(/qustnrSn=(\d+)/);
           if (snMatch) {
             const sn = snMatch[1];
-            // 캘린더 데이터는 날짜+제목+카테고리만 있으므로 부분 업데이트
             lectures[sn] = {
               sn,
               title: titleMatch[1],
@@ -139,7 +139,6 @@
     return lectures;
   }
 
-  // HTML 문자열에서 테이블 파싱 (전체 동기화용)
   function parseTableFromHTML(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -203,37 +202,22 @@
     return lectures;
   }
 
-  // 페이지에 다음 페이지가 있는지 확인
-  function hasNextPage(html) {
-    return html.includes('다음') || /pageIndex=\d+.*?class=['"]\s*$/.test(html);
-  }
-
-  // 총 페이지 수 추출
   function getTotalPages(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    const pageLinks = doc.querySelectorAll('.pagination li a[onclick*="pageIndex"]');
     let max = 1;
-    pageLinks.forEach(a => {
-      const m = a.getAttribute('onclick')?.match(/pageIndex.*?(\d+)/);
+    doc.querySelectorAll('.pagination li a').forEach(a => {
+      const onclick = a.getAttribute('onclick') || '';
+      const m = onclick.match(/(\d+)/);
       if (m) max = Math.max(max, parseInt(m[1]));
     });
-    // 또는 "마지막" 링크에서
-    const lastLink = doc.querySelector('.pagination li:last-child a');
-    if (lastLink) {
-      const m = lastLink.getAttribute('onclick')?.match(/(\d+)/);
-      if (m) max = Math.max(max, parseInt(m[1]));
-    }
     return max;
   }
 
-  // 전체 동기화
   async function fullSync(statusCallback) {
     const baseUrl = '/sw/mypage/mentoLec/list.do?menuNo=200046&pageIndex=';
-    let page = 1;
     let allLectures = {};
 
-    // 첫 페이지에서 총 페이지 수 확인
     statusCallback?.('동기화 시작...');
     const firstResp = await fetch(baseUrl + '1');
     const firstHtml = await firstResp.text();
@@ -244,38 +228,28 @@
     }
 
     const totalPages = getTotalPages(firstHtml);
-    const firstLectures = parseTableFromHTML(firstHtml);
-    Object.assign(allLectures, firstLectures);
-    statusCallback?.(`1/${totalPages} 페이지 완료`);
+    Object.assign(allLectures, parseTableFromHTML(firstHtml));
+    statusCallback?.(`1/${totalPages} 페이지`);
 
-    // 나머지 페이지
-    for (page = 2; page <= totalPages; page++) {
+    for (let page = 2; page <= totalPages; page++) {
       await new Promise(r => setTimeout(r, 500));
-      try {
-        const resp = await fetch(baseUrl + page);
-        const html = await resp.text();
-        if (html.includes('잘못된 접근')) break;
-        const lectures = parseTableFromHTML(html);
-        Object.assign(allLectures, lectures);
-        statusCallback?.(`${page}/${totalPages} 페이지 완료`);
-      } catch (e) {
-        console.error(`SWM Helper: page ${page} fetch error`, e);
-        break;
-      }
+      const resp = await fetch(baseUrl + page);
+      const html = await resp.text();
+      if (html.includes('잘못된 접근')) break;
+      Object.assign(allLectures, parseTableFromHTML(html));
+      statusCallback?.(`${page}/${totalPages} 페이지`);
     }
 
-    // 저장
     await SWM.saveLectures(allLectures);
     const meta = await SWM.getMeta();
     meta.lastFullSync = new Date().toISOString();
     meta.knownLectureSns = Object.keys(allLectures);
     await SWM.saveMeta(meta);
 
-    statusCallback?.(`완료! ${Object.keys(allLectures).length}개 강연 저장`);
+    statusCallback?.(`완료! ${Object.keys(allLectures).length}개`);
     return allLectures;
   }
 
-  // 상세 정보 일괄 수집 (sn 배열 입력)
   async function fetchDetails(sns, statusCallback) {
     let done = 0;
     for (const sn of sns) {
@@ -295,11 +269,11 @@
           if (key && val) info[key] = val;
         });
 
-        const location = info['장소'] || '';
-        const isOnline = /온라인|비대면|ZOOM|Zoom|Webex|화상|Google Meet|Teams|줌/i.test(location);
+        const loc = info['장소'] || '';
+        const isOnline = /온라인|비대면|ZOOM|Zoom|Webex|화상|Google Meet|Teams|줌/i.test(loc);
         const description = doc.querySelector('.bbs-view-new .cont')?.textContent?.trim()?.substring(0, 500) || '';
 
-        await SWM.saveLecture(sn, { location, isOnline, description, detailFetched: true });
+        await SWM.saveLecture(sn, { location: loc, isOnline, description, detailFetched: true });
         done++;
         statusCallback?.(`상세 ${done}/${sns.length}`);
       } catch (e) {
@@ -309,65 +283,45 @@
     return done;
   }
 
-  // --- 초기 실행 ---
+  // --- ★ 초기화 (try-catch로 감싸서 실패해도 리스너는 살아있음) ---
 
-  // 목록 페이지인 경우 현재 페이지 파싱
-  const isListPage = location.href.includes('mentoLec/list.do');
-  if (isListPage) {
-    const currentPageData = parseCurrentPage();
-    const calendarData = parseCalendarData();
+  (async () => {
+    try {
+      // 목록 페이지면 현재 페이지 파싱
+      if (location.href.includes('mentoLec/list.do')) {
+        const calendarData = parseCalendarData();
+        const currentPageData = parseCurrentPage();
 
-    if (Object.keys(calendarData).length > 0) {
-      await SWM.saveLectures(calendarData);
+        if (Object.keys(calendarData).length > 0) {
+          await SWM.saveLectures(calendarData);
+        }
+        if (Object.keys(currentPageData).length > 0) {
+          await SWM.saveLectures(currentPageData);
+        }
+        console.log(`SWM Helper: ${Object.keys(currentPageData).length} rows + ${Object.keys(calendarData).length} calendar items parsed`);
+      }
+
+      // 로그인 상태 감지 → 자동 동기화
+      const isLoggedIn = !!document.querySelector('a[href*="logout.do"]');
+      if (isLoggedIn) {
+        const meta = await SWM.getMeta();
+        const lectures = await SWM.getLectures();
+        const hoursSinceSync = meta.lastFullSync
+          ? (Date.now() - new Date(meta.lastFullSync).getTime()) / (60 * 60 * 1000)
+          : Infinity;
+
+        if (Object.keys(lectures).length === 0 || hoursSinceSync > 1) {
+          console.log('SWM Helper: 로그인 감지, 자동 동기화 시작');
+          await fullSync(status => console.log('SWM Helper:', status));
+        } else {
+          console.log(`SWM Helper: 동기화 불필요 (${Object.keys(lectures).length}개, ${hoursSinceSync.toFixed(1)}h 전)`);
+        }
+      } else {
+        console.log('SWM Helper: 로그인 안 됨, 동기화 스킵');
+      }
+    } catch (e) {
+      console.error('SWM Helper: 초기화 에러', e);
     }
-    if (Object.keys(currentPageData).length > 0) {
-      await SWM.saveLectures(currentPageData);
-    }
-    console.log(`SWM Helper: ${Object.keys(currentPageData).length} rows + ${Object.keys(calendarData).length} calendar items parsed`);
-  }
-
-  // 로그인 상태 감지 → 자동 동기화
-  // 로그아웃 상태면 "로그인" 링크가 보임, 로그인 상태면 "로그아웃" 링크가 보임
-  const isLoggedIn = !!document.querySelector('a[href*="logout.do"]');
-
-  if (isLoggedIn) {
-    const meta = await SWM.getMeta();
-    const lectures = await SWM.getLectures();
-    const hoursSinceSync = meta.lastFullSync
-      ? (Date.now() - new Date(meta.lastFullSync).getTime()) / (60 * 60 * 1000)
-      : Infinity;
-
-    // 데이터 없거나 1시간 이상 경과 시 자동 동기화
-    if (Object.keys(lectures).length === 0 || hoursSinceSync > 1) {
-      console.log('SWM Helper: 로그인 감지, 자동 동기화 시작');
-      await fullSync(status => console.log('SWM Helper:', status));
-    }
-  }
-
-  // 메시지 리스너 (팝업 ↔ content script 통신)
-  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.type === 'FULL_SYNC') {
-      fullSync(status => {
-        chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status });
-      }).then(result => {
-        sendResponse({ success: !!result, count: result ? Object.keys(result).length : 0 });
-      });
-      return true; // async response
-    }
-
-    if (msg.type === 'FETCH_DETAILS') {
-      fetchDetails(msg.sns, status => {
-        chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status });
-      }).then(count => {
-        sendResponse({ success: true, count });
-      });
-      return true;
-    }
-
-    if (msg.type === 'PING') {
-      sendResponse({ alive: true });
-      return;
-    }
-  });
+  })();
 
 })();
