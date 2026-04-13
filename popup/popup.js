@@ -63,10 +63,11 @@
       });
     }
 
-    // 날짜 필터: 특정 날짜 고를 땐 그 날짜만, 아니면 오늘 이후 (과거 강연 숨김)
+    // 날짜 필터: 특정 날짜 선택시 그 날짜만. 검색탭 기본은 오늘 이후.
+    // 즐겨찾기/내 신청 탭은 과거 포함(저장된 기록 전체 표시).
     if (date) {
       lectures = lectures.filter(l => l.lecDate === date);
-    } else {
+    } else if (currentTab === 'search') {
       const today = new Date().toISOString().slice(0, 10);
       lectures = lectures.filter(l => !l.lecDate || l.lecDate >= today);
     }
