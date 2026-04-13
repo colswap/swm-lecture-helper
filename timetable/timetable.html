@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>SWM Lecture — 시간표</title>
+  <link rel="stylesheet" href="timetable.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <header class="sidebar-header">
+    <h2>검색 · 필터</h2>
+    <div id="headerStats" class="header-stats">--</div>
+  </header>
+
+  <div class="search-box">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="searchInput" placeholder="제목·멘토·설명·장소 검색" autofocus>
+  </div>
+
+  <div class="filters">
+    <select id="filterStatus">
+      <option value="">전체 상태</option>
+      <option value="A" selected>접수중</option>
+      <option value="C">마감</option>
+    </select>
+    <select id="filterCategory">
+      <option value="">전체 분류</option>
+      <option value="MRC020">멘토 특강</option>
+      <option value="MRC010">자유 멘토링</option>
+    </select>
+    <select id="filterLocation">
+      <option value="">전체 장소</option>
+      <option value="online">비대면</option>
+      <option value="offline">대면</option>
+    </select>
+  </div>
+
+  <div class="toggle-row">
+    <label><input type="checkbox" id="onlyFreeSlot"> 내 시간과 안 겹치는 것만</label>
+    <label><input type="checkbox" id="thisWeekOnly" checked> 이번 주 강연만</label>
+  </div>
+
+  <div id="searchCount" class="search-count">--</div>
+  <div id="searchResults" class="search-results"></div>
+
+  <div id="undatedSection" class="undated-section" style="display:none">
+    <h3>시간 미정</h3>
+    <div id="undatedList" class="undated-list"></div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="main-header">
+    <div class="nav-group">
+      <button id="prevWeek" class="nav-btn" title="이전 주">◀</button>
+      <button id="todayBtn" class="nav-btn today">오늘</button>
+      <button id="nextWeek" class="nav-btn" title="다음 주">▶</button>
+      <span id="weekLabel" class="week-label">--</span>
+    </div>
+    <div class="right-group">
+      <div id="hoverPreviewInfo" class="preview-info"></div>
+    </div>
+  </header>
+
+  <div class="grid-wrapper">
+    <div class="day-headers" id="dayHeaders"></div>
+    <div class="grid-body" id="gridBody"></div>
+  </div>
+</main>
+
+<div id="popover" class="popover" style="display:none">
+  <div class="popover-title" id="popoverTitle"></div>
+  <div class="popover-meta" id="popoverMeta"></div>
+  <div class="popover-desc" id="popoverDesc"></div>
+  <div class="popover-actions">
+    <button id="popoverOpen" class="btn btn-primary">사이트 열기</button>
+    <button id="popoverClose" class="btn btn-secondary">닫기</button>
+  </div>
+</div>
+
+<script src="../lib/storage.js"></script>
+<script src="../lib/time_utils.js"></script>
+<script src="timetable.js"></script>
+</body>
+</html>

@@ -340,6 +340,17 @@
         }
       }
       if (changed) await chrome.storage.local.set({ lectures: all });
+
+      // applied 인데 detailFetched 안 된 것 (주로 history.do에서 새로 발견된 마감 강연)
+      // 시간표 표시를 위해 상세 페이지 fetch 해서 lecDate/lecTime 확보
+      const appliedNeedDetail = appliedSns.filter(sn => {
+        const l = all[sn];
+        return l && !l.detailFetched;
+      });
+      if (appliedNeedDetail.length > 0) {
+        statusCallback?.(`신청 강연 상세 ${appliedNeedDetail.length}개 수집 중...`);
+        await fetchDetailsBatch(appliedNeedDetail, { concurrency: 8, statusCallback });
+      }
     }
 
     const meta = await SWM.getMeta();
@@ -371,7 +382,24 @@
       const loc = info['장소'] || '';
       const isOnline = /온라인|비대면|ZOOM|Zoom|Webex|화상|Google Meet|Teams|줌/i.test(loc);
       const description = doc.querySelector('.bbs-view-new .cont')?.textContent?.trim()?.substring(0, 500) || '';
-      return { sn, data: { location: loc, isOnline, description, detailFetched: true } };
+
+      // 강의날짜/시간 추출 (시간표용 — 마감 강연 applied 도 블록으로 표시하려면 필수)
+      const data = { location: loc, isOnline, description, detailFetched: true };
+      const lecDateRaw = info['강의날짜'] || '';
+      const dateMatch = lecDateRaw.match(/(\d{4})[.\-](\d{2})[.\-](\d{2})/);
+      if (dateMatch) data.lecDate = `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`;
+      const timeMatch = lecDateRaw.match(/(\d{2}:\d{2})[^0-9]*~[^0-9]*(\d{2}:\d{2})/);
+      if (timeMatch) data.lecTime = `${timeMatch[1]} ~ ${timeMatch[2]}`;
+
+      // 멘토/분류/상태 보조 (list 데이터 없을 때만 보충용)
+      if (info['작성자']) data.mentor = info['작성자'];
+      if (info['모집 명'] && !data.title) data.title = info['모집 명'];
+      if (info['접수 기간']) data.regPeriod = info['접수 기간'];
+      if (info['상태']) {
+        data.status = info['상태'].includes('접수중') ? 'A' : 'C';
+      }
+
+      return { sn, data };
     } catch (e) {
       console.error(`SWM Helper: detail ${sn} error`, e);
       return { sn, error: e.message };

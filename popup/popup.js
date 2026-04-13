@@ -257,6 +257,10 @@
   syncBtn.addEventListener('click', () => triggerSync(syncBtn, '접수중 동기화', 'A'));
   syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, '마감 포함', ''));
 
+  document.getElementById('openTimetableBtn').addEventListener('click', () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('timetable/timetable.html') });
+  });
+
   // 동기화 상태 수신
   chrome.runtime.onMessage.addListener((msg) => {
     if (msg.type === 'SYNC_STATUS') {
