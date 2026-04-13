@@ -213,14 +213,39 @@
     return `/sw/mypage/mentoLec/list.do?${params}`;
   }
 
+  async function fetchWithRetry(url, { retries = 2, baseMs = 400 } = {}) {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const resp = await fetch(url, { credentials: 'same-origin' });
+        // 429 Too Many Requests / 5xx 는 backoff
+        if (resp.status === 429 || resp.status >= 500) {
+          const retryAfter = parseInt(resp.headers.get('Retry-After') || '0', 10) * 1000;
+          if (attempt < retries) {
+            const jitter = Math.random() * baseMs;
+            await new Promise(r => setTimeout(r, (retryAfter || baseMs * Math.pow(2, attempt)) + jitter));
+            continue;
+          }
+        }
+        return resp;
+      } catch (e) {
+        // 네트워크 에러도 retry
+        if (attempt < retries) {
+          await new Promise(r => setTimeout(r, baseMs * Math.pow(2, attempt) + Math.random() * baseMs));
+          continue;
+        }
+        throw e;
+      }
+    }
+  }
+
   async function fetchListPage(page, statusFilter) {
-    const resp = await fetch(buildListUrl(page, statusFilter), { credentials: 'same-origin' });
+    const resp = await fetchWithRetry(buildListUrl(page, statusFilter));
     if (isLoginRedirect(resp)) return { loginRequired: true };
     const html = await resp.text();
     return { data: parseTableFromHTML(html) };
   }
 
-  async function fullSync({ statusFilter = 'A', concurrency = 4, statusCallback } = {}) {
+  async function fullSync({ statusFilter = 'A', concurrency = 8, statusCallback } = {}) {
     // listLectures: status 필터에 해당하는 표 데이터 (상세 수집 대상)
     // calendarData: 모든 달의 캘린더 파편 (SN+날짜+제목 일부만, 상세 수집 제외)
     const listLectures = {};
@@ -266,7 +291,7 @@
     const needDetail = Object.keys(listLectures).filter(sn => !stored[sn]?.detailFetched);
     if (needDetail.length > 0) {
       statusCallback?.(`${scopeLabel} 상세 수집 중 (${needDetail.length}개)...`);
-      await fetchDetailsBatch(needDetail, { concurrency: 4, statusCallback });
+      await fetchDetailsBatch(needDetail, { concurrency: 8, statusCallback });
     }
 
     const meta = await SWM.getMeta();
@@ -282,9 +307,8 @@
 
   async function fetchOneDetail(sn) {
     try {
-      const resp = await fetch(
-        `/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`,
-        { credentials: 'same-origin' }
+      const resp = await fetchWithRetry(
+        `/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`
       );
       if (isLoginRedirect(resp)) return { loginRequired: true };
       const html = await resp.text();
