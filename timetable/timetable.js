@@ -29,6 +29,7 @@
   const filterLocation = el('filterLocation');
   const onlyFreeSlot = el('onlyFreeSlot');
   const thisWeekOnly = el('thisWeekOnly');
+  const showFavsOnGrid = el('showFavsOnGrid');
   const resultsDiv = el('results');
   const resultCount = el('resultCount');
   const headerStats = el('headerStats');
@@ -246,6 +247,37 @@
     return Object.values(allLectures).filter(l => l.applied && l.lecDate && weekISO.includes(l.lecDate));
   }
 
+  function favoritesInWeek() {
+    const weekISO = Array.from({ length: 7 }, (_, i) => fmtISO(addDays(weekStart, i)));
+    const favSet = new Set(favorites);
+    return Object.values(allLectures).filter(l =>
+      favSet.has(l.sn) && !l.applied && l.lecDate && weekISO.includes(l.lecDate)
+    );
+  }
+
+  function renderFavoriteBlocks() {
+    gridBody.querySelectorAll('.lec-block.favorite').forEach(e => e.remove());
+    if (!showFavsOnGrid.checked) return;
+    favoritesInWeek().forEach(l => {
+      const range = parseTimeRange(l.lecTime);
+      if (!range) return;
+      const col = gridBody.querySelector(`.day-column[data-date="${l.lecDate}"]`);
+      if (!col) return;
+      const { top, height } = blockPos(range);
+      const title = (l.title || '').replace(/^\[[^\]]+\]\s*/, '');
+      const block = document.createElement('div');
+      block.className = 'lec-block favorite';
+      block.dataset.sn = l.sn;
+      block.style.top = top + 'px';
+      block.style.height = height + 'px';
+      block.innerHTML = `
+        <div class="bt">★ ${escapeHtml(title)}</div>
+        <div class="bl">${escapeHtml(minToHHMM(range.startMin))}~${escapeHtml(minToHHMM(range.endMin))}${l.mentor ? ' · ' + escapeHtml(l.mentor) : ''}</div>`;
+      block.addEventListener('click', e => { e.stopPropagation(); showPopover(l, block); });
+      col.appendChild(block);
+    });
+  }
+
   function renderAppliedBlocks() {
     gridBody.querySelectorAll('.lec-block.applied').forEach(e => e.remove());
     appliedInWeek().forEach(l => {
@@ -438,6 +470,7 @@
   });
   [filterDateStart, filterDateEnd, filterStatus, filterCategory, filterLocation, onlyFreeSlot, thisWeekOnly]
     .forEach(i => i.addEventListener('change', runSearch));
+  showFavsOnGrid.addEventListener('change', renderFavoriteBlocks);
   clearDateRange.addEventListener('click', () => {
     filterDateStart.value = '';
     filterDateEnd.value = '';
@@ -672,6 +705,7 @@
   }
   function rerenderAll() {
     renderGridSkeleton();
+    renderFavoriteBlocks();
     renderAppliedBlocks();
     renderSlotBlocks();
     updateDayHeaderSelection();
@@ -710,6 +744,7 @@
     }
     if (needRender) {
       updateHeaderStats();
+      renderFavoriteBlocks();
       renderAppliedBlocks();
       runSearch();
     }

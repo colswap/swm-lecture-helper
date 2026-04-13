@@ -618,6 +618,16 @@ body.dragging .lec-block { pointer-events: none; }
 }
 .lec-block.applied.special { background: var(--emerald-700); border-left-color: #064e3b; }
 
+.lec-block.favorite {
+  z-index: var(--z-fav);
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px dashed var(--amber-500);
+  color: var(--slate-800);
+}
+.lec-block.favorite:hover {
+  background: rgba(251, 191, 36, 0.25);
+}
+
 .lec-block.preview {
   z-index: var(--z-preview);
   background: rgba(16, 185, 129, 0.35);
