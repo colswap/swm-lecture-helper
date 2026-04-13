@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>V4 · Dense (iter 2)</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'] },
+        colors: {
+          brand: { 50:'#E6F2FA', 100:'#CCE5F5', 200:'#99CAEB', 500:'#006EB7', 600:'#005B99', 700:'#004A7D' },
+        },
+      },
+    },
+  };
+</script>
+<style>body { width: 420px; }</style>
+</head>
+<body class="font-sans text-slate-900 bg-white antialiased">
+
+<div class="flex flex-col h-[620px]">
+  <!-- Header with graduation-cap icon -->
+  <header class="px-4 pt-2.5 pb-2 bg-gradient-to-r from-brand-700 to-brand-500 text-white">
+    <div class="flex items-center justify-between">
+      <h1 class="text-[13px] font-bold tracking-tight flex items-center gap-1.5">
+        <img src="../../icons/logo_white.png" class="w-6 h-6" alt="">
+        SWM Lecture
+      </h1>
+      <div class="text-[10px] opacity-90 flex items-center gap-2.5">
+        <span>접수중 210</span>
+        <span class="opacity-60">·</span>
+        <span>즐겨찾기 3</span>
+        <span class="opacity-60">·</span>
+        <span>내 신청 5</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="px-3 pt-2 pb-2 bg-white border-b border-slate-100">
+    <div class="relative">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="제목·멘토·설명 검색" class="w-full pl-8 pr-2 py-1.5 text-[12px] bg-slate-50 border border-slate-200 rounded-md outline-none focus:bg-white focus:border-brand-500">
+    </div>
+  </div>
+
+  <!-- 상세 필터 (한 줄, 복원) -->
+  <div class="px-3 pt-2 pb-2 bg-white flex gap-1 border-b border-slate-100">
+    <input type="date" class="flex-1 text-[11px] px-2 py-1 border border-slate-200 rounded-md bg-white text-slate-600 min-w-0">
+    <select class="flex-1 text-[11px] px-2 py-1 border border-slate-200 rounded-md bg-white text-slate-700 min-w-0"><option>접수중</option></select>
+    <select class="flex-1 text-[11px] px-2 py-1 border border-slate-200 rounded-md bg-white text-slate-700 min-w-0"><option>전체 분류</option></select>
+    <select class="flex-1 text-[11px] px-2 py-1 border border-slate-200 rounded-md bg-white text-slate-700 min-w-0"><option>전체 장소</option></select>
+  </div>
+
+  <!-- Tabs -->
+  <div class="px-3 bg-white flex text-[12px] border-b border-slate-200">
+    <button class="px-3 py-2 font-semibold text-brand-600 border-b-2 border-brand-500 -mb-px">검색</button>
+    <button class="px-3 py-2 text-slate-500 hover:text-slate-700 border-b-2 border-transparent">즐겨찾기</button>
+    <button class="px-3 py-2 text-slate-500 hover:text-slate-700 border-b-2 border-transparent">내 신청</button>
+    <div class="ml-auto flex items-center text-[10px] text-slate-400 font-medium">5건</div>
+  </div>
+
+  <!-- Dense list -->
+  <div class="flex-1 overflow-y-auto divide-y divide-slate-100">
+    <div class="px-3 py-2 hover:bg-slate-50 cursor-pointer">
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-0.5">
+        <span class="text-[9px] font-bold px-1 rounded bg-orange-100 text-orange-700">멘토</span>
+        <span class="font-bold text-slate-900">4/13</span>
+        <span>12:30~13:30</span>
+        <span>·</span>
+        <span>정인호</span>
+        <span>·</span>
+        <span class="font-medium">3/5명</span>
+        <span class="ml-auto text-amber-500"><svg viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+      </div>
+      <div class="text-[12.5px] leading-snug text-slate-900 font-medium">229명의 멘토 중 유일하게 알려줄 수 있는 인프라 아키텍처</div>
+      <div class="mt-1 flex gap-1 text-[10px]">
+        <span class="px-1.5 rounded bg-brand-50 text-brand-700 font-medium">비대면 Webex</span>
+        <span class="px-1.5 rounded bg-emerald-50 text-emerald-700 font-medium">접수중</span>
+      </div>
+    </div>
+
+    <div class="px-3 py-2 bg-brand-50/50 border-l-2 border-brand-500 hover:bg-brand-50 cursor-pointer">
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-0.5">
+        <span class="text-[9px] font-bold px-1 rounded bg-emerald-100 text-emerald-700">특강</span>
+        <span class="font-bold text-slate-900">4/15</span>
+        <span>19:00~21:00</span>
+        <span>·</span>
+        <span>이현수</span>
+        <span>·</span>
+        <span class="font-medium">6/6명</span>
+        <span class="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-brand-500 text-white">신청</span>
+      </div>
+      <div class="text-[12.5px] leading-snug text-slate-900 font-medium">AI 에이전트의 두뇌 만들기: 프로젝트 지식을 AI가 읽고 쓰게</div>
+      <div class="mt-1 flex gap-1 text-[10px]">
+        <span class="px-1.5 rounded bg-rose-50 text-rose-700 font-medium">대면 토즈-강남역</span>
+        <span class="px-1.5 rounded bg-slate-100 text-slate-500 font-medium">마감</span>
+      </div>
+    </div>
+
+    <div class="px-3 py-2 hover:bg-slate-50 cursor-pointer">
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-0.5">
+        <span class="text-[9px] font-bold px-1 rounded bg-emerald-100 text-emerald-700">특강</span>
+        <span class="font-bold text-slate-900">4/13</span>
+        <span>20:00~22:00</span>
+        <span>·</span>
+        <span>이상호</span>
+        <span>·</span>
+        <span class="font-medium">4/20명</span>
+        <span class="ml-auto text-slate-300"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+      </div>
+      <div class="text-[12.5px] leading-snug text-slate-900 font-medium">LLM 서빙 최적화: GPU 선택과 양자화 실무 가이드</div>
+      <div class="mt-1 flex gap-1 text-[10px]">
+        <span class="px-1.5 rounded bg-brand-50 text-brand-700 font-medium">비대면 Webex</span>
+        <span class="px-1.5 rounded bg-emerald-50 text-emerald-700 font-medium">접수중</span>
+      </div>
+    </div>
+
+    <div class="px-3 py-2 hover:bg-slate-50 cursor-pointer">
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-0.5">
+        <span class="text-[9px] font-bold px-1 rounded bg-orange-100 text-orange-700">멘토</span>
+        <span class="font-bold text-slate-900">4/18</span>
+        <span>19:00~21:00</span>
+        <span>·</span>
+        <span>이현수</span>
+        <span>·</span>
+        <span class="font-medium">3/10명</span>
+        <span class="ml-auto text-slate-300"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+      </div>
+      <div class="text-[12.5px] leading-snug text-slate-900 font-medium">[AI 기초] RAG 기초 이론 & 실습</div>
+      <div class="mt-1 flex gap-1 text-[10px]">
+        <span class="px-1.5 rounded bg-brand-50 text-brand-700 font-medium">비대면 Webex</span>
+        <span class="px-1.5 rounded bg-emerald-50 text-emerald-700 font-medium">접수중</span>
+      </div>
+    </div>
+
+    <div class="px-3 py-2 bg-brand-50/50 border-l-2 border-brand-500 hover:bg-brand-50 cursor-pointer">
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-500 mb-0.5">
+        <span class="text-[9px] font-bold px-1 rounded bg-orange-100 text-orange-700">멘토</span>
+        <span class="font-bold text-slate-900">4/22</span>
+        <span>19:00~21:00</span>
+        <span>·</span>
+        <span>정진우</span>
+        <span>·</span>
+        <span class="font-medium">4/4명</span>
+        <span class="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-brand-500 text-white">신청</span>
+      </div>
+      <div class="text-[12.5px] leading-snug text-slate-900 font-medium">바이브코딩 - 심화반</div>
+      <div class="mt-1 flex gap-1 text-[10px]">
+        <span class="px-1.5 rounded bg-rose-50 text-rose-700 font-medium">대면 토즈-홍대</span>
+        <span class="px-1.5 rounded bg-slate-100 text-slate-500 font-medium">마감</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-3 py-2 bg-slate-50 border-t border-slate-200 flex gap-1.5">
+    <button class="flex-1 px-3 py-1.5 bg-brand-500 hover:bg-brand-600 text-white text-[11px] font-semibold rounded-md flex items-center justify-center gap-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-3 h-3"><path d="M21 12a9 9 0 11-6.219-8.56"/><polyline points="21 4 21 10 15 10"/></svg>접수중 동기화
+    </button>
+    <button class="px-2.5 py-1.5 bg-white text-slate-700 text-[11px] font-medium rounded-md border border-slate-200">마감 포함</button>
+  </div>
+</div>
+
+</body>
+</html>

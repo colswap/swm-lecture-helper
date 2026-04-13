@@ -1,0 +1,245 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 420px;
+  max-height: 560px;
+  font-family: 'Segoe UI', -apple-system, sans-serif;
+  font-size: 13px;
+  color: #333;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px 6px;
+  background: #1a73e8;
+  color: white;
+}
+
+.header h1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sync-info {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.search-bar {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26,115,232,0.15);
+}
+
+.filters {
+  display: flex;
+  gap: 4px;
+  padding: 6px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.filters input, .filters select {
+  flex: 1;
+  min-width: 80px;
+  padding: 4px 6px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 11px;
+  background: white;
+}
+
+.filters input[type="date"] {
+  min-width: 110px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  color: #1a73e8;
+  border-bottom: 2px solid #1a73e8;
+  margin-bottom: -2px;
+}
+
+.tab:hover { color: #1a73e8; }
+
+.result-count {
+  padding: 5px 12px;
+  font-size: 11px;
+  color: #888;
+  background: #fafafa;
+}
+
+.results {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.lecture-item {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lecture-item:hover {
+  background: #f5f8ff;
+}
+
+.lecture-item.applied {
+  background: #fffbf0;
+  border-left-color: #f5b94a;
+}
+
+.lecture-item.applied:hover {
+  background: #fff4d9;
+}
+
+.lecture-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #222;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.lecture-title .cat {
+  flex-shrink: 0;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.cat.special { background: #e8f5e9; color: #2e7d32; }
+.cat.free { background: #fff3e0; color: #e65100; }
+
+.lecture-title .name {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.lecture-meta {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #777;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.lecture-meta .tag {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.tag.online { background: #e3f2fd; color: #1565c0; }
+.tag.offline { background: #fce4ec; color: #c62828; }
+.tag.open { background: #e8f5e9; color: #2e7d32; }
+.tag.closed { background: #f5f5f5; color: #999; }
+
+.fav-btn {
+  float: right;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 2px;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+}
+
+.fav-btn:hover, .fav-btn.active {
+  opacity: 1;
+}
+
+.footer {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  gap: 6px;
+}
+
+.sync-btn {
+  flex: 1;
+  padding: 7px;
+  border: 1px solid #1a73e8;
+  border-radius: 4px;
+  background: white;
+  color: #1a73e8;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sync-btn:hover {
+  background: #1a73e8;
+  color: white;
+}
+
+.sync-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sync-btn.detail {
+  border-color: #7c4dff;
+  color: #7c4dff;
+}
+
+.sync-btn.detail:hover {
+  background: #7c4dff;
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #aaa;
+}
+
+.empty-state .icon { font-size: 32px; margin-bottom: 8px; }
+.empty-state .msg { font-size: 13px; }

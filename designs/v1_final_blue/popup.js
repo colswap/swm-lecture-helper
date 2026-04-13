@@ -18,25 +18,19 @@
   const resultCount = document.getElementById('resultCount');
   const syncBtn = document.getElementById('syncBtn');
   const syncAllBtn = document.getElementById('syncAllBtn');
-  const headerStats = document.getElementById('headerStats');
+  const syncInfo = document.getElementById('syncInfo');
 
   // --- 초기화 ---
-  function updateHeaderStats() {
-    const openCount = Object.values(allLectures).filter(l => l.status === 'A').length;
-    const appliedCount = Object.values(allLectures).filter(l => l.applied).length;
-    const favCount = favorites.length;
-    headerStats.textContent = `접수중 ${openCount} · 즐겨찾기 ${favCount} · 내 신청 ${appliedCount}`;
-  }
-
   async function init() {
     allLectures = await SWM.getLectures();
     favorites = await SWM.getFavorites();
 
     const meta = await SWM.getMeta();
     if (meta.lastFullSync) {
-      updateHeaderStats();
+      const openCount = Object.values(allLectures).filter(l => l.status === 'A').length;
+      syncInfo.textContent = `접수중 ${openCount}개 · ${timeAgo(new Date(meta.lastFullSync))}`;
     } else {
-      headerStats.textContent = '동기화 필요';
+      syncInfo.textContent = '동기화 필요';
     }
 
     doSearch();
@@ -118,53 +112,44 @@
       return;
     }
 
-    const starSvgFilled = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-    const starSvgEmpty = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-
     resultsDiv.innerHTML = lectures.map(l => {
       const isFav = favorites.includes(l.sn);
       const isSpecial = l.category === 'MRC020';
       const catLabel = isSpecial ? '특강' : '멘토링';
       const catClass = isSpecial ? 'special' : 'free';
 
+      // 메타 태그: 날짜/시간 → 멘토 → 인원 → 장소 → 상태
+      const tags = [];
+      if (l.lecDate) tags.push(formatDate(l.lecDate));
+      if (l.lecTime) tags.push(l.lecTime);
+      if (l.mentor) tags.push(l.mentor);
+      if (l.count?.max) tags.push(`${l.count.current ?? '?'}/${l.count.max}명`);
+      if (l.detailFetched && l.location) {
+        const locClass = l.isOnline ? 'online' : 'offline';
+        const locLabel = l.isOnline ? '비대면' : '대면';
+        tags.push(`<span class="tag ${locClass}">${locLabel}: ${l.location}</span>`);
+      }
+      if (l.status === 'A') {
+        tags.push('<span class="tag open">접수중</span>');
+      } else if (l.status === 'C') {
+        tags.push('<span class="tag closed">마감</span>');
+      }
+
       // 제목에서 카테고리 접두사 제거
       let displayTitle = l.title || '';
       displayTitle = displayTitle.replace(/^\[[^\]]+\]\s*/, '');
 
-      // 메타 라인: 카테고리 · 날짜 · 시간 · 멘토 · 인원 · [즐겨찾기 or 신청뱃지]
-      const metaBits = [];
-      metaBits.push(`<span class="cat ${catClass}">${catLabel}</span>`);
-      if (l.lecDate) metaBits.push(`<span class="date">${formatDate(l.lecDate)}</span>`);
-      if (l.lecTime) metaBits.push(`<span>${escapeHtml(l.lecTime)}</span>`);
-      if (l.mentor || l.count?.max) {
-        metaBits.push('<span class="sep">·</span>');
-        if (l.mentor) metaBits.push(`<span>${escapeHtml(l.mentor)}</span>`);
-        if (l.mentor && l.count?.max) metaBits.push('<span class="sep">·</span>');
-        if (l.count?.max) metaBits.push(`<span class="count">${l.count.current ?? '?'}/${l.count.max}명</span>`);
-      }
-      metaBits.push('<span class="spacer"></span>');
-      if (l.applied) {
-        metaBits.push('<span class="applied-badge">신청</span>');
-      } else {
-        metaBits.push(`<button class="fav-btn ${isFav ? 'on' : ''}" data-sn="${l.sn}" title="즐겨찾기">${isFav ? starSvgFilled : starSvgEmpty}</button>`);
-      }
-
-      // 태그 라인: 장소 + 상태
-      const tags = [];
-      if (l.detailFetched && l.location) {
-        const locClass = l.isOnline ? 'online' : 'offline';
-        const locLabel = l.isOnline ? '비대면' : '대면';
-        tags.push(`<span class="tag ${locClass}">${locLabel} ${escapeHtml(l.location)}</span>`);
-      }
-      if (l.status === 'A') tags.push('<span class="tag open">접수중</span>');
-      else if (l.status === 'C') tags.push('<span class="tag closed">마감</span>');
-
       const itemClass = `lecture-item${l.applied ? ' applied' : ''}`;
       return `
         <div class="${itemClass}" data-sn="${l.sn}" ${l.applied ? 'title="신청한 강연"' : ''}>
-          <div class="meta-line">${metaBits.join('')}</div>
-          <div class="title-line">${escapeHtml(displayTitle)}</div>
-          <div class="tags-line">${tags.join('')}</div>
+          <button class="fav-btn ${isFav ? 'active' : ''}" data-sn="${l.sn}" title="즐겨찾기">
+            ${isFav ? '★' : '☆'}
+          </button>
+          <div class="lecture-title">
+            <span class="cat ${catClass}">${catLabel}</span>
+            <span class="name">${escapeHtml(displayTitle)}</span>
+          </div>
+          <div class="lecture-meta">${tags.join(' · ')}</div>
         </div>`;
     }).join('');
   }
@@ -242,7 +227,8 @@
       if (response?.success) {
         button.textContent = `완료! ${response.count}개`;
         allLectures = await SWM.getLectures();
-        updateHeaderStats();
+        const openCount = Object.values(allLectures).filter(l => l.status === 'A').length;
+        syncInfo.textContent = `접수중 ${openCount}개 · 방금`;
         doSearch();
       } else {
         button.textContent = '실패 (로그인 확인)';
