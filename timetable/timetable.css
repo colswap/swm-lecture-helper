@@ -608,7 +608,11 @@ body.dragging .lec-block { pointer-events: none; }
   border: 2px dashed var(--amber-500);
   border-radius: 4px;
   z-index: var(--z-drag-sel);
-  pointer-events: none;
+}
+.drag-sel.drag-preview { pointer-events: none; }
+.drag-sel:not(.drag-preview):hover {
+  background: rgba(251, 191, 36, 0.4);
+  cursor: context-menu;
 }
 
 /* ─── Day header: 클릭 가능 힌트 ─── */

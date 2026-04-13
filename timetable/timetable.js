@@ -568,12 +568,32 @@
       slots.forEach(s => {
         const b = document.createElement('div');
         b.className = 'drag-sel';
+        b.dataset.date = dateStr;
+        b.dataset.start = s.startMin;
+        b.dataset.end = s.endMin;
+        b.title = '우클릭으로 이 슬롯 제거';
         b.style.top = minToY(s.startMin) + 'px';
         b.style.height = (minToY(s.endMin) - minToY(s.startMin)) + 'px';
         col.appendChild(b);
       });
     }
   }
+
+  // 우클릭으로 슬롯 제거
+  gridBody.addEventListener('contextmenu', e => {
+    const block = e.target.closest('.drag-sel:not(.drag-preview)');
+    if (!block) return;
+    e.preventDefault();
+    const { date, start, end } = block.dataset;
+    const arr = selectedSlots.get(date) || [];
+    const next = arr.filter(s => !(s.startMin === +start && s.endMin === +end));
+    if (next.length === 0) selectedSlots.delete(date);
+    else selectedSlots.set(date, next);
+    renderSlotBar();
+    renderSlotBlocks();
+    updateDayHeaderSelection();
+    runSearch();
+  });
 
   function updateDayHeaderSelection() {
     const kids = Array.from(dayHeaders.children).slice(1);
