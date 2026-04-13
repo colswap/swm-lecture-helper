@@ -17,7 +17,8 @@
   // B-2: 시간대 선택
   // key: 'YYYY-MM-DD', value: [{startMin, endMin}]
   const selectedSlots = new Map();
-  let slotFilterOn = false; // "이 시간대 검색" 활성 플래그
+  let advancedMode = false; // 상세검색 모드 (드래그/슬롯 필터 활성 여부)
+  const SLOT_SNAP_MIN = 10; // 10분 단위 스냅
 
   const el = id => document.getElementById(id);
   const searchInput = el('searchInput');
@@ -56,7 +57,7 @@
     const status = filterStatus.value;
     const category = filterCategory.value;
     const location = filterLocation.value;
-    const slotSearchActive = slotFilterOn && selectedSlots.size > 0;
+    const slotSearchActive = advancedMode && selectedSlots.size > 0;
 
     let lectures = Object.values(allLectures);
 
@@ -139,7 +140,8 @@
     if (!slots || slots.length === 0) return false;
     const r = parseTimeRange(l.lecTime);
     if (!r) return false;
-    return slots.some(s => overlaps(s, r));
+    // 완전 포함 (강연 시간이 선택 슬롯 안에 전부 들어가는 경우만)
+    return slots.some(s => s.startMin <= r.startMin && s.endMin >= r.endMin);
   }
 
   // ─── 카드 렌더 (팝업과 동일 구조) ───
@@ -516,17 +518,20 @@
   let dragState = null; // {colEl, dateStr, startY, currentY, shift}
 
   function yToMin(y) {
-    return Math.max(baseMin, Math.min(baseMin + Math.round(y / HOUR_PX * 60), (END_HOUR + 1) * 60));
+    const raw = baseMin + (y / HOUR_PX) * 60;
+    const snapped = Math.round(raw / SLOT_SNAP_MIN) * SLOT_SNAP_MIN;
+    return Math.max(baseMin, Math.min(snapped, (END_HOUR + 1) * 60));
   }
   function minToY(min) {
     return Math.max(0, (min - baseMin) / 60) * HOUR_PX;
   }
 
-  function addSlot(dateStr, startMin, endMin, shift) {
+  function addSlot(dateStr, startMin, endMin) {
     startMin = Math.max(baseMin, startMin);
     endMin = Math.min((END_HOUR + 1) * 60, endMin);
     if (startMin >= endMin) return;
-    const existing = shift ? (selectedSlots.get(dateStr) || []).slice() : [];
+    // 항상 기존 슬롯에 추가 (하루에 여러 바 허용)
+    const existing = (selectedSlots.get(dateStr) || []).slice();
     existing.push({ startMin, endMin });
     existing.sort((a, b) => a.startMin - b.startMin);
     const merged = [];
@@ -538,7 +543,6 @@
       }
     }
     selectedSlots.set(dateStr, merged);
-    slotFilterOn = true;
   }
 
   function clearDragPreview() {
@@ -582,7 +586,7 @@
   const wdayShort = ['일', '월', '화', '수', '목', '금', '토'];
   function renderSlotBar() {
     const bar = el('slotBar');
-    if (selectedSlots.size === 0) {
+    if (!advancedMode) {
       bar.style.display = 'none';
       return;
     }
@@ -603,8 +607,9 @@
     el('slotChips').innerHTML = chips.join('');
   }
 
-  // 드래그 이벤트
+  // 드래그 이벤트 (상세검색 모드 ON 일 때만)
   gridBody.addEventListener('mousedown', e => {
+    if (!advancedMode) return;
     const col = e.target.closest('.day-column');
     if (!col || e.target !== col) return;
     e.preventDefault();
@@ -615,7 +620,6 @@
       dateStr: col.dataset.date,
       startY: y,
       currentY: y,
-      shift: e.shiftKey,
     };
     document.body.classList.add('dragging');
     renderDragPreview();
@@ -635,7 +639,7 @@
     document.body.classList.remove('dragging');
     clearDragPreview();
     if (Math.abs(endY - startY) >= 4) {
-      addSlot(dragState.dateStr, yToMin(startY), yToMin(endY), dragState.shift);
+      addSlot(dragState.dateStr, yToMin(startY), yToMin(endY));
       renderSlotBar();
       renderSlotBlocks();
       updateDayHeaderSelection();
@@ -644,8 +648,9 @@
     dragState = null;
   });
 
-  // 요일 헤더 클릭 → 그 요일 전체 토글
+  // 요일 헤더 클릭 → 그 요일 전체 토글 (상세검색 모드 ON 일 때만)
   dayHeaders.addEventListener('click', e => {
+    if (!advancedMode) return;
     const cell = e.target.closest('.day-headers > div');
     if (!cell) return;
     const kids = Array.from(dayHeaders.children);
@@ -661,7 +666,6 @@
     } else {
       selectedSlots.set(dateStr, [{ startMin: baseMin, endMin: (END_HOUR + 1) * 60 }]);
     }
-    slotFilterOn = selectedSlots.size > 0;
     renderSlotBar();
     renderSlotBlocks();
     updateDayHeaderSelection();
@@ -678,23 +682,28 @@
     const next = arr.filter(s => !(s.startMin === +start && s.endMin === +end));
     if (next.length === 0) selectedSlots.delete(date);
     else selectedSlots.set(date, next);
-    slotFilterOn = selectedSlots.size > 0;
     renderSlotBar();
     renderSlotBlocks();
     updateDayHeaderSelection();
     runSearch();
   });
 
-  el('slotSearchBtn').addEventListener('click', () => {
-    slotFilterOn = true;
-    runSearch();
-  });
   el('slotClearBtn').addEventListener('click', () => {
     selectedSlots.clear();
-    slotFilterOn = false;
     renderSlotBar();
     renderSlotBlocks();
     updateDayHeaderSelection();
+    runSearch();
+  });
+
+  // 상세검색 토글
+  el('advancedToggle').addEventListener('click', () => {
+    advancedMode = !advancedMode;
+    el('advancedToggle').classList.toggle('on', advancedMode);
+    el('advancedToggle').textContent = advancedMode
+      ? '상세검색 종료'
+      : '상세검색 (시간대 선택)';
+    renderSlotBar();
     runSearch();
   });
 

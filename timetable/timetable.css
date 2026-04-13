@@ -172,6 +172,67 @@ body.dragging .lec-block { pointer-events: none; }
   gap: 4px;
   cursor: pointer;
 }
+.advanced-btn {
+  margin-left: auto;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  background: white;
+  border: 1px solid var(--slate-200);
+  border-radius: 5px;
+  color: var(--slate-700);
+  cursor: pointer;
+  font-family: inherit;
+}
+.advanced-btn:hover { border-color: var(--brand-500); color: var(--brand-600); }
+.advanced-btn.on {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  color: white;
+}
+
+/* ─── 헤더 토글 스위치 ─── */
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--slate-700);
+  user-select: none;
+}
+.toggle-switch input { display: none; }
+.toggle-switch .slider {
+  width: 30px;
+  height: 16px;
+  background: var(--slate-300);
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.toggle-switch .slider::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  transition: left 0.15s;
+}
+.toggle-switch input:checked + .slider { background: var(--brand-500); }
+.toggle-switch input:checked + .slider::after { left: 16px; }
+.toggle-switch .toggle-label { white-space: nowrap; }
+
+.slot-hint {
+  font-size: 10px;
+  color: var(--slate-500);
+  font-style: italic;
+  margin-right: 4px;
+}
 
 .tabs {
   display: flex;
