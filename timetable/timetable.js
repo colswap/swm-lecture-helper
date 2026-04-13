@@ -696,6 +696,53 @@
     runSearch();
   });
 
+  // 내 빈 시간 전체 선택 — 이번 주 7일 각각 [base~end] 에서 신청 강연 시간 차감
+  function subtractIntervals(base, holes) {
+    let result = base.slice();
+    for (const h of holes) {
+      const next = [];
+      for (const r of result) {
+        if (h.endMin <= r.startMin || h.startMin >= r.endMin) {
+          next.push(r);
+        } else if (h.startMin <= r.startMin && h.endMin >= r.endMin) {
+          // 전체 잘림
+        } else if (h.startMin > r.startMin && h.endMin < r.endMin) {
+          next.push({ startMin: r.startMin, endMin: h.startMin });
+          next.push({ startMin: h.endMin, endMin: r.endMin });
+        } else if (h.startMin <= r.startMin) {
+          next.push({ startMin: h.endMin, endMin: r.endMin });
+        } else {
+          next.push({ startMin: r.startMin, endMin: h.endMin });
+        }
+      }
+      result = next.filter(r => r.startMin < r.endMin);
+    }
+    return result;
+  }
+
+  el('slotFreeBtn').addEventListener('click', () => {
+    const FULL = { startMin: baseMin, endMin: (END_HOUR + 1) * 60 };
+    for (let i = 0; i < 7; i++) {
+      const dateStr = fmtISO(addDays(weekStart, i));
+      const myBlocks = Object.values(allLectures)
+        .filter(l => l.applied && l.lecDate === dateStr && l.lecTime)
+        .map(l => parseTimeRange(l.lecTime))
+        .filter(Boolean)
+        .map(r => ({
+          startMin: Math.max(baseMin, r.startMin),
+          endMin: Math.min((END_HOUR + 1) * 60, r.endMin),
+        }))
+        .filter(r => r.startMin < r.endMin);
+      const free = subtractIntervals([FULL], myBlocks);
+      if (free.length > 0) selectedSlots.set(dateStr, free);
+      else selectedSlots.delete(dateStr); // 하루 종일 신청이면 빈 시간 없음
+    }
+    renderSlotBar();
+    renderSlotBlocks();
+    updateDayHeaderSelection();
+    runSearch();
+  });
+
   // 상세검색 토글
   el('advancedToggle').addEventListener('click', () => {
     advancedMode = !advancedMode;
