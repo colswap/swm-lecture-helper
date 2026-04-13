@@ -25,18 +25,6 @@
       return true;
     }
 
-    if (msg.type === 'FETCH_DETAILS') {
-      fetchDetails(msg.sns, status => {
-        chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status }).catch(() => {});
-      }).then(count => {
-        sendResponse({ success: true, count });
-      }).catch(e => {
-        console.error('SWM Helper: fetchDetails error', e);
-        sendResponse({ success: false, error: e.message });
-      });
-      return true;
-    }
-
     if (msg.type === 'PING') {
       sendResponse({ alive: true });
     }
@@ -233,7 +221,9 @@
   }
 
   async function fullSync({ statusFilter = 'A', concurrency = 4, statusCallback } = {}) {
-    const allLectures = {};
+    // listLectures: status 필터에 해당하는 표 데이터 (상세 수집 대상)
+    // calendarData: 모든 달의 캘린더 파편 (SN+날짜+제목 일부만, 상세 수집 제외)
+    const listLectures = {};
     const scopeLabel = statusFilter === 'A' ? '접수중' : statusFilter === 'C' ? '마감' : '전체';
     const MAX_PAGES = 300;
 
@@ -254,63 +244,81 @@
           return null;
         }
         const rowCount = Object.keys(r.data).length;
-        Object.assign(allLectures, r.data);
-        // 페이지당 10행 고정. 10 미만이면 마지막 페이지.
+        Object.assign(listLectures, r.data);
         if (rowCount < 10) done = true;
       }
 
       page += concurrency;
-      statusCallback?.(`${scopeLabel} ${Math.min(page - 1, MAX_PAGES)}페이지 (누적 ${Object.keys(allLectures).length}개)`);
+      statusCallback?.(`${scopeLabel} ${Math.min(page - 1, MAX_PAGES)}페이지 (누적 ${Object.keys(listLectures).length}개)`);
     }
 
-    // 캘린더 스크립트의 부분 메타데이터도 병합 (SN 보충용)
+    // 저장은 SWM.saveLectures 가 SN 단위로 얕은 merge 해준다.
+    // 캘린더(부분 메타) 를 먼저 저장한 뒤, list(전체 필드)로 덮어쓰는 순서가 안전.
     const calendarData = parseCalendarData();
     if (Object.keys(calendarData).length > 0) {
-      Object.assign(allLectures, calendarData);
+      await SWM.saveLectures(calendarData);
+    }
+    await SWM.saveLectures(listLectures);
+
+    // 상세 수집: list 에 포함된(= 이번 sync 스코프) SN 중 아직 detailFetched 안 된 것만.
+    // calendar 로만 들어온 과거 항목은 제외.
+    const stored = await SWM.getLectures();
+    const needDetail = Object.keys(listLectures).filter(sn => !stored[sn]?.detailFetched);
+    if (needDetail.length > 0) {
+      statusCallback?.(`${scopeLabel} 상세 수집 중 (${needDetail.length}개)...`);
+      await fetchDetailsBatch(needDetail, { concurrency: 4, statusCallback });
     }
 
-    await SWM.saveLectures(allLectures);
     const meta = await SWM.getMeta();
     meta.lastFullSync = new Date().toISOString();
     meta.lastSyncScope = statusFilter || 'all';
-    // 전체 storage 기준으로 knownLectureSns 갱신 (마감 데이터 포함)
-    const merged = await SWM.getLectures();
-    meta.knownLectureSns = Object.keys(merged);
+    const final = await SWM.getLectures();
+    meta.knownLectureSns = Object.keys(final);
     await SWM.saveMeta(meta);
 
-    statusCallback?.(`완료! ${scopeLabel} ${Object.keys(allLectures).length}개`);
-    return allLectures;
+    statusCallback?.(`완료! ${scopeLabel} ${Object.keys(listLectures).length}개`);
+    return listLectures;
   }
 
-  async function fetchDetails(sns, statusCallback) {
+  async function fetchOneDetail(sn) {
+    try {
+      const resp = await fetch(
+        `/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`,
+        { credentials: 'same-origin' }
+      );
+      if (isLoginRedirect(resp)) return { loginRequired: true };
+      const html = await resp.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const groups = doc.querySelectorAll('.bbs-view-new .top .group');
+      const info = {};
+      groups.forEach(g => {
+        const key = g.querySelector('.t')?.textContent?.trim();
+        const val = g.querySelector('.c')?.textContent?.trim();
+        if (key && val) info[key] = val;
+      });
+      const loc = info['장소'] || '';
+      const isOnline = /온라인|비대면|ZOOM|Zoom|Webex|화상|Google Meet|Teams|줌/i.test(loc);
+      const description = doc.querySelector('.bbs-view-new .cont')?.textContent?.trim()?.substring(0, 500) || '';
+      return { sn, data: { location: loc, isOnline, description, detailFetched: true } };
+    } catch (e) {
+      console.error(`SWM Helper: detail ${sn} error`, e);
+      return { sn, error: e.message };
+    }
+  }
+
+  async function fetchDetailsBatch(sns, { concurrency = 4, statusCallback } = {}) {
     let done = 0;
-    for (const sn of sns) {
-      await new Promise(r => setTimeout(r, 1000));
-      try {
-        const resp = await fetch(`/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`, { credentials: 'same-origin' });
-        if (isLoginRedirect(resp)) break;
-        const html = await resp.text();
-
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const groups = doc.querySelectorAll('.bbs-view-new .top .group');
-        const info = {};
-        groups.forEach(g => {
-          const key = g.querySelector('.t')?.textContent?.trim();
-          const val = g.querySelector('.c')?.textContent?.trim();
-          if (key && val) info[key] = val;
-        });
-
-        const loc = info['장소'] || '';
-        const isOnline = /온라인|비대면|ZOOM|Zoom|Webex|화상|Google Meet|Teams|줌/i.test(loc);
-        const description = doc.querySelector('.bbs-view-new .cont')?.textContent?.trim()?.substring(0, 500) || '';
-
-        await SWM.saveLecture(sn, { location: loc, isOnline, description, detailFetched: true });
-        done++;
-        statusCallback?.(`상세 ${done}/${sns.length}`);
-      } catch (e) {
-        console.error(`SWM Helper: detail ${sn} error`, e);
+    for (let i = 0; i < sns.length; i += concurrency) {
+      const chunk = sns.slice(i, i + concurrency);
+      const results = await Promise.all(chunk.map(fetchOneDetail));
+      for (const r of results) {
+        if (r.loginRequired) return done;
+        if (r.data) {
+          await SWM.saveLecture(r.sn, r.data);
+          done++;
+        }
       }
+      statusCallback?.(`상세 ${done}/${sns.length}`);
     }
     return done;
   }

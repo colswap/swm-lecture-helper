@@ -18,7 +18,6 @@
   const resultCount = document.getElementById('resultCount');
   const syncBtn = document.getElementById('syncBtn');
   const syncAllBtn = document.getElementById('syncAllBtn');
-  const syncDetailBtn = document.getElementById('syncDetailBtn');
   const syncInfo = document.getElementById('syncInfo');
 
   // --- 초기화 ---
@@ -62,9 +61,12 @@
       });
     }
 
-    // 날짜 필터
+    // 날짜 필터: 특정 날짜 고를 땐 그 날짜만, 아니면 오늘 이후 (과거 강연 숨김)
     if (date) {
       lectures = lectures.filter(l => l.lecDate === date);
+    } else {
+      const today = new Date().toISOString().slice(0, 10);
+      lectures = lectures.filter(l => !l.lecDate || l.lecDate >= today);
     }
 
     // 상태 필터
@@ -84,13 +86,13 @@
       lectures = lectures.filter(l => l.detailFetched && l.isOnline === false);
     }
 
-    // 정렬: 날짜 내림차순, 같으면 sn 내림차순
+    // 정렬: 강의 날짜+시간 오름차순 (가까운 순). 날짜 없는 항목은 맨 뒤.
     lectures.sort((a, b) => {
-      if (a.lecDate && b.lecDate) {
-        const cmp = b.lecDate.localeCompare(a.lecDate);
-        if (cmp !== 0) return cmp;
-      }
-      return (parseInt(b.sn) || 0) - (parseInt(a.sn) || 0);
+      const ak = a.lecDate ? `${a.lecDate} ${a.lecTime || ''}` : '\uffff';
+      const bk = b.lecDate ? `${b.lecDate} ${b.lecTime || ''}` : '\uffff';
+      const cmp = ak.localeCompare(bk);
+      if (cmp !== 0) return cmp;
+      return (parseInt(a.sn) || 0) - (parseInt(b.sn) || 0);
     });
 
     currentResults = lectures;
@@ -129,7 +131,7 @@
         tags.push(`<span class="tag ${locClass}">${locLabel}: ${l.location}</span>`);
       }
       if (l.mentor) tags.push(l.mentor);
-      if (l.count?.max) tags.push(`${l.count.current || '?'}/${l.count.max}명`);
+      if (l.count?.max) tags.push(`${l.count.current ?? '?'}/${l.count.max}명`);
       if (l.status === 'A') {
         tags.push('<span class="tag open">접수중</span>');
       } else if (l.status === 'C') {
@@ -195,7 +197,7 @@
     if (item) {
       const sn = item.dataset.sn;
       chrome.tabs.create({
-        url: `https://swmaestro.ai/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`
+        url: `https://www.swmaestro.ai/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`
       });
     }
   });
@@ -241,42 +243,6 @@
 
   syncBtn.addEventListener('click', () => triggerSync(syncBtn, '접수중 동기화', 'A'));
   syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, '마감 포함', ''));
-
-  // 상세 수집
-  syncDetailBtn.addEventListener('click', async () => {
-    // 현재 검색 결과에서 detailFetched가 false인 것들
-    const needDetail = currentResults.filter(l => !l.detailFetched).map(l => l.sn);
-
-    if (needDetail.length === 0) {
-      syncDetailBtn.textContent = '수집할 항목 없음';
-      setTimeout(() => { syncDetailBtn.textContent = '상세 수집'; }, 1500);
-      return;
-    }
-
-    syncDetailBtn.disabled = true;
-    syncDetailBtn.textContent = `수집 중... (${needDetail.length}개)`;
-
-    const tab = await findSwmTab();
-    if (!tab) {
-      syncDetailBtn.textContent = 'swmaestro.ai 필요';
-      setTimeout(() => { syncDetailBtn.textContent = '상세 수집'; syncDetailBtn.disabled = false; }, 2000);
-      return;
-    }
-
-    try {
-      const response = await chrome.tabs.sendMessage(tab.id, { type: 'FETCH_DETAILS', sns: needDetail });
-      syncDetailBtn.textContent = `완료! ${response?.count || 0}개`;
-      allLectures = await SWM.getLectures();
-      doSearch();
-    } catch (e) {
-      syncDetailBtn.textContent = '페이지 새로고침 필요';
-    }
-
-    setTimeout(() => {
-      syncDetailBtn.textContent = '상세 수집';
-      syncDetailBtn.disabled = false;
-    }, 2500);
-  });
 
   // 동기화 상태 수신
   chrome.runtime.onMessage.addListener((msg) => {

@@ -29,17 +29,14 @@
     const lecDate = dateMatch ? dateMatch[1].replace(/\./g, '-') : '';
     const lecTime = timeMatch ? `${timeMatch[1]} ~ ${timeMatch[2]}` : '';
 
-    const countText = info['모집인원'] || '';
-    const countMatch = countText.match(/(\d+)/);
-    const countMax = countMatch ? parseInt(countMatch[1]) : 0;
-
     const title = info['모집 명'] || '';
     const mentor = info['작성자'] || '';
     const regPeriod = info['접수 기간'] || '';
 
+    // count 는 list 데이터(current/max 다 있음)가 더 정확하므로 건드리지 않음
     const data = {
       sn, title, status, location: loc, isOnline, description,
-      lecDate, lecTime, count: { max: countMax },
+      lecDate, lecTime,
       mentor, regPeriod, detailFetched: true
     };
 
