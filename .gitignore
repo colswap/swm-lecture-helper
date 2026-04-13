@@ -1,3 +1,6 @@
 .DS_Store
 *.crx
 *.pem
+
+# Gemini 생성 원본 로고 (큰 용량 소스)
+유자로고.jpeg
