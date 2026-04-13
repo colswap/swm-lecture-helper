@@ -227,11 +227,46 @@ body.dragging .lec-block { pointer-events: none; }
 .toggle-switch input:checked + .slider::after { left: 16px; }
 .toggle-switch .toggle-label { white-space: nowrap; }
 
-.slot-hint {
-  font-size: 10px;
-  color: var(--slate-500);
-  font-style: italic;
-  margin-right: 4px;
+.info-btn {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 2px;
+  cursor: help;
+  color: var(--slate-400);
+  line-height: 0;
+  display: inline-flex;
+  align-items: center;
+}
+.info-btn:hover { color: var(--brand-500); }
+.info-btn svg { width: 15px; height: 15px; }
+.info-btn[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: var(--slate-900);
+  color: white;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+  font-weight: 400;
+  white-space: pre-line;
+  max-width: 280px;
+  width: max-content;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.18);
+}
+.info-btn[data-tooltip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  right: 6px;
+  border: 5px solid transparent;
+  border-top-color: var(--slate-900);
+  z-index: 1000;
 }
 
 .tabs {
