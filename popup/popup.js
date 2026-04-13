@@ -143,16 +143,14 @@
       } else if (l.status === 'C') {
         tags.push('<span class="tag closed">마감</span>');
       }
-      if (l.applied) {
-        tags.push('<span class="tag applied">✓ 신청완료</span>');
-      }
 
       // 제목에서 카테고리 접두사 제거
       let displayTitle = l.title || '';
       displayTitle = displayTitle.replace(/^\[[^\]]+\]\s*/, '');
 
+      const itemClass = `lecture-item${l.applied ? ' applied' : ''}`;
       return `
-        <div class="lecture-item" data-sn="${l.sn}">
+        <div class="${itemClass}" data-sn="${l.sn}" ${l.applied ? 'title="신청한 강연"' : ''}>
           <button class="fav-btn ${isFav ? 'active' : ''}" data-sn="${l.sn}" title="즐겨찾기">
             ${isFav ? '★' : '☆'}
           </button>
