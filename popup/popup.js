@@ -27,8 +27,8 @@
 
     const meta = await SWM.getMeta();
     if (meta.lastFullSync) {
-      const ago = timeAgo(new Date(meta.lastFullSync));
-      syncInfo.textContent = `${Object.keys(allLectures).length}개 | ${ago}`;
+      const openCount = Object.values(allLectures).filter(l => l.status === 'A').length;
+      syncInfo.textContent = `접수중 ${openCount}개 · ${timeAgo(new Date(meta.lastFullSync))}`;
     } else {
       syncInfo.textContent = '동기화 필요';
     }
@@ -121,17 +121,17 @@
       const catLabel = isSpecial ? '특강' : '멘토링';
       const catClass = isSpecial ? 'special' : 'free';
 
-      // 메타 태그
+      // 메타 태그: 날짜/시간 → 멘토 → 인원 → 장소 → 상태
       const tags = [];
       if (l.lecDate) tags.push(formatDate(l.lecDate));
       if (l.lecTime) tags.push(l.lecTime);
+      if (l.mentor) tags.push(l.mentor);
+      if (l.count?.max) tags.push(`${l.count.current ?? '?'}/${l.count.max}명`);
       if (l.detailFetched && l.location) {
         const locClass = l.isOnline ? 'online' : 'offline';
         const locLabel = l.isOnline ? '비대면' : '대면';
         tags.push(`<span class="tag ${locClass}">${locLabel}: ${l.location}</span>`);
       }
-      if (l.mentor) tags.push(l.mentor);
-      if (l.count?.max) tags.push(`${l.count.current ?? '?'}/${l.count.max}명`);
       if (l.status === 'A') {
         tags.push('<span class="tag open">접수중</span>');
       } else if (l.status === 'C') {
@@ -229,7 +229,8 @@
       if (response?.success) {
         button.textContent = `완료! ${response.count}개`;
         allLectures = await SWM.getLectures();
-        syncInfo.textContent = `${Object.keys(allLectures).length}개 | 방금`;
+        const openCount = Object.values(allLectures).filter(l => l.status === 'A').length;
+        syncInfo.textContent = `접수중 ${openCount}개 · 방금`;
         doSearch();
       } else {
         button.textContent = '실패 (로그인 확인)';
