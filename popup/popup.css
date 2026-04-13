@@ -51,13 +51,6 @@ body {
   font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.2px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.logo {
-  width: 22px;
-  height: 22px;
 }
 .header-stats {
   font-size: 10px;
