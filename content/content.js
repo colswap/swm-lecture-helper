@@ -6,10 +6,18 @@
   // ★ 메시지 리스너를 제일 먼저 등록 (절대 실패하지 않는 동기 코드)
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === 'FULL_SYNC') {
-      fullSync(status => {
-        chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status }).catch(() => {});
-      }).then(result => {
-        sendResponse({ success: !!result, count: result ? Object.keys(result).length : 0 });
+      const opts = {
+        statusFilter: msg.statusFilter ?? 'A',
+        statusCallback: status => {
+          chrome.runtime.sendMessage({ type: 'SYNC_STATUS', status }).catch(() => {});
+        },
+      };
+      fullSync(opts).then(result => {
+        sendResponse({
+          success: !!result,
+          count: result ? Object.keys(result).length : 0,
+          statusFilter: opts.statusFilter,
+        });
       }).catch(e => {
         console.error('SWM Helper: fullSync error', e);
         sendResponse({ success: false, error: e.message });
@@ -208,34 +216,54 @@
     return resp.url.includes('forLogin.do') || resp.url.includes('loginForward');
   }
 
-  async function fullSync(statusCallback) {
-    const baseUrl = '/sw/mypage/mentoLec/list.do?menuNo=200046&pageIndex=';
-    let allLectures = {};
+  function buildListUrl(page, statusFilter) {
+    const params = new URLSearchParams({
+      menuNo: '200046',
+      pageIndex: String(page),
+    });
+    if (statusFilter) params.set('searchStatMentolec', statusFilter);
+    return `/sw/mypage/mentoLec/list.do?${params}`;
+  }
 
-    statusCallback?.('동기화 시작...');
+  async function fetchListPage(page, statusFilter) {
+    const resp = await fetch(buildListUrl(page, statusFilter), { credentials: 'same-origin' });
+    if (isLoginRedirect(resp)) return { loginRequired: true };
+    const html = await resp.text();
+    return { data: parseTableFromHTML(html) };
+  }
+
+  async function fullSync({ statusFilter = 'A', concurrency = 4, statusCallback } = {}) {
+    const allLectures = {};
+    const scopeLabel = statusFilter === 'A' ? '접수중' : statusFilter === 'C' ? '마감' : '전체';
+    const MAX_PAGES = 300;
+
+    statusCallback?.(`${scopeLabel} 동기화 시작...`);
 
     let page = 1;
-    const MAX_PAGES = 200;
-    while (page <= MAX_PAGES) {
-      const resp = await fetch(baseUrl + page, { credentials: 'same-origin' });
-      if (isLoginRedirect(resp)) {
-        statusCallback?.('로그인 필요');
-        return null;
+    let done = false;
+    while (!done && page <= MAX_PAGES) {
+      const batch = [];
+      for (let i = 0; i < concurrency && page + i <= MAX_PAGES; i++) {
+        batch.push(fetchListPage(page + i, statusFilter));
       }
-      const html = await resp.text();
-      const pageData = parseTableFromHTML(html);
-      const rowCount = Object.keys(pageData).length;
+      const results = await Promise.all(batch);
 
-      Object.assign(allLectures, pageData);
-      statusCallback?.(`${page}페이지 (누적 ${Object.keys(allLectures).length}개)`);
+      for (const r of results) {
+        if (r.loginRequired) {
+          statusCallback?.('로그인 필요');
+          return null;
+        }
+        const rowCount = Object.keys(r.data).length;
+        Object.assign(allLectures, r.data);
+        // 페이지당 10행 고정. 10 미만이면 마지막 페이지.
+        if (rowCount < 10) done = true;
+      }
 
-      // swmaestro 목록은 페이지당 10행 고정. 10 미만이면 마지막 페이지.
-      if (rowCount < 10) break;
-      page++;
-      await new Promise(r => setTimeout(r, 400));
+      page += concurrency;
+      statusCallback?.(`${scopeLabel} ${Math.min(page - 1, MAX_PAGES)}페이지 (누적 ${Object.keys(allLectures).length}개)`);
     }
 
-    // 캘린더 스크립트 데이터(부분 정보지만 SN 추가 확보용)도 병합
+    // 캘린더 스크립트의 부분 메타데이터도 병합 (SN 보충용)
     const calendarData = parseCalendarData();
     if (Object.keys(calendarData).length > 0) {
       Object.assign(allLectures, calendarData);
@@ -244,10 +272,13 @@
     await SWM.saveLectures(allLectures);
     const meta = await SWM.getMeta();
     meta.lastFullSync = new Date().toISOString();
-    meta.knownLectureSns = Object.keys(allLectures);
+    meta.lastSyncScope = statusFilter || 'all';
+    // 전체 storage 기준으로 knownLectureSns 갱신 (마감 데이터 포함)
+    const merged = await SWM.getLectures();
+    meta.knownLectureSns = Object.keys(merged);
     await SWM.saveMeta(meta);
 
-    statusCallback?.(`완료! ${Object.keys(allLectures).length}개`);
+    statusCallback?.(`완료! ${scopeLabel} ${Object.keys(allLectures).length}개`);
     return allLectures;
   }
 
@@ -312,8 +343,11 @@
           : Infinity;
 
         if (Object.keys(lectures).length === 0 || hoursSinceSync > 1) {
-          console.log('SWM Helper: 로그인 감지, 자동 동기화 시작');
-          await fullSync(status => console.log('SWM Helper:', status));
+          console.log('SWM Helper: 로그인 감지, 자동 동기화 시작 (접수중)');
+          await fullSync({
+            statusFilter: 'A',
+            statusCallback: status => console.log('SWM Helper:', status),
+          });
         } else {
           console.log(`SWM Helper: 동기화 불필요 (${Object.keys(lectures).length}개, ${hoursSinceSync.toFixed(1)}h 전)`);
         }

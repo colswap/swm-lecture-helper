@@ -17,6 +17,7 @@
   const resultsDiv = document.getElementById('results');
   const resultCount = document.getElementById('resultCount');
   const syncBtn = document.getElementById('syncBtn');
+  const syncAllBtn = document.getElementById('syncAllBtn');
   const syncDetailBtn = document.getElementById('syncDetailBtn');
   const syncInfo = document.getElementById('syncInfo');
 
@@ -210,35 +211,36 @@
     return tabs[0] || null;
   }
 
-  // 전체 동기화
-  syncBtn.addEventListener('click', async () => {
-    syncBtn.disabled = true;
-    syncBtn.textContent = '동기화 중...';
+  async function triggerSync(button, originalLabel, statusFilter) {
+    button.disabled = true;
+    button.textContent = '동기화 중...';
 
     const tab = await findSwmTab();
     if (!tab) {
-      syncBtn.textContent = 'swmaestro.ai를 아무 페이지나 열어주세요';
-      setTimeout(() => { syncBtn.textContent = '전체 동기화'; syncBtn.disabled = false; }, 2500);
+      button.textContent = 'swmaestro.ai 탭을 여세요';
+      setTimeout(() => { button.textContent = originalLabel; button.disabled = false; }, 2500);
       return;
     }
 
     try {
-      const response = await chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC' });
+      const response = await chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter });
       if (response?.success) {
-        syncBtn.textContent = `완료! ${response.count}개`;
+        button.textContent = `완료! ${response.count}개`;
         allLectures = await SWM.getLectures();
-        const meta = await SWM.getMeta();
         syncInfo.textContent = `${Object.keys(allLectures).length}개 | 방금`;
         doSearch();
       } else {
-        syncBtn.textContent = '실패 (로그인 확인)';
+        button.textContent = '실패 (로그인 확인)';
       }
     } catch (e) {
-      syncBtn.textContent = 'swmaestro.ai 페이지를 새로고침 해주세요';
+      button.textContent = '페이지 새로고침 필요';
     }
 
-    setTimeout(() => { syncBtn.textContent = '전체 동기화'; syncBtn.disabled = false; }, 2500);
-  });
+    setTimeout(() => { button.textContent = originalLabel; button.disabled = false; }, 2500);
+  }
+
+  syncBtn.addEventListener('click', () => triggerSync(syncBtn, '접수중 동기화', 'A'));
+  syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, '마감 포함', ''));
 
   // 상세 수집
   syncDetailBtn.addEventListener('click', async () => {
