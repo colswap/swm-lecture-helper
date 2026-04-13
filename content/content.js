@@ -202,16 +202,10 @@
     return lectures;
   }
 
-  function getTotalPages(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    let max = 1;
-    doc.querySelectorAll('.pagination li a').forEach(a => {
-      const onclick = a.getAttribute('onclick') || '';
-      const m = onclick.match(/(\d+)/);
-      if (m) max = Math.max(max, parseInt(m[1]));
-    });
-    return max;
+  function isLoginRedirect(resp) {
+    // 세션 만료 시 swmaestro는 forLogin.do 로 302 리다이렉트.
+    // fetch의 resp.url 이 바뀌었는지로 판정 (HTML 문자열 매칭은 false positive 다발).
+    return resp.url.includes('forLogin.do') || resp.url.includes('loginForward');
   }
 
   async function fullSync(statusCallback) {
@@ -219,25 +213,32 @@
     let allLectures = {};
 
     statusCallback?.('동기화 시작...');
-    const firstResp = await fetch(baseUrl + '1');
-    const firstHtml = await firstResp.text();
 
-    if (firstHtml.includes('잘못된 접근') || firstHtml.includes('forLogin.do')) {
-      statusCallback?.('로그인 필요');
-      return null;
+    let page = 1;
+    const MAX_PAGES = 200;
+    while (page <= MAX_PAGES) {
+      const resp = await fetch(baseUrl + page, { credentials: 'same-origin' });
+      if (isLoginRedirect(resp)) {
+        statusCallback?.('로그인 필요');
+        return null;
+      }
+      const html = await resp.text();
+      const pageData = parseTableFromHTML(html);
+      const rowCount = Object.keys(pageData).length;
+
+      Object.assign(allLectures, pageData);
+      statusCallback?.(`${page}페이지 (누적 ${Object.keys(allLectures).length}개)`);
+
+      // swmaestro 목록은 페이지당 10행 고정. 10 미만이면 마지막 페이지.
+      if (rowCount < 10) break;
+      page++;
+      await new Promise(r => setTimeout(r, 400));
     }
 
-    const totalPages = getTotalPages(firstHtml);
-    Object.assign(allLectures, parseTableFromHTML(firstHtml));
-    statusCallback?.(`1/${totalPages} 페이지`);
-
-    for (let page = 2; page <= totalPages; page++) {
-      await new Promise(r => setTimeout(r, 500));
-      const resp = await fetch(baseUrl + page);
-      const html = await resp.text();
-      if (html.includes('잘못된 접근')) break;
-      Object.assign(allLectures, parseTableFromHTML(html));
-      statusCallback?.(`${page}/${totalPages} 페이지`);
+    // 캘린더 스크립트 데이터(부분 정보지만 SN 추가 확보용)도 병합
+    const calendarData = parseCalendarData();
+    if (Object.keys(calendarData).length > 0) {
+      Object.assign(allLectures, calendarData);
     }
 
     await SWM.saveLectures(allLectures);
@@ -255,9 +256,9 @@
     for (const sn of sns) {
       await new Promise(r => setTimeout(r, 1000));
       try {
-        const resp = await fetch(`/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`);
+        const resp = await fetch(`/sw/mypage/mentoLec/view.do?qustnrSn=${sn}&menuNo=200046`, { credentials: 'same-origin' });
+        if (isLoginRedirect(resp)) break;
         const html = await resp.text();
-        if (html.includes('잘못된 접근')) break;
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');

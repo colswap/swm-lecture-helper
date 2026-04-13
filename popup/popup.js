@@ -199,14 +199,14 @@
     }
   });
 
-  // swmaestro.ai 탭 찾기 (아무 페이지든 OK)
+  // swmaestro.ai 탭 찾기 (www 포함, 아무 페이지든 OK)
   async function findSwmTab() {
-    // 현재 탭 먼저 확인
     const [active] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (active?.url?.includes('swmaestro.ai')) return active;
 
-    // 모든 탭에서 swmaestro.ai 탭 찾기
-    const tabs = await chrome.tabs.query({ url: 'https://swmaestro.ai/*' });
+    const tabs = await chrome.tabs.query({
+      url: ['https://swmaestro.ai/*', 'https://www.swmaestro.ai/*']
+    });
     return tabs[0] || null;
   }
 

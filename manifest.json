@@ -1,16 +1,20 @@
 {
   "manifest_version": 3,
   "name": "SWM Lecture Helper",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "SW마에스트로 멘토링/특강 검색, 필터, 즐겨찾기, 알림",
   "permissions": ["storage", "alarms", "notifications", "activeTab", "tabs"],
-  "host_permissions": ["https://swmaestro.ai/*"],
+  "host_permissions": [
+    "https://swmaestro.ai/*",
+    "https://www.swmaestro.ai/*"
+  ],
   "background": {
     "service_worker": "background/service-worker.js"
   },
   "content_scripts": [{
     "matches": [
-      "https://swmaestro.ai/*"
+      "https://swmaestro.ai/*",
+      "https://www.swmaestro.ai/*"
     ],
     "js": ["lib/storage.js", "content/content.js", "content/detail.js"],
     "css": ["content/content.css"],
