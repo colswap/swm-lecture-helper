@@ -53,7 +53,7 @@
       lectures = lectures.filter(l => l.applied === true);
     }
 
-    // 키워드 검색
+    // 키워드 검색은 모든 탭 공통
     if (query) {
       lectures = lectures.filter(l => {
         const searchable = [
@@ -63,8 +63,7 @@
       });
     }
 
-    // 날짜 필터: 특정 날짜 선택시 그 날짜만. 검색탭 기본은 오늘 이후.
-    // 즐겨찾기/내 신청 탭은 과거 포함(저장된 기록 전체 표시).
+    // 날짜 필터: 특정 날짜 선택시 모든 탭에 적용. 비어있을 때는 검색 탭에서만 "오늘 이후" 적용.
     if (date) {
       lectures = lectures.filter(l => l.lecDate === date);
     } else if (currentTab === 'search') {
@@ -72,21 +71,12 @@
       lectures = lectures.filter(l => !l.lecDate || l.lecDate >= today);
     }
 
-    // 상태 필터
-    if (status) {
-      lectures = lectures.filter(l => l.status === status);
-    }
-
-    // 카테고리 필터
-    if (category) {
-      lectures = lectures.filter(l => l.category === category);
-    }
-
-    // 장소 필터
-    if (location === 'online') {
-      lectures = lectures.filter(l => l.isOnline === true);
-    } else if (location === 'offline') {
-      lectures = lectures.filter(l => l.detailFetched && l.isOnline === false);
+    // 상태/분류/장소 필터는 검색 탭에서만 적용. 즐겨찾기/내 신청 탭은 전체 표시.
+    if (currentTab === 'search') {
+      if (status) lectures = lectures.filter(l => l.status === status);
+      if (category) lectures = lectures.filter(l => l.category === category);
+      if (location === 'online') lectures = lectures.filter(l => l.isOnline === true);
+      else if (location === 'offline') lectures = lectures.filter(l => l.detailFetched && l.isOnline === false);
     }
 
     // 정렬: 강의 날짜+시간 오름차순 (가까운 순). 날짜 없는 항목은 맨 뒤.
