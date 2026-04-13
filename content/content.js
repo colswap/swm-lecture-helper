@@ -247,6 +247,7 @@
 
   async function fetchAppliedSns() {
     // 내 접수내역 페이지(/sw/mypage/userAnswer/history.do)에서 신청한 강연 SN 수집
+    // 접수취소된 행은 제외 (컬럼 [6] 접수상태 = "접수취소" 이면 skip)
     const applied = new Set();
     const MAX_PAGES = 20;
     for (let page = 1; page <= MAX_PAGES; page++) {
@@ -255,13 +256,26 @@
         if (isLoginRedirect(resp)) return null;
         const html = await resp.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
-        const links = doc.querySelectorAll('td.tit a[href*="mentoLec/view.do"]');
-        if (links.length === 0) break;
-        links.forEach(a => {
-          const m = (a.getAttribute('href') || '').match(/qustnrSn=(\d+)/);
-          if (m) applied.add(m[1]);
+        const rows = doc.querySelectorAll('tbody tr');
+        let added = 0;
+        rows.forEach(row => {
+          const link = row.querySelector('td.tit a[href*="mentoLec/view.do"]');
+          if (!link) return;
+          const m = (link.getAttribute('href') || '').match(/qustnrSn=(\d+)/);
+          if (!m) return;
+          // 접수상태 컬럼 — td 의 text 가 "접수취소" 면 제외
+          const tds = row.querySelectorAll('td');
+          let cancelled = false;
+          tds.forEach(td => {
+            const t = (td.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t === '접수취소' || t.includes('접수취소')) cancelled = true;
+          });
+          if (cancelled) return;
+          applied.add(m[1]);
+          added++;
         });
-        if (links.length < 10) break;
+        if (added === 0 && rows.length === 0) break;
+        if (rows.length < 10) break;
       } catch (e) {
         console.error('SWM Helper: fetchAppliedSns error', e);
         break;
