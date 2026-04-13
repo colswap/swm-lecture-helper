@@ -284,7 +284,7 @@
     return Array.from(applied);
   }
 
-  async function fullSync({ statusFilter = 'A', concurrency = 8, statusCallback } = {}) {
+  async function fullSync({ statusFilter = 'A', concurrency = 4, statusCallback } = {}) {
     // listLectures: status 필터에 해당하는 표 데이터 (상세 수집 대상)
     // calendarData: 모든 달의 캘린더 파편 (SN+날짜+제목 일부만, 상세 수집 제외)
     const listLectures = {};
@@ -330,7 +330,7 @@
     const needDetail = Object.keys(listLectures).filter(sn => !stored[sn]?.detailFetched);
     if (needDetail.length > 0) {
       statusCallback?.(`${scopeLabel} 상세 수집 중 (${needDetail.length}개)...`);
-      await fetchDetailsBatch(needDetail, { concurrency: 8, statusCallback });
+      await fetchDetailsBatch(needDetail, { concurrency: 4, statusCallback });
     }
 
     // 내 신청내역 동기화 — 단일 read/write로 배치 처리
@@ -359,7 +359,7 @@
       // (detailFetched 여부 무관 — count/mentor/location/설명 등 변경 반영)
       if (appliedSns.length > 0) {
         statusCallback?.(`신청 강연 상세 ${appliedSns.length}개 재수집 중...`);
-        await fetchDetailsBatch(appliedSns, { concurrency: 8, statusCallback });
+        await fetchDetailsBatch(appliedSns, { concurrency: 4, statusCallback });
       }
     }
 
