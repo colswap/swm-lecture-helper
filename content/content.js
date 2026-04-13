@@ -245,6 +245,31 @@
     return { data: parseTableFromHTML(html) };
   }
 
+  async function fetchAppliedSns() {
+    // 내 접수내역 페이지(/sw/mypage/userAnswer/history.do)에서 신청한 강연 SN 수집
+    const applied = new Set();
+    const MAX_PAGES = 20;
+    for (let page = 1; page <= MAX_PAGES; page++) {
+      try {
+        const resp = await fetchWithRetry(`/sw/mypage/userAnswer/history.do?menuNo=200047&pageIndex=${page}`);
+        if (isLoginRedirect(resp)) return null;
+        const html = await resp.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const links = doc.querySelectorAll('td.tit a[href*="mentoLec/view.do"]');
+        if (links.length === 0) break;
+        links.forEach(a => {
+          const m = (a.getAttribute('href') || '').match(/qustnrSn=(\d+)/);
+          if (m) applied.add(m[1]);
+        });
+        if (links.length < 10) break;
+      } catch (e) {
+        console.error('SWM Helper: fetchAppliedSns error', e);
+        break;
+      }
+    }
+    return Array.from(applied);
+  }
+
   async function fullSync({ statusFilter = 'A', concurrency = 8, statusCallback } = {}) {
     // listLectures: status 필터에 해당하는 표 데이터 (상세 수집 대상)
     // calendarData: 모든 달의 캘린더 파편 (SN+날짜+제목 일부만, 상세 수집 제외)
@@ -294,6 +319,29 @@
       await fetchDetailsBatch(needDetail, { concurrency: 8, statusCallback });
     }
 
+    // 내 신청내역 동기화 — 단일 read/write로 배치 처리
+    statusCallback?.('신청내역 확인 중...');
+    const appliedSns = await fetchAppliedSns();
+    if (appliedSns !== null) {
+      const appliedSet = new Set(appliedSns);
+      const all = await SWM.getLectures();
+      let changed = false;
+      for (const sn of Object.keys(all)) {
+        const wantApplied = appliedSet.has(sn);
+        if (!!all[sn].applied !== wantApplied) {
+          all[sn] = { ...all[sn], applied: wantApplied };
+          changed = true;
+        }
+      }
+      for (const sn of appliedSns) {
+        if (!all[sn]) {
+          all[sn] = { sn, applied: true };
+          changed = true;
+        }
+      }
+      if (changed) await chrome.storage.local.set({ lectures: all });
+    }
+
     const meta = await SWM.getMeta();
     meta.lastFullSync = new Date().toISOString();
     meta.lastSyncScope = statusFilter || 'all';
@@ -332,15 +380,24 @@
 
   async function fetchDetailsBatch(sns, { concurrency = 4, statusCallback } = {}) {
     let done = 0;
+    const collected = {}; // per-chunk에서 모아 한번에 saveLectures
     for (let i = 0; i < sns.length; i += concurrency) {
       const chunk = sns.slice(i, i + concurrency);
       const results = await Promise.all(chunk.map(fetchOneDetail));
       for (const r of results) {
-        if (r.loginRequired) return done;
+        if (r.loginRequired) {
+          if (Object.keys(collected).length) await SWM.saveLectures(collected);
+          return done;
+        }
         if (r.data) {
-          await SWM.saveLecture(r.sn, r.data);
+          collected[r.sn] = r.data;
           done++;
         }
+      }
+      // 청크마다 배치 저장 → UI 에 점진적 반영 + 재시작 안전성
+      if (Object.keys(collected).length) {
+        await SWM.saveLectures(collected);
+        for (const k of Object.keys(collected)) delete collected[k];
       }
       statusCallback?.(`상세 ${done}/${sns.length}`);
     }

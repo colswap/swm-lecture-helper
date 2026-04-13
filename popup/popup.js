@@ -46,9 +46,11 @@
 
     let lectures = Object.values(allLectures);
 
-    // 즐겨찾기 탭이면 즐겨찾기만
+    // 탭별 필터
     if (currentTab === 'favorites') {
       lectures = lectures.filter(l => favorites.includes(l.sn));
+    } else if (currentTab === 'applied') {
+      lectures = lectures.filter(l => l.applied === true);
     }
 
     // 키워드 검색
@@ -104,12 +106,16 @@
     resultCount.textContent = `${lectures.length}건`;
 
     if (lectures.length === 0) {
+      const emptyMsg =
+        currentTab === 'favorites' ? '즐겨찾기가 없습니다' :
+        currentTab === 'applied' ? '신청한 강연이 없습니다' :
+        '검색 결과가 없습니다';
       resultsDiv.innerHTML = `
         <div class="empty-state">
           <div class="icon">📭</div>
-          <div class="msg">${currentTab === 'favorites' ? '즐겨찾기가 없습니다' : '검색 결과가 없습니다'}</div>
+          <div class="msg">${emptyMsg}</div>
           <div class="msg" style="font-size:11px;margin-top:4px;color:#bbb">
-            ${Object.keys(allLectures).length === 0 ? '먼저 "전체 동기화"를 실행하세요' : ''}
+            ${Object.keys(allLectures).length === 0 ? '먼저 "접수중 동기화"를 실행하세요' : ''}
           </div>
         </div>`;
       return;
@@ -136,6 +142,9 @@
         tags.push('<span class="tag open">접수중</span>');
       } else if (l.status === 'C') {
         tags.push('<span class="tag closed">마감</span>');
+      }
+      if (l.applied) {
+        tags.push('<span class="tag applied">✓ 신청완료</span>');
       }
 
       // 제목에서 카테고리 접두사 제거
