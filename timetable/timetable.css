@@ -372,7 +372,83 @@ body.dragging .lec-block { pointer-events: none; }
   font-weight: 700;
   color: var(--slate-800);
 }
+.right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .right-group .preview-info { font-size: 12px; color: var(--slate-500); }
+
+/* ─── ⋯ 메뉴 ─── */
+.menu-wrap { position: relative; }
+.menu-btn {
+  background: white;
+  border: 1px solid var(--slate-200);
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 4px 6px;
+  color: var(--slate-600);
+  font-family: inherit;
+  line-height: 0;
+}
+.menu-btn:hover { color: var(--brand-600); border-color: var(--brand-500); }
+.menu-btn svg { width: 16px; height: 16px; }
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: white;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+  min-width: 180px;
+  padding: 4px;
+  z-index: 50;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  background: none;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--slate-700);
+  text-align: left;
+}
+.menu-item:hover { background: var(--slate-50); color: var(--slate-900); }
+.menu-item svg { width: 14px; height: 14px; color: var(--slate-400); }
+.menu-item:hover svg { color: var(--brand-500); }
+.menu-item-danger { color: var(--rose-700); }
+.menu-item-danger:hover { background: var(--rose-50); color: var(--rose-700); }
+.menu-item-danger svg { color: var(--rose-500); }
+.menu-sep {
+  height: 1px;
+  background: var(--slate-100);
+  margin: 4px 0;
+}
+
+/* ─── 인쇄 ─── */
+@media print {
+  body {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+  .sidebar,
+  .main-header,
+  .slot-bar { display: none !important; }
+  .main { display: block; }
+  .grid-wrapper { overflow: visible; height: auto; }
+  .day-headers { position: static; }
+  .day-column { break-inside: avoid; }
+  .lec-block { break-inside: avoid; }
+}
 .preview-info.conflict { color: var(--rose-700); font-weight: 600; }
 .preview-info.free { color: var(--emerald-700); font-weight: 600; }
 
