@@ -341,15 +341,11 @@
       }
       if (changed) await chrome.storage.local.set({ lectures: all });
 
-      // applied 인데 detailFetched 안 된 것 (주로 history.do에서 새로 발견된 마감 강연)
-      // 시간표 표시를 위해 상세 페이지 fetch 해서 lecDate/lecTime 확보
-      const appliedNeedDetail = appliedSns.filter(sn => {
-        const l = all[sn];
-        return l && !l.detailFetched;
-      });
-      if (appliedNeedDetail.length > 0) {
-        statusCallback?.(`신청 강연 상세 ${appliedNeedDetail.length}개 수집 중...`);
-        await fetchDetailsBatch(appliedNeedDetail, { concurrency: 8, statusCallback });
+      // applied 강연은 매 sync 마다 상세 재fetch
+      // (detailFetched 여부 무관 — count/mentor/location/설명 등 변경 반영)
+      if (appliedSns.length > 0) {
+        statusCallback?.(`신청 강연 상세 ${appliedSns.length}개 재수집 중...`);
+        await fetchDetailsBatch(appliedSns, { concurrency: 8, statusCallback });
       }
     }
 
