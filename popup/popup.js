@@ -268,6 +268,25 @@
     }
   });
 
+  // Cross-document storage 변경 자동 반영
+  // (timetable 에서 ★ 토글 / sync 진행 시 즉시 popup UI 업데이트)
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local') return;
+    let changed = false;
+    if (changes.lectures) {
+      allLectures = changes.lectures.newValue || {};
+      changed = true;
+    }
+    if (changes.favorites) {
+      favorites = changes.favorites.newValue || [];
+      changed = true;
+    }
+    if (changed) {
+      updateHeaderStats();
+      doSearch();
+    }
+  });
+
   // --- 유틸리티 ---
   function escapeHtml(text) {
     const div = document.createElement('div');
