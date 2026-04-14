@@ -612,7 +612,20 @@ body.dragging .lec-block { pointer-events: none; }
 
 :root[data-theme="dark"] .slot-bar { background: rgba(0, 149, 232, 0.08); border-bottom-color: rgba(0, 149, 232, 0.3); }
 :root[data-theme="dark"] .slot-bar-label { color: #e2e8f0; }
-:root[data-theme="dark"] .slot-chip { background: #0f172a; color: #e2e8f0; }
+:root[data-theme="dark"] .slot-chip { background: #1e293b; color: #f1f5f9; border-color: #38bdf8; }
+
+/* 다크 모드에서 slot 선택 블록 밝게 (어두운 배경 대비 개선) */
+:root[data-theme="dark"] .drag-sel {
+  background: rgba(56, 189, 248, 0.3);
+  border-color: #38bdf8;
+}
+:root[data-theme="dark"] .drag-sel:not(.drag-preview):hover {
+  background: rgba(56, 189, 248, 0.45);
+}
+:root[data-theme="dark"] .day-headers > div.has-selection {
+  background: rgba(56, 189, 248, 0.18);
+  border-bottom-color: #38bdf8;
+}
 
 :root[data-theme="dark"] .popover { background: #1e293b; border-color: #334155; box-shadow: 0 24px 48px rgba(0,0,0,0.5); }
 :root[data-theme="dark"] .popover-header { border-bottom-color: #334155; }
