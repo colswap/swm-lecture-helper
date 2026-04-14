@@ -4,3 +4,9 @@
 
 # Gemini 생성 원본 로고 (큰 용량 소스)
 유자로고.jpeg
+
+# 실제 유저 데이터 포함 스크린샷 (개인정보 유출 방지)
+store_screenshots/
+designs/timetable_v1.png
+designs/timetable_popover.png
+designs/v4_dense/actual_popup.png
