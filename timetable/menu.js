@@ -20,13 +20,22 @@
     dd.addEventListener('click', async e => {
       const item = e.target.closest('.menu-item');
       if (!item) return;
-      dd.style.display = 'none';
       const action = item.dataset.action;
+      // 다크모드는 메뉴 닫지 말고 그 자리에서 순환
+      if (action === 'darkmode') return;
+      dd.style.display = 'none';
       if (action === 'ical') await exportICal();
       else if (action === 'print') doPrint();
       else if (action === 'notify') openNotifyModal();
       else if (action === 'reset') await resetData();
     });
+
+    // 다크모드 토글 바인딩
+    const darkItem = document.getElementById('menuDarkMode');
+    const darkLabel = document.getElementById('darkModeLabel');
+    if (window.SWMMenuCommon && darkItem && darkLabel) {
+      window.SWMMenuCommon.bindDarkModeMenuItem(darkItem, darkLabel);
+    }
   }
 
   // ─── iCal 내보내기 (RFC 5545) ───

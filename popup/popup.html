@@ -12,6 +12,22 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         시간표
       </button>
+      <div class="menu-wrap">
+        <button id="popupMenuBtn" class="header-btn menu-btn-icon" title="메뉴">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+        </button>
+        <div id="popupMenuDropdown" class="menu-dropdown" style="display:none">
+          <button class="menu-item" data-action="darkmode" id="popupMenuDark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <span id="popupDarkModeLabel">다크 모드</span>
+          </button>
+          <div class="menu-sep"></div>
+          <button class="menu-item menu-item-danger" data-action="reset">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            데이터 초기화
+          </button>
+        </div>
+      </div>
       <div id="headerStats" class="header-stats">--</div>
     </div>
   </header>
@@ -57,7 +73,10 @@
     <button id="syncAllBtn" class="btn btn-secondary" title="마감된 과거 강연까지 포함 (느림)">마감 포함</button>
   </div>
 
+  <script src="../lib/theme.js"></script>
+  <script src="../lib/menu_common.js"></script>
   <script src="../lib/storage.js"></script>
+  <script src="../lib/time_utils.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

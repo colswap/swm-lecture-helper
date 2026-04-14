@@ -83,6 +83,8 @@
       if (category) lectures = lectures.filter(l => l.category === category);
       if (location === 'online') lectures = lectures.filter(l => l.isOnline === true);
       else if (location === 'offline') lectures = lectures.filter(l => l.detailFetched && l.isOnline === false);
+      // 접수중 필터 시: 이미 시작한 강연 제외
+      if (status === 'A') lectures = lectures.filter(l => !hasStarted(l));
     }
 
     // 정렬: 강의 날짜+시간 오름차순 (가까운 순). 날짜 없는 항목은 맨 뒤.
@@ -260,6 +262,38 @@
   document.getElementById('openTimetableBtn').addEventListener('click', () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('timetable/timetable.html') });
   });
+
+  // 팝업 ⋯ 메뉴
+  const popupMenuBtn = document.getElementById('popupMenuBtn');
+  const popupMenuDropdown = document.getElementById('popupMenuDropdown');
+  const popupMenuDark = document.getElementById('popupMenuDark');
+  const popupDarkLabel = document.getElementById('popupDarkModeLabel');
+
+  popupMenuBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    popupMenuDropdown.style.display = popupMenuDropdown.style.display === 'none' ? 'block' : 'none';
+  });
+  document.addEventListener('click', e => {
+    if (!popupMenuDropdown.contains(e.target) && e.target !== popupMenuBtn) {
+      popupMenuDropdown.style.display = 'none';
+    }
+  });
+  popupMenuDropdown.addEventListener('click', async e => {
+    const item = e.target.closest('.menu-item');
+    if (!item) return;
+    const action = item.dataset.action;
+    if (action === 'darkmode') return; // bindDarkModeMenuItem 이 처리
+    popupMenuDropdown.style.display = 'none';
+    if (action === 'reset') {
+      if (!confirm('모든 캐시된 강연 데이터·즐겨찾기·설정이 삭제됩니다. 진행할까요?')) return;
+      await chrome.storage.local.clear();
+      alert('초기화 완료. 다시 동기화해주세요.');
+      location.reload();
+    }
+  });
+  if (window.SWMMenuCommon && popupMenuDark && popupDarkLabel) {
+    window.SWMMenuCommon.bindDarkModeMenuItem(popupMenuDark, popupDarkLabel);
+  }
 
   // 동기화 상태 수신
   chrome.runtime.onMessage.addListener((msg) => {

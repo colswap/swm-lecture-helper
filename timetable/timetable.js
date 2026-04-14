@@ -96,6 +96,8 @@
       if (category) lectures = lectures.filter(l => l.category === category);
       if (location === 'online') lectures = lectures.filter(l => l.isOnline === true);
       else if (location === 'offline') lectures = lectures.filter(l => l.detailFetched && l.isOnline === false);
+      // 접수중 필터 시: 이미 시작한 강연 제외
+      if (status === 'A') lectures = lectures.filter(l => !hasStarted(l));
     }
 
     // 시간표 전용 토글
@@ -562,6 +564,7 @@
 
   function renderSlotBlocks() {
     gridBody.querySelectorAll('.drag-sel:not(.drag-preview)').forEach(e => e.remove());
+    if (!advancedMode) return; // 상세검색 OFF 면 그리드에 블록 안 그림
     for (const [dateStr, slots] of selectedSlots) {
       const col = gridBody.querySelector(`.day-column[data-date="${dateStr}"]`);
       if (!col) continue;
@@ -599,7 +602,8 @@
     const kids = Array.from(dayHeaders.children).slice(1);
     kids.forEach((k, i) => {
       const dateStr = fmtISO(addDays(weekStart, i));
-      k.classList.toggle('has-selection', selectedSlots.has(dateStr));
+      const active = advancedMode && selectedSlots.has(dateStr);
+      k.classList.toggle('has-selection', active);
     });
   }
 
@@ -771,6 +775,8 @@
       ? '상세검색 종료'
       : '상세검색 (시간대 선택)';
     renderSlotBar();
+    renderSlotBlocks();
+    updateDayHeaderSelection();
     runSearch();
   });
 
