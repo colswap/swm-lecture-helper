@@ -643,21 +643,70 @@ body.dragging .lec-block { pointer-events: none; }
   color: #fbbf24;
 }
 
-/* ─── 인쇄 ─── */
+/* ─── 인쇄 · PDF ─── */
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
 @media print {
-  body {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body {
     display: block;
     height: auto;
+    width: 100%;
     overflow: visible;
+    background: white;
   }
   .sidebar,
   .main-header,
-  .slot-bar { display: none !important; }
-  .main { display: block; }
-  .grid-wrapper { overflow: visible; height: auto; }
-  .day-headers { position: static; }
-  .day-column { break-inside: avoid; }
-  .lec-block { break-inside: avoid; }
+  .slot-bar,
+  .popover,
+  .popover-backdrop,
+  .menu-dropdown { display: none !important; }
+  .main { display: block; width: 100%; }
+  .grid-wrapper {
+    overflow: visible;
+    height: auto;
+    position: relative;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .day-headers {
+    position: static;
+    page-break-after: avoid;
+    break-after: avoid;
+    background: white !important;
+    border-bottom: 1px solid #000 !important;
+  }
+  .day-headers > div { color: #000 !important; font-weight: 700; }
+  .day-headers > div.weekend { color: #b91c1c !important; }
+  .day-headers > div.today {
+    background: #e6f2fa !important;
+    color: #004A7D !important;
+  }
+  .grid-body, .day-column, .lec-block { break-inside: avoid; page-break-inside: avoid; }
+  .day-column {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--hour-height) - 1px),
+      #d1d5db calc(var(--hour-height) - 1px),
+      #d1d5db var(--hour-height)
+    ) !important;
+  }
+  .time-slot { color: #475569 !important; }
+  .lec-block {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  /* 인쇄 시 그리드 제목 표시용 상단 라벨 */
+  body::before {
+    content: "SWM 시간표";
+    display: block;
+    font: 700 14px 'Pretendard Variable', sans-serif;
+    color: #0f172a;
+    padding: 0 0 8px;
+  }
 }
 .preview-info.conflict { color: var(--rose-700); font-weight: 600; }
 .preview-info.free { color: var(--emerald-700); font-weight: 600; }
