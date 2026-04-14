@@ -412,6 +412,12 @@
       });
     };
 
+    updateActionButtons(lec);
+    el('popoverApply').onclick = () => onApplyClick(lec);
+    el('popoverCancel').onclick = () => onCancelClick(lec);
+    // applied 인데 applySn 모르면 백그라운드 스크래핑
+    if (lec.applied && !lec.applySn) fetchApplySn(lec.sn);
+
     // 위치
     popover.style.transform = '';
     if (anchor) {
@@ -464,6 +470,131 @@
     const wdays = ['일', '월', '화', '수', '목', '금', '토'];
     const dt = new Date(y, m - 1, d);
     return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')} (${wdays[dt.getDay()]})`;
+  }
+
+  // ─── 신청 / 취소 액션 ───
+
+  function updateActionButtons(lec) {
+    const applyBtn = el('popoverApply');
+    const cancelBtn = el('popoverCancel');
+    const today = fmtISO(new Date());
+    const slotsOpen = (lec.count?.current ?? 0) < (lec.count?.max ?? 0);
+    const isOpen = lec.status === 'A' && slotsOpen && !hasStarted(lec);
+    const isCancellable = lec.applied && lec.lecDate && lec.lecDate > today;
+
+    applyBtn.style.display = (!lec.applied && isOpen) ? 'inline-flex' : 'none';
+    cancelBtn.style.display = isCancellable ? 'inline-flex' : 'none';
+    cancelBtn.disabled = !lec.applySn;
+    el('popoverCancelLabel').textContent = lec.applySn ? '신청 취소' : '신청 취소 (로딩…)';
+  }
+
+  async function onApplyClick(lec) {
+    if (!lec) return;
+    const cleanTitle = (lec.title || '').replace(/^\[[^\]]+\]\s*/, '');
+    const loc = lec.location ? `\n장소: ${lec.location}` : '';
+    const ok = confirm(
+      `이 강연을 지금 신청합니다.\n\n` +
+      `${cleanTitle}\n${lec.lecDate || ''} ${lec.lecTime || ''}${loc}\n\n진행할까요?`
+    );
+    if (!ok) return;
+
+    const applyBtn = el('popoverApply');
+    applyBtn.disabled = true;
+    el('popoverApplyLabel').textContent = '신청 중…';
+    const r = await sendToSwm({
+      type: 'APPLY',
+      sn: lec.sn,
+      applyCnt: lec.count?.max ?? '',
+      appCnt: lec.count?.current ?? 0,
+    });
+    applyBtn.disabled = false;
+    el('popoverApplyLabel').textContent = '즉시 신청';
+
+    if (r.noTab) return toast('swmaestro.ai 탭을 먼저 여세요', 'error');
+    if (r.loginRequired) return toast('로그인 만료. 사이트에서 다시 로그인 필요', 'error');
+    if (r.resultCode === 'success') {
+      toast('신청 완료', 'success');
+      await setLectureApplied(lec.sn, true);
+    } else if (r.resultCode === 'error') {
+      toast('이미 신청된 강연', 'warn');
+      await setLectureApplied(lec.sn, true);
+    } else {
+      toast(`실패: ${r.msg || r.error || '알 수 없는 오류'}`, 'error');
+    }
+  }
+
+  async function onCancelClick(lec) {
+    if (!lec) return;
+    if (!lec.applySn) return toast('신청 번호 로딩 중. 잠시 후 다시 시도', 'warn');
+    const cleanTitle = (lec.title || '').replace(/^\[[^\]]+\]\s*/, '');
+    const ok = confirm(
+      `이 강연의 신청을 취소합니다.\n\n` +
+      `${cleanTitle}\n${lec.lecDate || ''} ${lec.lecTime || ''}\n\n진행할까요?`
+    );
+    if (!ok) return;
+
+    const cancelBtn = el('popoverCancel');
+    cancelBtn.disabled = true;
+    el('popoverCancelLabel').textContent = '취소 중…';
+    const r = await sendToSwm({ type: 'CANCEL_APPLY', sn: lec.sn, applySn: lec.applySn });
+    cancelBtn.disabled = false;
+    el('popoverCancelLabel').textContent = '신청 취소';
+
+    if (r.noTab) return toast('swmaestro.ai 탭을 먼저 여세요', 'error');
+    if (r.loginRequired) return toast('로그인 만료. 사이트에서 다시 로그인 필요', 'error');
+    if (r.resultCode === 'success' && r.cancelAt === 'Y') {
+      toast('취소 완료', 'success');
+      await setLectureApplied(lec.sn, false);
+    } else if (r.resultCode === 'success' && r.cancelAt === 'N') {
+      toast('강의 날짜가 지나 취소 불가', 'warn');
+    } else {
+      toast(`실패: ${r.msg || r.error || '알 수 없는 오류'}`, 'error');
+    }
+  }
+
+  async function setLectureApplied(sn, applied) {
+    const all = await SWM.getLectures();
+    if (!all[sn]) return;
+    const next = { ...all[sn], applied };
+    if (!applied) delete next.applySn;
+    all[sn] = next;
+    await chrome.storage.local.set({ lectures: all });
+    // 현재 팝오버에 떠 있으면 버튼 상태 갱신 (위치 유지)
+    if (currentPopoverSn === sn) updateActionButtons(next);
+  }
+
+  async function fetchApplySn(sn) {
+    const r = await sendToSwm({ type: 'GET_APPLY_SN', sn });
+    if (r?.applySn) {
+      const all = await SWM.getLectures();
+      if (all[sn]) {
+        all[sn].applySn = r.applySn;
+        await chrome.storage.local.set({ lectures: all });
+      }
+    }
+  }
+
+  async function sendToSwm(message) {
+    const tabs = await chrome.tabs.query({
+      url: ['https://swmaestro.ai/*', 'https://www.swmaestro.ai/*'],
+    });
+    const tab = tabs[0];
+    if (!tab) return { noTab: true };
+    try {
+      const r = await chrome.tabs.sendMessage(tab.id, message);
+      return r || { error: 'no_response' };
+    } catch (e) {
+      return { noTab: true };
+    }
+  }
+
+  function toast(text, level = 'success') {
+    const t = el('popoverToast');
+    t.textContent = text;
+    t.className = 'popover-toast ' + level;
+    t.style.display = 'block';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => { t.style.display = 'none'; }, 3200);
   }
 
   // ─── 이벤트 ───

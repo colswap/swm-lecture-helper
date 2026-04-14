@@ -1,6 +1,6 @@
 # Privacy Policy — SWM Lecture Helper
 
-*Last updated: 2026-04-13*
+*Last updated: 2026-04-14*
 
 The SWM Lecture Helper Chrome extension ("the extension") enhances the user experience of the SW Maestro (swmaestro.ai) mentoring/lecture board. This document describes what data the extension handles.
 
@@ -30,6 +30,10 @@ All data is stored in `chrome.storage.local`, which resides only on your compute
 | `alarms` | Schedule periodic background sync (every 30 minutes) |
 | `notifications` | Desktop notifications when new lectures appear during background sync |
 | `tabs`, `activeTab` | Locate an open swmaestro.ai tab so the content script can run |
+
+## When you click Apply / Cancel in the popover
+
+When you press the "즉시 신청" or "신청 취소" button inside a lecture popover, the extension issues an HTTP POST to swmaestro.ai (`/sw/mypage/mentoLec/apply.json` or `/sw/mypage/userAnswer/cancel.json`) authenticated with your existing session cookie. This is functionally identical to clicking the same button on the swmaestro.ai website: no credentials leave your browser, and no external service is involved. A browser `confirm()` dialog is shown before each such request so nothing happens without your explicit approval.
 
 ## Data deletion
 

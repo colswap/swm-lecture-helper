@@ -146,11 +146,20 @@
       <svg id="popoverFavIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       <span id="popoverFavLabel">즐겨찾기</span>
     </button>
+    <button id="popoverApply" class="btn btn-apply-action" style="display:none" title="바로 신청 (확인창 뜸)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="popoverApplyLabel">즉시 신청</span>
+    </button>
+    <button id="popoverCancel" class="btn btn-cancel-action" style="display:none" title="신청 취소 (확인창 뜸)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <span id="popoverCancelLabel">신청 취소</span>
+    </button>
     <button id="popoverOpen" class="btn btn-apply">
       신청하러 가기
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </button>
   </div>
+  <div id="popoverToast" class="popover-toast" style="display:none"></div>
 </div>
 
 <script src="../lib/theme.js"></script>

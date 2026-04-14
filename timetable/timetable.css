@@ -1039,3 +1039,57 @@ body.dragging .lec-block { pointer-events: none; }
 }
 .popover-actions .btn-apply:hover { background: var(--brand-600); }
 .popover-actions .btn-apply svg { width: 13px; height: 13px; }
+
+.popover-actions .btn-apply-action {
+  background: var(--emerald-700, #047857);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.popover-actions .btn-apply-action:hover { background: #065f46; }
+.popover-actions .btn-apply-action:disabled { background: #94a3b8; cursor: wait; }
+.popover-actions .btn-apply-action svg { width: 13px; height: 13px; }
+
+.popover-actions .btn-cancel-action {
+  background: white;
+  border: 1px solid var(--rose-500, #f43f5e);
+  color: var(--rose-700, #be123c);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.popover-actions .btn-cancel-action:hover:not(:disabled) { background: #fff1f2; }
+.popover-actions .btn-cancel-action:disabled { color: #94a3b8; border-color: var(--slate-200); cursor: wait; }
+.popover-actions .btn-cancel-action svg { width: 13px; height: 13px; }
+
+.popover-toast {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.2);
+  z-index: 10;
+  animation: popoverToastIn 0.18s ease-out;
+}
+.popover-toast.success { background: var(--emerald-700, #047857); }
+.popover-toast.warn    { background: #d97706; }
+.popover-toast.error   { background: var(--rose-500, #f43f5e); }
+@keyframes popoverToastIn {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+:root[data-theme="dark"] .popover-actions .btn-cancel-action {
+  background: #0f172a;
+  color: #fda4af;
+  border-color: #9f1239;
+}
+:root[data-theme="dark"] .popover-actions .btn-cancel-action:hover:not(:disabled) {
+  background: #1f1318;
+}

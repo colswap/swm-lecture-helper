@@ -27,6 +27,22 @@
 
     if (msg.type === 'PING') {
       sendResponse({ alive: true });
+      return;
+    }
+
+    if (msg.type === 'APPLY') {
+      applyLecture(msg).then(sendResponse).catch(e => sendResponse({ error: e.message }));
+      return true;
+    }
+
+    if (msg.type === 'CANCEL_APPLY') {
+      cancelApplyLecture(msg).then(sendResponse).catch(e => sendResponse({ error: e.message }));
+      return true;
+    }
+
+    if (msg.type === 'GET_APPLY_SN') {
+      scrapeApplySn(msg.sn).then(sendResponse).catch(e => sendResponse({ error: e.message }));
+      return true;
     }
   });
 
@@ -213,10 +229,11 @@
     return `/sw/mypage/mentoLec/list.do?${params}`;
   }
 
-  async function fetchWithRetry(url, { retries = 2, baseMs = 400 } = {}) {
+  async function fetchWithRetry(url, init = {}, { retries = 2, baseMs = 400 } = {}) {
+    const merged = { credentials: 'same-origin', ...init };
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        const resp = await fetch(url, { credentials: 'same-origin' });
+        const resp = await fetch(url, merged);
         // 429 Too Many Requests / 5xx 는 backoff
         if (resp.status === 429 || resp.status >= 500) {
           const retryAfter = parseInt(resp.headers.get('Retry-After') || '0', 10) * 1000;
@@ -236,6 +253,63 @@
         throw e;
       }
     }
+  }
+
+  async function applyLecture({ sn, applyCnt, appCnt }) {
+    const body = new URLSearchParams({
+      qustnrSn: String(sn),
+      applyCnt: String(applyCnt ?? ''),
+      appCnt: String(appCnt ?? 0),
+    });
+    const resp = await fetchWithRetry('/sw/mypage/mentoLec/apply.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+      body,
+    });
+    if (isLoginRedirect(resp)) return { loginRequired: true };
+    try {
+      const data = await resp.json();
+      return { resultCode: data.resultCode, msg: data.msg };
+    } catch (e) {
+      return { error: 'parse_failed' };
+    }
+  }
+
+  async function cancelApplyLecture({ sn, applySn }) {
+    const body = new URLSearchParams({
+      id: String(applySn),
+      qustnrSn: String(sn),
+      gubun: 'mentoLec',
+    });
+    const resp = await fetchWithRetry('/sw/mypage/userAnswer/cancel.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+      body,
+    });
+    if (isLoginRedirect(resp)) return { loginRequired: true };
+    try {
+      const data = await resp.json();
+      return { resultCode: data.resultCode, cancelAt: data.cancelAt, msg: data.msg };
+    } catch (e) {
+      return { error: 'parse_failed' };
+    }
+  }
+
+  async function scrapeApplySn(targetSn) {
+    // userAnswer/history.do 에서 delDate('{applySn}','{qustnrSn}','mentoLec') 패턴으로 추출
+    for (let page = 1; page <= 5; page++) {
+      const resp = await fetchWithRetry(`/sw/mypage/userAnswer/history.do?menuNo=200047&pageIndex=${page}`);
+      if (isLoginRedirect(resp)) return { loginRequired: true };
+      const html = await resp.text();
+      const re = /delDate\(\s*'(\d+)'\s*,\s*'(\d+)'\s*,\s*'mentoLec'\s*\)/g;
+      let m;
+      while ((m = re.exec(html)) !== null) {
+        if (m[2] === String(targetSn)) return { applySn: m[1] };
+      }
+      // 다음 페이지 링크가 없으면 중단
+      if (!/pageIndex=' \+ \(|pageIndex=" \+ \(|pageIndex=\d+"[^>]*>다음|pageIndex=\d+"[^>]*>&gt;/.test(html)) break;
+    }
+    return { applySn: null };
   }
 
   async function fetchListPage(page, statusFilter) {
