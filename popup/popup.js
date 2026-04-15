@@ -25,7 +25,8 @@
     const openCount = Object.values(allLectures).filter(l => l.status === 'A').length;
     const appliedCount = Object.values(allLectures).filter(l => l.applied).length;
     const favCount = favorites.length;
-    headerStats.textContent = `접수중 ${openCount} · 즐겨찾기 ${favCount} · 내 신청 ${appliedCount}`;
+    headerStats.textContent = `접수 ${openCount} · ★ ${favCount} · 신청 ${appliedCount}`;
+    headerStats.title = `접수중 ${openCount} · 즐겨찾기 ${favCount} · 내 신청 ${appliedCount}`;
   }
 
   async function init() {

@@ -1,0 +1,27 @@
+{
+  "name": "swm-lecture-helper",
+  "version": "1.0.0",
+  "description": "SW마에스트로 (swmaestro.ai) 멘토링/특강 게시판을 위한 Chrome 확장 프로그램.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colswap/swm-lecture-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/colswap/swm-lecture-helper/issues"
+  },
+  "homepage": "https://github.com/colswap/swm-lecture-helper#readme",
+  "devDependencies": {
+    "playwright": "^1.59.1"
+  }
+}

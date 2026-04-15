@@ -485,7 +485,8 @@
     applyBtn.style.display = (!lec.applied && isOpen) ? 'inline-flex' : 'none';
     cancelBtn.style.display = isCancellable ? 'inline-flex' : 'none';
     cancelBtn.disabled = !lec.applySn;
-    el('popoverCancelLabel').textContent = lec.applySn ? '신청 취소' : '신청 취소 (로딩…)';
+    cancelBtn.title = lec.applySn ? '신청 취소' : '신청 번호 확인 중…';
+    el('popoverCancelLabel').textContent = '신청 취소';
   }
 
   async function onApplyClick(lec) {

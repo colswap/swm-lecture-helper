@@ -61,6 +61,7 @@ body {
   font-size: 10px;
   opacity: 0.9;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .header-btn {
   display: inline-flex;
@@ -162,7 +163,7 @@ body {
 }
 .filters input, .filters select {
   flex: 1;
-  min-width: 0;
+  min-width: 72px;
   padding: 4px 6px;
   font-size: 11px;
   color: var(--slate-700);
@@ -291,6 +292,11 @@ body {
   color: var(--slate-900);
   font-weight: 500;
   margin: 1px 0 3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
 }
 .tags-line {
   display: flex;
@@ -391,7 +397,8 @@ body {
 :root[data-theme="dark"] .lecture-item.applied { background: rgba(0, 149, 232, 0.12); }
 :root[data-theme="dark"] .lecture-item.applied:hover { background: rgba(0, 149, 232, 0.2); }
 :root[data-theme="dark"] .title-line { color: #f1f5f9; }
-:root[data-theme="dark"] .meta-line, :root[data-theme="dark"] .meta-line .date { color: #cbd5e1; }
+:root[data-theme="dark"] .meta-line { color: #cbd5e1; }
+:root[data-theme="dark"] .meta-line .date { color: #f1f5f9; font-weight: 700; }
 :root[data-theme="dark"] .meta-line .sep { color: #475569; }
 :root[data-theme="dark"] .footer { background: #1e293b; border-top-color: #334155; }
 :root[data-theme="dark"] .btn-secondary { background: #1e293b; color: #e2e8f0; border-color: #334155; }

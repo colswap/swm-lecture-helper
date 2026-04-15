@@ -744,6 +744,7 @@ body.dragging .lec-block { pointer-events: none; }
   color: var(--slate-800);
   border-radius: 999px;
   font-weight: 500;
+  white-space: nowrap;
 }
 .slot-chip .x {
   cursor: pointer;
@@ -870,8 +871,22 @@ body.dragging .lec-block { pointer-events: none; }
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .lec-block:hover { z-index: var(--z-hover); box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-1px); }
-.lec-block .bt { font-weight: 700; font-size: 9px; opacity: 0.95; }
-.lec-block .bl { font-size: 9px; opacity: 0.8; margin-top: 2px; }
+.lec-block .bt {
+  font-weight: 700;
+  font-size: 9px;
+  opacity: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lec-block .bl {
+  font-size: 9px;
+  opacity: 0.8;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .lec-block.applied {
   z-index: var(--z-applied);
@@ -980,6 +995,12 @@ body.dragging .lec-block { pointer-events: none; }
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+}
+.meta-row span {
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .meta-row svg {
   width: 13px;
@@ -1015,8 +1036,14 @@ body.dragging .lec-block { pointer-events: none; }
   display: flex;
   gap: 8px;
   background: var(--slate-50);
+  flex-wrap: wrap;
 }
-.popover-actions .btn { padding: 8px 14px; font-size: 12px; flex: 0 0 auto; }
+.popover-actions .btn {
+  padding: 8px 12px;
+  font-size: 12px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
 .popover-actions .btn-fav {
   background: white;
   border: 1px solid var(--slate-200);

@@ -10,3 +10,9 @@ store_screenshots/
 designs/timetable_v1.png
 designs/timetable_popover.png
 designs/v4_dense/actual_popup.png
+
+# Dev tool
+node_modules/
+
+# 빌드 산출물 (스토어 업로드용)
+*.zip
