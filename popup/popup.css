@@ -35,7 +35,8 @@ body {
   background: white;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 /* ─── Header ─── */
