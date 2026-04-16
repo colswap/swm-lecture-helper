@@ -999,7 +999,7 @@
       return;
     }
     try {
-      // 60초 timeout — content.js 응답 없으면 자동 실패 (무한 대기 방지)
+      // 3분 timeout — content.js 응답 없으면 자동 실패 (무한 대기 방지)
       const timeoutMs = 180000; // 3분
       const response = await Promise.race([
         chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter }),
@@ -1020,7 +1020,7 @@
       if (msg.includes('Could not establish connection') || msg.includes('Receiving end')) {
         button.textContent = 'swmaestro 탭 새로고침 필요';
       } else if (msg.includes('timeout')) {
-        button.textContent = '시간 초과 (60초)';
+        button.textContent = '시간 초과';
       } else {
         button.textContent = '오류 발생';
       }

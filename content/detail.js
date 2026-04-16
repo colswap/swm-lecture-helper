@@ -24,9 +24,9 @@
     const status = statusText.includes('접수중') ? 'A' : 'C';
 
     const lecDateRaw = info['강의날짜'] || '';
-    const dateMatch = lecDateRaw.match(/(\d{4}\.\d{2}\.\d{2})/);
+    const dateMatch = lecDateRaw.match(/(\d{4})[.\-](\d{2})[.\-](\d{2})/);
     const timeMatch = lecDateRaw.match(/(\d{2}:\d{2})시?\s*~\s*(\d{2}:\d{2})/);
-    const lecDate = dateMatch ? dateMatch[1].replace(/\./g, '-') : '';
+    const lecDate = dateMatch ? `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}` : '';
     const lecTime = timeMatch ? `${timeMatch[1]} ~ ${timeMatch[2]}` : '';
 
     const title = info['모집 명'] || '';
