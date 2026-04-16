@@ -86,7 +86,8 @@
         if (dateEnd && l.lecDate > dateEnd) return false;
         return true;
       });
-    } else if (currentTab === 'search' && !slotSearchActive) {
+    } else if (currentTab === 'search' && !slotSearchActive && !thisWeekOnly.checked) {
+      // "이번 주" 체크 시 → 전체 주 보여야 하므로 "오늘 이후" 필터 건너뛰기
       const today = fmtISO(new Date());
       lectures = lectures.filter(l => !l.lecDate || l.lecDate >= today);
     }
@@ -963,7 +964,7 @@
     const end = addDays(weekStart, 6);
     weekLabel.textContent = `${fmtISO(weekStart).replace(/-/g, '.')} ~ ${fmtISO(end).replace(/-/g, '.')}`;
   }
-  // 현재 시간 실시간 표시선
+  // 현재 시간 실시간 표시선 (08:00 이전이면 맨 위, 23:00 이후면 맨 아래에 표시)
   function renderNowLine() {
     document.querySelectorAll('.now-line').forEach(el => el.remove());
     const now = new Date();
@@ -971,9 +972,10 @@
     const todayCol = gridBody.querySelector(`.day-column[data-date="${todayStr}"]`);
     if (!todayCol) return;
     const nowMin = now.getHours() * 60 + now.getMinutes();
-    const baseMin = START_HOUR * 60;
-    if (nowMin < baseMin || nowMin > END_HOUR * 60) return;
-    const top = (nowMin - baseMin) / 60 * HOUR_PX;
+    const startMin = START_HOUR * 60;
+    const endMin = END_HOUR * 60;
+    const clampedMin = Math.max(startMin, Math.min(nowMin, endMin));
+    const top = (clampedMin - startMin) / 60 * HOUR_PX;
     const line = document.createElement('div');
     line.className = 'now-line';
     line.style.top = top + 'px';
