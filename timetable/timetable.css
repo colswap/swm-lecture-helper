@@ -621,7 +621,8 @@ body.dragging .lec-block { pointer-events: none; }
 :root[data-theme="dark"] .day-column.today { background-color: rgba(0, 149, 232, 0.08); }
 
 :root[data-theme="dark"] .slot-bar { background: rgba(0, 149, 232, 0.08); border-bottom-color: rgba(0, 149, 232, 0.3); }
-:root[data-theme="dark"] .slot-bar-label { color: #e2e8f0; }
+:root[data-theme="dark"] .slot-divider { background: rgba(0, 149, 232, 0.3); }
+:root[data-theme="dark"] .preset-label { color: #64748b; }
 :root[data-theme="dark"] .slot-chip { background: #1e293b; color: #f1f5f9; border-color: #38bdf8; }
 
 /* 다크 모드에서 slot 선택 블록 밝게 (어두운 배경 대비 개선) */
@@ -724,17 +725,32 @@ body.dragging .lec-block { pointer-events: none; }
 
 /* ─── Slot selection bar ─── */
 .slot-bar {
-  padding: 8px 16px;
   background: var(--brand-50);
   border-bottom: 1px solid var(--brand-200, rgba(0, 110, 183, 0.3));
-  display: flex;
-  align-items: center;
-  gap: 10px;
   font-size: 12px;
 }
-.slot-bar-label {
-  color: var(--slate-700);
-  font-weight: 600;
+.slot-bar-row {
+  padding: 7px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.slot-bar-controls {
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+.slot-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.slot-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--brand-200, rgba(0, 110, 183, 0.25));
+  margin: 0 4px;
   flex-shrink: 0;
 }
 .slot-chips {
@@ -764,12 +780,7 @@ body.dragging .lec-block { pointer-events: none; }
   padding-left: 2px;
 }
 .slot-chip .x:hover { color: var(--rose-500); }
-.slot-bar-actions {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.slot-bar-actions .btn {
+.slot-bar-controls .btn {
   padding: 5px 10px;
   font-size: 11px;
   flex: 0 0 auto;
@@ -1160,17 +1171,10 @@ body.dragging .lec-block { pointer-events: none; }
   background: #ef4444;
   border-radius: 50%;
 }
-.preset-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px 2px;
-  flex-wrap: wrap;
-}
 .preset-label {
   font-size: 11px;
   font-weight: 600;
-  color: var(--slate-400);
+  color: var(--slate-500);
   flex-shrink: 0;
 }
 .preset-chips {
