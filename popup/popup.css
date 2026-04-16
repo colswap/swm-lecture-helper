@@ -1,5 +1,10 @@
 /* SWM Lecture Helper — V4 Dense */
 
+*:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
 :root {
   --brand-50: #E6F2FA;
   --brand-100: #CCE5F5;

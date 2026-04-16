@@ -143,7 +143,7 @@
         metaBits.push('<span class="sep">·</span>');
         if (l.mentor) metaBits.push(`<span>${escapeHtml(l.mentor)}</span>`);
         if (l.mentor && l.count?.max) metaBits.push('<span class="sep">·</span>');
-        if (l.count?.max) metaBits.push(`<span class="count">${l.count.current ?? '?'}/${l.count.max}명</span>`);
+        if (l.count?.max) metaBits.push(`<span class="count">${escapeHtml(l.count.current ?? '?')}/${escapeHtml(l.count.max)}명</span>`);
       }
       metaBits.push('<span class="spacer"></span>');
       if (l.applied) {

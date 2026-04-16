@@ -185,7 +185,7 @@
         metaBits.push('<span class="sep">·</span>');
         if (l.mentor) metaBits.push(`<span>${escapeHtml(l.mentor)}</span>`);
         if (l.mentor && l.count?.max) metaBits.push('<span class="sep">·</span>');
-        if (l.count?.max) metaBits.push(`<span class="count">${l.count.current ?? '?'}/${l.count.max}명</span>`);
+        if (l.count?.max) metaBits.push(`<span class="count">${escapeHtml(l.count.current ?? '?')}/${escapeHtml(l.count.max)}명</span>`);
       }
       metaBits.push('<span class="spacer"></span>');
       if (l.applied) {
@@ -378,7 +378,7 @@
     if (lec.mentor || lec.count?.max) {
       const parts = [];
       if (lec.mentor) parts.push(escapeHtml(lec.mentor));
-      if (lec.count?.max) parts.push(`${lec.count.current ?? '?'}/${lec.count.max}명`);
+      if (lec.count?.max) parts.push(`${escapeHtml(lec.count.current ?? '?')}/${escapeHtml(lec.count.max)}명`);
       rows.push(`<div class="meta-row">${svgIcon(ICON.user)}<span>${parts.join(' · ')}</span></div>`);
     }
     if (lec.detailFetched && lec.location) {

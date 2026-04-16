@@ -159,14 +159,14 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </button>
   </div>
-  <div id="popoverToast" class="popover-toast" style="display:none"></div>
+  <div id="popoverToast" class="popover-toast" role="status" aria-live="polite" style="display:none"></div>
 </div>
 
 <!-- 알림 설정 모달 -->
 <div id="notifyModalBackdrop" class="modal-backdrop" style="display:none"></div>
-<div id="notifyModal" class="modal" style="display:none">
+<div id="notifyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="notifyModalTitle" style="display:none">
   <header class="modal-header">
-    <h2 class="modal-title">알림 설정</h2>
+    <h2 class="modal-title" id="notifyModalTitle">알림 설정</h2>
     <button id="notifyModalClose" class="modal-close" title="닫기">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>

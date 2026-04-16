@@ -3,7 +3,7 @@
   "name": "SWM Lecture Helper",
   "version": "1.12.0",
   "description": "SW마에스트로 멘토링/특강 검색, 필터, 즐겨찾기, 알림",
-  "permissions": ["storage", "alarms", "notifications", "activeTab", "tabs"],
+  "permissions": ["storage", "alarms", "notifications", "tabs"],
   "host_permissions": [
     "https://swmaestro.ai/*",
     "https://www.swmaestro.ai/*"

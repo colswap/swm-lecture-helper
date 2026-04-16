@@ -1,5 +1,10 @@
 /* SWM 시간표 — 자체 디자인 토큰 + 컴포넌트 (popup.css 격리, 동일 토큰만 공유) */
 
+*:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
 :root {
   --brand-50: #E6F2FA;
   --brand-100: #CCE5F5;
