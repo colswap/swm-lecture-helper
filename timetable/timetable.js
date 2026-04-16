@@ -998,6 +998,7 @@
       setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
       return;
     }
+    syncRunning = true;
     try {
       // 3분 timeout — content.js 응답 없으면 자동 실패 (무한 대기 방지)
       const timeoutMs = 180000; // 3분
@@ -1025,14 +1026,16 @@
         button.textContent = '오류 발생';
       }
     }
-    setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
+    setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; syncRunning = false; }, 2500);
   }
   syncBtn.addEventListener('click', () => triggerSync(syncBtn, 'A'));
   syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, ''));
 
   // sync 상태 라벨 업데이트 (content script가 보내는 중간 상태)
+  // SYNC_STATUS 는 수동 동기화 중에만 버튼 텍스트 갱신 (alarm sync 시 SVG 소실 방지)
+  let syncRunning = false;
   chrome.runtime.onMessage.addListener(msg => {
-    if (msg.type === 'SYNC_STATUS') syncBtn.textContent = msg.status;
+    if (msg.type === 'SYNC_STATUS' && syncRunning) syncBtn.textContent = msg.status;
   });
 
   // ─── 유틸 ───

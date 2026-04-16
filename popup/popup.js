@@ -242,6 +242,7 @@
       return;
     }
 
+    syncRunning = true;
     try {
       const timeoutMs = 180000; // 3분
       const response = await Promise.race([
@@ -267,7 +268,7 @@
       }
     }
 
-    setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
+    setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; syncRunning = false; }, 2500);
   }
 
   syncBtn.addEventListener('click', () => triggerSync(syncBtn, 'A'));
@@ -309,9 +310,10 @@
     window.SWMMenuCommon.bindDarkModeMenuItem(popupMenuDark, popupDarkLabel);
   }
 
-  // 동기화 상태 수신
+  // 동기화 상태 수신 (수동 sync 중에만 — alarm sync 시 SVG 소실 방지)
+  let syncRunning = false;
   chrome.runtime.onMessage.addListener((msg) => {
-    if (msg.type === 'SYNC_STATUS') {
+    if (msg.type === 'SYNC_STATUS' && syncRunning) {
       syncBtn.textContent = msg.status;
     }
   });
