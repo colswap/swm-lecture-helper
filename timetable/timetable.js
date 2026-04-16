@@ -899,47 +899,34 @@
     runSearch();
   });
 
-  // ─── 시간대 프리셋 저장/로드 ───
-  const presetSelect = el('slotPresetSelect');
-  const presetSaveBtn = el('slotPresetSave');
+  // ─── 시간대 프리셋 (chip 기반) ───
+  const presetChips = el('presetChips');
+  const presetSaveBtn = el('presetSaveBtn');
 
-  async function loadPresets() {
+  async function renderPresetChips() {
     const { slotPresets = [] } = await chrome.storage.local.get('slotPresets');
-    presetSelect.innerHTML = '<option value="">프리셋</option>';
+    presetChips.innerHTML = '';
     slotPresets.forEach((p, i) => {
-      const opt = document.createElement('option');
-      opt.value = String(i);
-      opt.textContent = p.name;
-      presetSelect.appendChild(opt);
+      const chip = document.createElement('span');
+      chip.className = 'preset-chip';
+      chip.title = `클릭: "${p.name}" 로드`;
+      chip.innerHTML = `${escapeHtml(p.name)}<span class="x" title="삭제">×</span>`;
+      chip.addEventListener('click', e => {
+        if (e.target.classList.contains('x')) return;
+        applyPreset(p);
+      });
+      chip.querySelector('.x').addEventListener('click', async e => {
+        e.stopPropagation();
+        if (!confirm(`"${p.name}" 프리셋을 삭제할까요?`)) return;
+        slotPresets.splice(i, 1);
+        await chrome.storage.local.set({ slotPresets });
+        renderPresetChips();
+      });
+      presetChips.appendChild(chip);
     });
-    if (slotPresets.length > 0) {
-      const delOpt = document.createElement('option');
-      delOpt.value = '__delete__';
-      delOpt.textContent = '🗑 프리셋 삭제...';
-      presetSelect.appendChild(delOpt);
-    }
   }
 
-  presetSelect.addEventListener('change', async () => {
-    const val = presetSelect.value;
-    if (!val) return;
-    const { slotPresets = [] } = await chrome.storage.local.get('slotPresets');
-
-    if (val === '__delete__') {
-      const names = slotPresets.map(p => p.name);
-      const target = prompt(`삭제할 프리셋 이름 입력:\n${names.join(', ')}`);
-      if (!target) { presetSelect.value = ''; return; }
-      const filtered = slotPresets.filter(p => p.name !== target);
-      await chrome.storage.local.set({ slotPresets: filtered });
-      await loadPresets();
-      presetSelect.value = '';
-      return;
-    }
-
-    const preset = slotPresets[parseInt(val, 10)];
-    if (!preset) return;
-
-    // 패턴 → 현재 주 실제 날짜로 변환
+  function applyPreset(preset) {
     selectedSlots.clear();
     for (const p of preset.pattern) {
       for (let i = 0; i < 7; i++) {
@@ -956,38 +943,27 @@
     renderSlotBar();
     updateDayHeaderSelection();
     runSearch();
-    presetSelect.value = '';
-  });
+  }
 
   presetSaveBtn.addEventListener('click', async () => {
-    if (selectedSlots.size === 0) {
-      alert('먼저 시간대를 선택하세요.');
-      return;
-    }
-    const name = prompt('프리셋 이름을 입력하세요:');
-    if (!name) return;
-
-    // 현재 슬롯 → 요일+시간 패턴으로 변환
+    if (selectedSlots.size === 0) return alert('먼저 시간대를 선택하세요.');
+    const name = prompt('프리셋 이름:');
+    if (!name?.trim()) return;
     const pattern = [];
     for (const [dateStr, ranges] of selectedSlots) {
       const [y, m, d] = dateStr.split('-').map(Number);
-      const day = new Date(y, m - 1, d).getDay(); // 0=일 ~ 6=토
-      for (const r of ranges) {
-        pattern.push({ day, startMin: r.startMin, endMin: r.endMin });
-      }
+      const day = new Date(y, m - 1, d).getDay();
+      for (const r of ranges) pattern.push({ day, startMin: r.startMin, endMin: r.endMin });
     }
-
     const { slotPresets = [] } = await chrome.storage.local.get('slotPresets');
-    // 같은 이름 덮어쓰기
-    const existing = slotPresets.findIndex(p => p.name === name);
-    if (existing >= 0) slotPresets[existing] = { name, pattern };
-    else slotPresets.push({ name, pattern });
+    const idx = slotPresets.findIndex(p => p.name === name.trim());
+    if (idx >= 0) slotPresets[idx] = { name: name.trim(), pattern };
+    else slotPresets.push({ name: name.trim(), pattern });
     await chrome.storage.local.set({ slotPresets });
-    await loadPresets();
-    alert(`"${name}" 프리셋 저장됨.`);
+    renderPresetChips();
   });
 
-  loadPresets();
+  renderPresetChips();
 
   // 내 빈 시간 전체 선택 — 이번 주 7일 각각 [base~end] 에서 신청 강연 시간 차감
   function subtractIntervals(base, holes) {

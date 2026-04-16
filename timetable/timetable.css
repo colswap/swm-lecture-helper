@@ -1160,13 +1160,66 @@ body.dragging .lec-block { pointer-events: none; }
   background: #ef4444;
   border-radius: 50%;
 }
-#slotPresetSelect {
-  padding: 4px 8px;
-  font-size: 11px;
-  border-radius: 5px;
-  cursor: pointer;
-  min-width: 80px;
+.preset-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 2px;
+  flex-wrap: wrap;
 }
+.preset-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--slate-400);
+  flex-shrink: 0;
+}
+.preset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.preset-chips:empty + .preset-save { margin-left: 0; }
+.preset-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  background: var(--emerald-50, #ecfdf5);
+  color: var(--emerald-700, #047857);
+  border: 1px solid var(--emerald-500, #10b981);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.12s;
+}
+.preset-chip:hover { background: var(--emerald-100, #d1fae5); }
+.preset-chip .x {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-400);
+  cursor: pointer;
+  line-height: 1;
+  margin-left: 2px;
+}
+.preset-chip .x:hover { color: var(--rose-500); }
+.preset-save {
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-500);
+  background: transparent;
+  border: 1px dashed var(--brand-300, #93c5fd);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.preset-save:hover { background: var(--brand-50); border-color: var(--brand-500); }
+:root[data-theme="dark"] .preset-chip { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: #059669; }
+:root[data-theme="dark"] .preset-chip:hover { background: rgba(16, 185, 129, 0.25); }
+:root[data-theme="dark"] .preset-save { color: #60a5fa; border-color: #1e40af; }
+:root[data-theme="dark"] .preset-save:hover { background: rgba(59, 130, 246, 0.15); }
+:root[data-theme="dark"] .preset-label { color: #64748b; }
 @media print { .now-line { display: none; } }
 :root[data-theme="dark"] .now-line { background: #f87171; }
 :root[data-theme="dark"] .now-line::before { background: #f87171; }
