@@ -418,25 +418,38 @@
     // applied 인데 applySn 모르면 백그라운드 스크래핑
     if (lec.applied && !lec.applySn) fetchApplySn(lec.sn);
 
-    // 위치
+    // 위치: 먼저 보여서 실제 크기 측정 후 viewport 안에 clamp
+    popover.style.left = '-9999px';
+    popover.style.top = '0';
     popover.style.transform = '';
+    popover.classList.add('show');
+    popoverBackdrop.classList.add('show');
+
+    const popRect = popover.getBoundingClientRect();
+    const popW = popRect.width;
+    const popH = popRect.height;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const pad = 12;
+
     if (anchor) {
       const rect = anchor.getBoundingClientRect();
-      const popW = 380;
-      const popH = 400; // 추정치, max-height 80vh
+      // 우측에 공간 있으면 우측, 없으면 좌측
       let left = rect.right + 10;
+      if (left + popW > vw - pad) left = Math.max(pad, rect.left - popW - 10);
+      // 세로: anchor 상단 기준, 넘치면 위로 조정
       let top = rect.top;
-      if (left + popW > window.innerWidth - 12) left = Math.max(12, rect.left - popW - 10);
-      if (top + popH > window.innerHeight - 12) top = Math.max(12, window.innerHeight - popH - 12);
+      if (top + popH > vh - pad) top = vh - popH - pad;
+      if (top < pad) top = pad;
+      // 가로도 최종 clamp
+      left = Math.max(pad, Math.min(left, vw - popW - pad));
       popover.style.left = left + 'px';
       popover.style.top = top + 'px';
     } else {
-      popover.style.left = '50%';
-      popover.style.top = '50%';
-      popover.style.transform = 'translate(-50%, -50%)';
+      // anchor 없으면 화면 중앙
+      popover.style.left = Math.max(pad, (vw - popW) / 2) + 'px';
+      popover.style.top = Math.max(pad, (vh - popH) / 2) + 'px';
     }
-    popover.classList.add('show');
-    popoverBackdrop.classList.add('show');
   }
 
   function hidePopover() {
