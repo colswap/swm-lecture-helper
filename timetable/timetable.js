@@ -987,7 +987,7 @@
     }
     try {
       // 60초 timeout — content.js 응답 없으면 자동 실패 (무한 대기 방지)
-      const timeoutMs = 60000;
+      const timeoutMs = 180000; // 3분
       const response = await Promise.race([
         chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter }),
         new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),

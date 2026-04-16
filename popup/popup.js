@@ -243,7 +243,7 @@
     }
 
     try {
-      const timeoutMs = 60000;
+      const timeoutMs = 180000; // 3분
       const response = await Promise.race([
         chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter }),
         new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
