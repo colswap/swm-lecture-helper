@@ -36,11 +36,20 @@
     const meta = await SWM.getMeta();
     if (meta.lastFullSync) {
       updateHeaderStats();
+      doSearch();
     } else {
       headerStats.textContent = '동기화 필요';
+      resultsDiv.innerHTML = `
+        <div style="padding:32px 20px;text-align:center;color:var(--slate-500)">
+          <div style="font-size:28px;margin-bottom:12px">👋</div>
+          <div style="font-size:14px;font-weight:600;color:var(--slate-800);margin-bottom:8px">시작하기</div>
+          <ol style="text-align:left;font-size:12.5px;line-height:1.8;padding-left:20px;margin:0">
+            <li><a href="https://www.swmaestro.ai" target="_blank" style="color:var(--brand-500)">swmaestro.ai</a> 에 로그인</li>
+            <li>아래 <strong>"접수중 동기화"</strong> 버튼 클릭</li>
+            <li>완료되면 강연 목록이 여기 표시됩니다</li>
+          </ol>
+        </div>`;
     }
-
-    doSearch();
   }
 
   // --- 검색 & 필터 ---
@@ -58,6 +67,7 @@
       lectures = lectures.filter(l => favorites.includes(l.sn));
     } else if (currentTab === 'applied') {
       lectures = lectures.filter(l => l.applied === true);
+      // 내 신청 탭: 상태 필터 무시 (접수중이든 마감이든 전부 보임)
     }
 
     // 키워드 검색은 모든 탭 공통
@@ -78,24 +88,37 @@
       lectures = lectures.filter(l => !l.lecDate || l.lecDate >= today);
     }
 
-    // 상태/분류/장소 필터는 검색 탭에서만 적용. 즐겨찾기/내 신청 탭은 전체 표시.
+    // 상태/분류/장소 필터는 검색 탭에서만 적용.
     if (currentTab === 'search') {
       if (status) lectures = lectures.filter(l => l.status === status);
       if (category) lectures = lectures.filter(l => l.category === category);
       if (location === 'online') lectures = lectures.filter(l => l.isOnline === true);
       else if (location === 'offline') lectures = lectures.filter(l => l.detailFetched && l.isOnline === false);
-      // 접수중 필터 시: 이미 시작한 강연 제외
       if (status === 'A') lectures = lectures.filter(l => !hasStarted(l));
     }
 
-    // 정렬: 강의 날짜+시간 오름차순 (가까운 순). 날짜 없는 항목은 맨 뒤.
-    lectures.sort((a, b) => {
-      const ak = a.lecDate ? `${a.lecDate} ${a.lecTime || ''}` : '\uffff';
-      const bk = b.lecDate ? `${b.lecDate} ${b.lecTime || ''}` : '\uffff';
-      const cmp = ak.localeCompare(bk);
-      if (cmp !== 0) return cmp;
-      return (parseInt(a.sn) || 0) - (parseInt(b.sn) || 0);
-    });
+    // 정렬
+    if (currentTab === 'applied') {
+      // 내 신청: 미래(가까운 것 먼저) → 과거(최근 것 먼저)
+      const today = new Date().toISOString().slice(0, 10);
+      lectures.sort((a, b) => {
+        const aF = (a.lecDate || '') >= today;
+        const bF = (b.lecDate || '') >= today;
+        if (aF !== bF) return aF ? -1 : 1;
+        const ak = (a.lecDate || '') + (a.lecTime || '');
+        const bk = (b.lecDate || '') + (b.lecTime || '');
+        return aF ? ak.localeCompare(bk) : bk.localeCompare(ak);
+      });
+    } else {
+      // 기본: 날짜+시간 오름차순
+      lectures.sort((a, b) => {
+        const ak = a.lecDate ? `${a.lecDate} ${a.lecTime || ''}` : '\uffff';
+        const bk = b.lecDate ? `${b.lecDate} ${b.lecTime || ''}` : '\uffff';
+        const cmp = ak.localeCompare(bk);
+        if (cmp !== 0) return cmp;
+        return (parseInt(a.sn, 10) || 0) - (parseInt(b.sn, 10) || 0);
+      });
+    }
 
     currentResults = lectures;
     renderResults(lectures);

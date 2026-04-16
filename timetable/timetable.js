@@ -66,6 +66,7 @@
       lectures = lectures.filter(l => favorites.includes(l.sn));
     } else if (currentTab === 'applied') {
       lectures = lectures.filter(l => l.applied === true);
+      // 내 신청 탭: 상태 필터 무시 (접수중이든 마감이든 전부 보임)
     }
 
     // 키워드 (제목·멘토·분류·설명·장소)
@@ -114,14 +115,27 @@
       lectures = lectures.filter(l => matchesSelectedSlots(l));
     }
 
-    // 정렬: 강의 날짜+시간 오름차순
-    lectures.sort((a, b) => {
-      const ak = a.lecDate ? `${a.lecDate} ${a.lecTime || ''}` : '\uffff';
-      const bk = b.lecDate ? `${b.lecDate} ${b.lecTime || ''}` : '\uffff';
-      const cmp = ak.localeCompare(bk);
-      if (cmp !== 0) return cmp;
-      return (parseInt(a.sn) || 0) - (parseInt(b.sn) || 0);
-    });
+    // 정렬
+    if (currentTab === 'applied') {
+      // 내 신청: 미래(가까운 것 먼저) → 과거(최근 것 먼저)
+      const today = fmtISO(new Date());
+      lectures.sort((a, b) => {
+        const aF = (a.lecDate || '') >= today;
+        const bF = (b.lecDate || '') >= today;
+        if (aF !== bF) return aF ? -1 : 1;
+        const ak = (a.lecDate || '') + (a.lecTime || '');
+        const bk = (b.lecDate || '') + (b.lecTime || '');
+        return aF ? ak.localeCompare(bk) : bk.localeCompare(ak);
+      });
+    } else {
+      lectures.sort((a, b) => {
+        const ak = a.lecDate ? `${a.lecDate} ${a.lecTime || ''}` : '\uffff';
+        const bk = b.lecDate ? `${b.lecDate} ${b.lecTime || ''}` : '\uffff';
+        const cmp = ak.localeCompare(bk);
+        if (cmp !== 0) return cmp;
+        return (parseInt(a.sn, 10) || 0) - (parseInt(b.sn, 10) || 0);
+      });
+    }
 
     renderResults(lectures);
   }
@@ -506,9 +520,28 @@
     if (!lec) return;
     const cleanTitle = (lec.title || '').replace(/^\[[^\]]+\]\s*/, '');
     const loc = lec.location ? `\n장소: ${lec.location}` : '';
+
+    // 시간 충돌 검사
+    let conflictMsg = '';
+    const lecRange = parseTimeRange(lec.lecTime);
+    if (lec.lecDate && lecRange) {
+      const conflicts = Object.values(allLectures).filter(l =>
+        l.applied && l.lecDate === lec.lecDate && l.sn !== lec.sn && l.lecTime
+      ).filter(l => {
+        const r = parseTimeRange(l.lecTime);
+        return r && overlaps(lecRange, r);
+      });
+      if (conflicts.length > 0) {
+        const names = conflicts.map(c =>
+          `  - ${c.lecTime} ${(c.title || '').replace(/^\[[^\]]+\]\s*/, '').slice(0, 30)}`
+        ).join('\n');
+        conflictMsg = `\n\n⚠️ 시간 충돌!\n같은 날 신청한 강연과 겹칩니다:\n${names}`;
+      }
+    }
+
     const ok = confirm(
       `이 강연을 지금 신청합니다.\n\n` +
-      `${cleanTitle}\n${lec.lecDate || ''} ${lec.lecTime || ''}${loc}\n\n진행할까요?`
+      `${cleanTitle}\n${lec.lecDate || ''} ${lec.lecTime || ''}${loc}${conflictMsg}\n\n진행할까요?`
     );
     if (!ok) return;
 
@@ -930,6 +963,24 @@
     const end = addDays(weekStart, 6);
     weekLabel.textContent = `${fmtISO(weekStart).replace(/-/g, '.')} ~ ${fmtISO(end).replace(/-/g, '.')}`;
   }
+  // 현재 시간 실시간 표시선
+  function renderNowLine() {
+    document.querySelectorAll('.now-line').forEach(el => el.remove());
+    const now = new Date();
+    const todayStr = fmtISO(now);
+    const todayCol = gridBody.querySelector(`.day-column[data-date="${todayStr}"]`);
+    if (!todayCol) return;
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+    const baseMin = START_HOUR * 60;
+    if (nowMin < baseMin || nowMin > END_HOUR * 60) return;
+    const top = (nowMin - baseMin) / 60 * HOUR_PX;
+    const line = document.createElement('div');
+    line.className = 'now-line';
+    line.style.top = top + 'px';
+    todayCol.appendChild(line);
+  }
+  setInterval(renderNowLine, 60000);
+
   function rerenderAll() {
     renderGridSkeleton();
     renderFavoriteBlocks();
@@ -937,6 +988,7 @@
     renderSlotBlocks();
     updateDayHeaderSelection();
     renderSlotBar();
+    renderNowLine();
     runSearch();
     updateWeekLabel();
     updateHeaderStats();
