@@ -154,12 +154,67 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       <span id="popoverCancelLabel">신청 취소</span>
     </button>
-    <button id="popoverOpen" class="btn btn-apply">
-      신청하러 가기
+    <button id="popoverOpen" class="btn btn-apply" title="swmaestro.ai 상세 페이지 새 탭 열기">
+      상세페이지
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </button>
   </div>
   <div id="popoverToast" class="popover-toast" style="display:none"></div>
+</div>
+
+<!-- 알림 설정 모달 -->
+<div id="notifyModalBackdrop" class="modal-backdrop" style="display:none"></div>
+<div id="notifyModal" class="modal" style="display:none">
+  <header class="modal-header">
+    <h2 class="modal-title">알림 설정</h2>
+    <button id="notifyModalClose" class="modal-close" title="닫기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
+  <div class="modal-body">
+    <section class="notify-section">
+      <label class="notify-row">
+        <input type="checkbox" id="nfToggleNew">
+        <span class="notify-label">
+          <strong>새 강연 알림</strong>
+          <small>접수중 강연이 새로 등록되면 알림</small>
+        </span>
+      </label>
+      <label class="notify-row">
+        <input type="checkbox" id="nfToggleSlot">
+        <span class="notify-label">
+          <strong>즐겨찾기 빈자리 알림</strong>
+          <small>★ 즐겨찾기한 강연이 만석에서 빈자리 생기면 알림</small>
+        </span>
+      </label>
+      <label class="notify-row">
+        <input type="checkbox" id="nfToggleMentor">
+        <span class="notify-label">
+          <strong>관심 멘토 매치 알림</strong>
+          <small>관심 멘토의 새 강연 등장 시 알림</small>
+        </span>
+      </label>
+    </section>
+
+    <section class="notify-section">
+      <h3 class="notify-sub">관심 멘토</h3>
+      <div id="nfMentorChips" class="chip-list"></div>
+      <div class="chip-input-row">
+        <input type="text" id="nfMentorInput" class="chip-input" placeholder="멘토 이름 입력" maxlength="30">
+        <button id="nfMentorAdd" class="btn btn-secondary">추가</button>
+      </div>
+      <small class="notify-hint">부분 일치: "이현수" 입력 시 "이현수 교수" 도 매치</small>
+    </section>
+
+    <section class="notify-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span>30분 주기로 자동 확인 · swmaestro.ai 탭이 열려 있을 때 동작합니다.</span>
+    </section>
+  </div>
+  <div class="modal-footer">
+    <button id="notifyModalCancel" class="btn btn-secondary">취소</button>
+    <button id="notifyModalSave" class="btn btn-primary">저장</button>
+  </div>
 </div>
 
 <script src="../lib/theme.js"></script>

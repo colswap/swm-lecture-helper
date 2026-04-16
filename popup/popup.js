@@ -229,19 +229,25 @@
     return tabs[0] || null;
   }
 
-  async function triggerSync(button, originalLabel, statusFilter) {
+  async function triggerSync(button, statusFilter) {
+    // SVG 아이콘 보존을 위해 innerHTML 전체 저장 + 복구
+    const originalHTML = button.innerHTML;
     button.disabled = true;
     button.textContent = '동기화 중...';
 
     const tab = await findSwmTab();
     if (!tab) {
       button.textContent = 'swmaestro.ai 탭을 여세요';
-      setTimeout(() => { button.textContent = originalLabel; button.disabled = false; }, 2500);
+      setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
       return;
     }
 
     try {
-      const response = await chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter });
+      const timeoutMs = 60000;
+      const response = await Promise.race([
+        chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
+      ]);
       if (response?.success) {
         button.textContent = `완료! ${response.count}개`;
         allLectures = await SWM.getLectures();
@@ -251,14 +257,21 @@
         button.textContent = '실패 (로그인 확인)';
       }
     } catch (e) {
-      button.textContent = '페이지 새로고침 필요';
+      const msg = String(e.message || e);
+      if (msg.includes('Could not establish connection') || msg.includes('Receiving end')) {
+        button.textContent = 'swmaestro 탭 새로고침 필요';
+      } else if (msg.includes('timeout')) {
+        button.textContent = '시간 초과';
+      } else {
+        button.textContent = '오류 발생';
+      }
     }
 
-    setTimeout(() => { button.textContent = originalLabel; button.disabled = false; }, 2500);
+    setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
   }
 
-  syncBtn.addEventListener('click', () => triggerSync(syncBtn, '접수중 동기화', 'A'));
-  syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, '마감 포함', ''));
+  syncBtn.addEventListener('click', () => triggerSync(syncBtn, 'A'));
+  syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, ''));
 
   document.getElementById('openTimetableBtn').addEventListener('click', () => {
     chrome.tabs.create({ url: chrome.runtime.getURL('timetable/timetable.html') });

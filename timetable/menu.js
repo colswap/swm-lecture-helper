@@ -152,9 +152,91 @@
   // ─── 인쇄 ───
   function doPrint() { window.print(); }
 
-  // ─── 알림 설정 (Phase E placeholder) ───
-  function openNotifyModal() {
-    alert('알림 설정 UI 는 곧 추가됩니다. 현재는 service-worker 에 기본 신규 강연 알림만 동작.');
+  // ─── 알림 설정 ───
+  // 기본 OFF — 사용자가 명시적으로 켜야 알림 발송 (방해 최소화)
+  const DEFAULT_SETTINGS = {
+    notifyNewLecture: false,
+    notifySlotOpen: false,
+    notifyMentorMatch: false,
+    watchedMentors: [],
+    keywords: [],
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  async function openNotifyModal() {
+    const { settings = {} } = await chrome.storage.local.get('settings');
+    const merged = { ...DEFAULT_SETTINGS, ...settings };
+
+    const backdrop = document.getElementById('notifyModalBackdrop');
+    const modal = document.getElementById('notifyModal');
+    const chipWrap = document.getElementById('nfMentorChips');
+    const input = document.getElementById('nfMentorInput');
+    const addBtn = document.getElementById('nfMentorAdd');
+
+    document.getElementById('nfToggleNew').checked = !!merged.notifyNewLecture;
+    document.getElementById('nfToggleSlot').checked = !!merged.notifySlotOpen;
+    document.getElementById('nfToggleMentor').checked = !!merged.notifyMentorMatch;
+
+    let mentors = Array.isArray(merged.watchedMentors) ? [...merged.watchedMentors] : [];
+
+    function renderMentorChips() {
+      chipWrap.innerHTML = '';
+      mentors.forEach((m, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'chip-item';
+        chip.innerHTML = `${escapeHtml(m)}<span class="remove" title="제거">×</span>`;
+        chip.querySelector('.remove').onclick = () => {
+          mentors.splice(i, 1);
+          renderMentorChips();
+        };
+        chipWrap.appendChild(chip);
+      });
+    }
+
+    function addMentor() {
+      const v = input.value.trim();
+      if (!v) return;
+      if (!mentors.includes(v)) mentors.push(v);
+      input.value = '';
+      renderMentorChips();
+      input.focus();
+    }
+
+    function onEsc(e) { if (e.key === 'Escape') close(); }
+
+    function close() {
+      backdrop.style.display = 'none';
+      modal.style.display = 'none';
+      document.removeEventListener('keydown', onEsc);
+    }
+
+    async function save() {
+      const next = {
+        ...merged,
+        notifyNewLecture: document.getElementById('nfToggleNew').checked,
+        notifySlotOpen: document.getElementById('nfToggleSlot').checked,
+        notifyMentorMatch: document.getElementById('nfToggleMentor').checked,
+        watchedMentors: mentors,
+      };
+      await chrome.storage.local.set({ settings: next });
+      close();
+    }
+
+    renderMentorChips();
+    backdrop.style.display = 'block';
+    modal.style.display = 'flex';
+    input.focus();
+
+    document.getElementById('notifyModalClose').onclick = close;
+    document.getElementById('notifyModalCancel').onclick = close;
+    backdrop.onclick = close;
+    document.getElementById('notifyModalSave').onclick = save;
+    addBtn.onclick = addMentor;
+    input.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); addMentor(); } };
+    document.addEventListener('keydown', onEsc);
   }
 
   // ─── 데이터 초기화 ───

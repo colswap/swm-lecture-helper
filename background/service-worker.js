@@ -4,10 +4,12 @@ const ALARM_NAME = 'swm-sync';
 const PERIOD_MIN = 30;
 
 const DEFAULT_SETTINGS = {
-  notifyNewLecture: true,
-  notifySlotOpen: true,     // 즐겨찾기 강연 빈자리
-  watchedMentors: [],        // string[]
-  keywords: [],              // string[] (추후)
+  // 모든 알림은 기본 OFF. 사용자가 ⋯ 메뉴 → "알림 설정" 에서 명시적 ON 해야 발송.
+  notifyNewLecture: false,
+  notifySlotOpen: false,      // 즐겨찾기 강연 빈자리
+  notifyMentorMatch: false,   // 관심 멘토 매치 (watchedMentors 있어야 발동)
+  watchedMentors: [],         // string[]
+  keywords: [],               // string[] (추후)
 };
 
 async function registerAlarm() {
@@ -44,62 +46,90 @@ async function snapshotForSlotDiff() {
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name !== ALARM_NAME) return;
 
+  const settings = await getSettings();
+  const anyEnabled = settings.notifyNewLecture || settings.notifySlotOpen || settings.notifyMentorMatch;
+  if (!anyEnabled) return; // 모든 알림 OFF → 폴링 자체 skip
+
   const tab = await findSwmaestroTab();
   if (!tab) return;
 
-  const [metaBefore, slotBefore, settings, favsWrap] = await Promise.all([
+  const [metaBefore, slotBefore, favsWrap] = await Promise.all([
     chrome.storage.local.get('meta').then(r => r.meta || {}),
     snapshotForSlotDiff(),
-    getSettings(),
     chrome.storage.local.get('favorites'),
   ]);
   const knownBefore = new Set(metaBefore.knownLectureSns || []);
   const favs = new Set(favsWrap.favorites || []);
 
-  // sync 실행 (content script 에 메시지)
-  try {
-    const resp = await chrome.tabs.sendMessage(tab.id, {
-      type: 'FULL_SYNC',
-      statusFilter: 'A',
+  // 분기: 빈자리 알림 & 즐겨찾기 있으면 → FULL_SYNC (전체 페이지 + count 추적 필요)
+  //       그 외 → PEEK_FIRST_PAGE (1 페이지만, 신규/멘토만 검증)
+  const needsFullSync = settings.notifySlotOpen && favs.size > 0;
+  let lectures = {};
+  let newSns = [];
+
+  if (needsFullSync) {
+    try {
+      const resp = await chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter: 'A' });
+      if (!resp?.success) return;
+    } catch { return; }
+    const after = await chrome.storage.local.get(['meta', 'lectures']);
+    lectures = after.lectures || {};
+    const knownAfter = new Set(after.meta?.knownLectureSns || []);
+    newSns = [...knownAfter].filter(sn => !knownBefore.has(sn));
+  } else {
+    // PEEK: 첫 페이지만 fetch
+    let peek;
+    try {
+      peek = await chrome.tabs.sendMessage(tab.id, { type: 'PEEK_FIRST_PAGE', statusFilter: 'A' });
+    } catch { return; }
+    if (!peek?.ok || !peek.lectures) return;
+
+    const peekLectures = peek.lectures;
+    const peekSns = Object.keys(peekLectures);
+    newSns = peekSns.filter(sn => !knownBefore.has(sn));
+    if (newSns.length === 0) return; // 변화 없음 — 종료
+
+    // peek 결과를 storage 에 합치고 (notification 메시지용 + 다음 사이클 비교용)
+    // 기존 lectures 와 merge, knownLectureSns 에 추가
+    const existing = (await chrome.storage.local.get('lectures')).lectures || {};
+    for (const sn of newSns) existing[sn] = { ...existing[sn], ...peekLectures[sn] };
+    await chrome.storage.local.set({
+      lectures: existing,
+      meta: { ...metaBefore, knownLectureSns: [...new Set([...knownBefore, ...peekSns])] },
     });
-    if (!resp?.success) return;
-  } catch {
-    return; // content script 미주입 등
+    lectures = existing;
   }
 
-  // sync 후 상태
-  const { meta: metaAfter = {}, lectures = {} } = await chrome.storage.local.get(['meta', 'lectures']);
-  const knownAfter = new Set(metaAfter.knownLectureSns || []);
+  // 각 알림 종류별 후보 sn 집합
+  const newSet = settings.notifyNewLecture ? new Set(newSns) : new Set();
 
-  // 1. 신규 강연
-  const newSns = [...knownAfter].filter(sn => !knownBefore.has(sn));
-  if (settings.notifyNewLecture && newSns.length > 0) {
-    notifyNew(newSns, lectures);
-  }
-
-  // 2. 즐겨찾기 빈자리 (favorite + 만석→여석)
-  if (settings.notifySlotOpen && favs.size > 0) {
-    const opens = [];
+  const slotSet = new Set();
+  if (needsFullSync) {  // PEEK 모드에선 빈자리 검출 불가
     for (const sn of favs) {
       const prev = slotBefore[sn];
       const curr = lectures[sn]?.count;
       if (!prev || !curr || curr.max == null || curr.current == null) continue;
-      if (prev.current >= prev.max && curr.current < curr.max) {
-        opens.push(sn);
-      }
+      if (prev.current >= prev.max && curr.current < curr.max) slotSet.add(sn);
     }
-    if (opens.length > 0) notifySlotOpen(opens, lectures);
   }
 
-  // 3. 멘토 매치 (신규 강연만)
-  if (settings.watchedMentors?.length > 0 && newSns.length > 0) {
-    const matched = newSns.filter(sn => {
+  const mentorSet = new Set();
+  if (settings.notifyMentorMatch && settings.watchedMentors?.length > 0) {
+    for (const sn of newSns) {
       const m = lectures[sn]?.mentor;
-      if (!m) return false;
-      return settings.watchedMentors.some(w => m.includes(w) || w.includes(m));
-    });
-    if (matched.length > 0) notifyMentorMatch(matched, lectures);
+      if (!m) continue;
+      if (settings.watchedMentors.some(w => m.includes(w))) mentorSet.add(sn);
+    }
   }
+
+  // 우선순위 dedup: mentor > slot > new (강연 1건은 1개 알림에만)
+  const finalMentor = mentorSet;
+  const finalSlot = new Set([...slotSet].filter(sn => !finalMentor.has(sn)));
+  const finalNew = new Set([...newSet].filter(sn => !finalMentor.has(sn) && !finalSlot.has(sn)));
+
+  if (finalMentor.size > 0) notifyMentorMatch([...finalMentor], lectures);
+  if (finalSlot.size > 0) notifySlotOpen([...finalSlot], lectures);
+  if (finalNew.size > 0) notifyNew([...finalNew], lectures);
 });
 
 function titleBrief(sns, lectures, n = 3) {

@@ -135,8 +135,9 @@ const meta = {
 
 // settings
 const settings = {
-  notifyNewLecture: true,
-  notifySlotOpen: true,
+  notifyNewLecture: false,
+  notifySlotOpen: false,
+  notifyMentorMatch: false,
   watchedMentors: [],
   keywords: [],
 };

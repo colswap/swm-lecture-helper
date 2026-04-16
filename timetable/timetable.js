@@ -974,32 +974,48 @@
     return tabs[0] || null;
   }
 
-  async function triggerSync(button, originalLabel, statusFilter) {
+  async function triggerSync(button, statusFilter) {
+    const originalHTML = button.innerHTML;
     button.disabled = true;
     button.textContent = '동기화 중...';
     const tab = await findSwmTab();
+    console.log('[SWM] findSwmTab result:', tab ? { id: tab.id, url: tab.url, status: tab.status } : null);
     if (!tab) {
       button.textContent = 'swmaestro.ai 탭을 여세요';
-      setTimeout(() => { button.textContent = originalLabel; button.disabled = false; }, 2500);
+      setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
       return;
     }
     try {
-      const response = await chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter });
+      // 60초 timeout — content.js 응답 없으면 자동 실패 (무한 대기 방지)
+      const timeoutMs = 60000;
+      const response = await Promise.race([
+        chrome.tabs.sendMessage(tab.id, { type: 'FULL_SYNC', statusFilter }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
+      ]);
       if (response?.success) {
         button.textContent = `완료! ${response.count}개`;
         allLectures = await SWM.getLectures();
         favorites = await SWM.getFavorites();
         rerenderAll();
       } else {
-        button.textContent = '실패 (로그인 확인)';
+        console.warn('[SWM timetable] sync fail:', response);
+        button.textContent = response?.error ? '실패 (상세 콘솔)' : '실패 (로그인 확인)';
       }
     } catch (e) {
-      button.textContent = '페이지 새로고침 필요';
+      console.error('[SWM timetable] sync error:', e);
+      const msg = String(e.message || e);
+      if (msg.includes('Could not establish connection') || msg.includes('Receiving end')) {
+        button.textContent = 'swmaestro 탭 새로고침 필요';
+      } else if (msg.includes('timeout')) {
+        button.textContent = '시간 초과 (60초)';
+      } else {
+        button.textContent = '오류 발생';
+      }
     }
-    setTimeout(() => { button.textContent = originalLabel; button.disabled = false; }, 2500);
+    setTimeout(() => { button.innerHTML = originalHTML; button.disabled = false; }, 2500);
   }
-  syncBtn.addEventListener('click', () => triggerSync(syncBtn, '접수중 동기화', 'A'));
-  syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, '마감 포함', ''));
+  syncBtn.addEventListener('click', () => triggerSync(syncBtn, 'A'));
+  syncAllBtn.addEventListener('click', () => triggerSync(syncAllBtn, ''));
 
   // sync 상태 라벨 업데이트 (content script가 보내는 중간 상태)
   chrome.runtime.onMessage.addListener(msg => {

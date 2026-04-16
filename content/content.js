@@ -30,6 +30,15 @@
       return;
     }
 
+    if (msg.type === 'PEEK_FIRST_PAGE') {
+      // 가벼운 polling: 첫 페이지(regDate DESC)만 fetch + 파싱
+      // 신규 강연 / 멘토 매치 알림 검증용
+      peekFirstPage(msg.statusFilter ?? 'A')
+        .then(sendResponse)
+        .catch(e => sendResponse({ error: e.message }));
+      return true;
+    }
+
     if (msg.type === 'APPLY') {
       applyLecture(msg).then(sendResponse).catch(e => sendResponse({ error: e.message }));
       return true;
@@ -310,6 +319,20 @@
       if (!/pageIndex=' \+ \(|pageIndex=" \+ \(|pageIndex=\d+"[^>]*>다음|pageIndex=\d+"[^>]*>&gt;/.test(html)) break;
     }
     return { applySn: null };
+  }
+
+  async function peekFirstPage(statusFilter = 'A') {
+    // regDate DESC 정렬로 첫 페이지만 가져와 신규 감지용으로 파싱
+    const url = `${buildListUrl(1, statusFilter)}&regDateOrder=DESC`;
+    try {
+      const resp = await fetchWithRetry(url);
+      if (isLoginRedirect(resp)) return { loginRequired: true };
+      const html = await resp.text();
+      const lectures = parseTableFromHTML(html);
+      return { ok: true, lectures };
+    } catch (e) {
+      return { error: e.message };
+    }
   }
 
   async function fetchListPage(page, statusFilter) {
