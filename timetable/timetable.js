@@ -899,6 +899,96 @@
     runSearch();
   });
 
+  // ─── 시간대 프리셋 저장/로드 ───
+  const presetSelect = el('slotPresetSelect');
+  const presetSaveBtn = el('slotPresetSave');
+
+  async function loadPresets() {
+    const { slotPresets = [] } = await chrome.storage.local.get('slotPresets');
+    presetSelect.innerHTML = '<option value="">프리셋</option>';
+    slotPresets.forEach((p, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = p.name;
+      presetSelect.appendChild(opt);
+    });
+    if (slotPresets.length > 0) {
+      const delOpt = document.createElement('option');
+      delOpt.value = '__delete__';
+      delOpt.textContent = '🗑 프리셋 삭제...';
+      presetSelect.appendChild(delOpt);
+    }
+  }
+
+  presetSelect.addEventListener('change', async () => {
+    const val = presetSelect.value;
+    if (!val) return;
+    const { slotPresets = [] } = await chrome.storage.local.get('slotPresets');
+
+    if (val === '__delete__') {
+      const names = slotPresets.map(p => p.name);
+      const target = prompt(`삭제할 프리셋 이름 입력:\n${names.join(', ')}`);
+      if (!target) { presetSelect.value = ''; return; }
+      const filtered = slotPresets.filter(p => p.name !== target);
+      await chrome.storage.local.set({ slotPresets: filtered });
+      await loadPresets();
+      presetSelect.value = '';
+      return;
+    }
+
+    const preset = slotPresets[parseInt(val, 10)];
+    if (!preset) return;
+
+    // 패턴 → 현재 주 실제 날짜로 변환
+    selectedSlots.clear();
+    for (const p of preset.pattern) {
+      for (let i = 0; i < 7; i++) {
+        const d = addDays(weekStart, i);
+        if (d.getDay() === p.day) {
+          const dateStr = fmtISO(d);
+          if (!selectedSlots.has(dateStr)) selectedSlots.set(dateStr, []);
+          selectedSlots.get(dateStr).push({ startMin: p.startMin, endMin: p.endMin });
+          break;
+        }
+      }
+    }
+    renderSlotBlocks();
+    renderSlotBar();
+    updateDayHeaderSelection();
+    runSearch();
+    presetSelect.value = '';
+  });
+
+  presetSaveBtn.addEventListener('click', async () => {
+    if (selectedSlots.size === 0) {
+      alert('먼저 시간대를 선택하세요.');
+      return;
+    }
+    const name = prompt('프리셋 이름을 입력하세요:');
+    if (!name) return;
+
+    // 현재 슬롯 → 요일+시간 패턴으로 변환
+    const pattern = [];
+    for (const [dateStr, ranges] of selectedSlots) {
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const day = new Date(y, m - 1, d).getDay(); // 0=일 ~ 6=토
+      for (const r of ranges) {
+        pattern.push({ day, startMin: r.startMin, endMin: r.endMin });
+      }
+    }
+
+    const { slotPresets = [] } = await chrome.storage.local.get('slotPresets');
+    // 같은 이름 덮어쓰기
+    const existing = slotPresets.findIndex(p => p.name === name);
+    if (existing >= 0) slotPresets[existing] = { name, pattern };
+    else slotPresets.push({ name, pattern });
+    await chrome.storage.local.set({ slotPresets });
+    await loadPresets();
+    alert(`"${name}" 프리셋 저장됨.`);
+  });
+
+  loadPresets();
+
   // 내 빈 시간 전체 선택 — 이번 주 7일 각각 [base~end] 에서 신청 강연 시간 차감
   function subtractIntervals(base, holes) {
     let result = base.slice();

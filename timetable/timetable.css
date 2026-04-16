@@ -1160,6 +1160,13 @@ body.dragging .lec-block { pointer-events: none; }
   background: #ef4444;
   border-radius: 50%;
 }
+#slotPresetSelect {
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 5px;
+  cursor: pointer;
+  min-width: 80px;
+}
 @media print { .now-line { display: none; } }
 :root[data-theme="dark"] .now-line { background: #f87171; }
 :root[data-theme="dark"] .now-line::before { background: #f87171; }
