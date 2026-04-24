@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SWM Lecture Helper — 설치 완료</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="icons/icon48.png">
+  <link rel="stylesheet" href="lib/tokens.css">
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <main class="welcome">
+    <header class="hero">
+      <img class="hero-logo" src="icons/icon128.png" alt="SWM Lecture Helper 로고" width="56" height="56">
+      <div class="hero-text">
+        <h1>SWM Lecture Helper <span class="badge badge-version">v1.16.1</span></h1>
+        <p class="tagline">SWM 멘토링 · 특강의 검색 · 필터 · 시간표 · 알림을 한 곳에서.</p>
+      </div>
+    </header>
+
+    <section class="features" aria-label="핵심 기능">
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">🔍</div>
+        <h2>빠른 검색 &amp; 필터</h2>
+        <p>제목·멘토·카테고리·상태를 조합한 즉시 검색. 자연어 prefix 로 정교하게.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">📅</div>
+        <h2>주간 시간표 뷰</h2>
+        <p>신청한 강연을 한 화면에 그리드로. 충돌 자동 감지, .ics 로 캘린더 연동.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">🏷️</div>
+        <h2>주제별 카테고리 태그</h2>
+        <p>18색 태그 팔레트로 AI · 백엔드 · 프론트 등 주제를 한눈에 구분.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">🔔</div>
+        <h2>관심 멘토 알림</h2>
+        <p>즐겨찾기 강연의 빈자리, 관심 멘토의 신규 강연을 자동 알림.</p>
+      </article>
+    </section>
+
+    <section class="cta-section">
+      <a class="cta" href="https://www.swmaestro.ai/sw/mypage/mentoLec/list.do?menuNo=200046" target="_blank" rel="noopener noreferrer" id="ctaBtn">
+        swmaestro.ai 로 이동 <span aria-hidden="true">→</span>
+      </a>
+      <button class="cta" id="startTourBtn" type="button"
+              style="background:transparent;color:var(--primary);border:1px solid var(--primary);margin-left:8px;font-family:inherit;cursor:pointer;">
+        💡 사용법 보기
+      </button>
+      <p class="cta-hint">로그인 후 이 확장을 열면 강연 데이터가 자동으로 동기화됩니다.</p>
+    </section>
+
+    <footer class="foot">
+      <span class="foot-meta">v1.16.1 · SWM Lecture Helper</span>
+      <a href="https://github.com/colswap/swm-lecture-helper" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+  </main>
+  <script src="lib/modal.js"></script>
+  <script src="welcome.js"></script>
+</body>
+</html>

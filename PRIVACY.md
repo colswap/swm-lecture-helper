@@ -1,6 +1,6 @@
 # Privacy Policy — SWM Lecture Helper
 
-*Last updated: 2026-04-14*
+*Last updated: 2026-04-24*
 
 The SWM Lecture Helper Chrome extension ("the extension") enhances the user experience of the SW Maestro (swmaestro.ai) mentoring/lecture board. This document describes what data the extension handles.
 
@@ -11,7 +11,12 @@ The extension accesses and stores **locally in your browser only**:
 - Lecture list and detail data (title, date, time, location, mentor, description) — scraped from pages you can already view on swmaestro.ai while logged in with your own account
 - Your own application history (내 신청 내역) — fetched from `/sw/mypage/userAnswer/history.do`
 - Favorites you mark with the ★ button
-- Sync metadata (last sync timestamp, lecture SN list)
+- Sync metadata (last sync timestamp, lecture SN list, last sync scope)
+- User preferences and UI state:
+  - `settings` — notification toggles, `watchedMentors` (멘토 이름 목록, 사용자가 직접 입력), keywords, theme/palette choice, onboarding flags
+  - `gcalPushedSns` — Gcal 중복 추가 방지용 SN 마커
+  - `swmIcsSequences`, `lastIcsExportAt` — iCal export 재출력 시 SEQUENCE 번호 추적
+  - `lastUserActivity` — 사용자가 팝업/시간표를 최근에 열었는지 (background sync 적응형 skip용)
 
 All data is stored in `chrome.storage.local`, which resides only on your computer.
 

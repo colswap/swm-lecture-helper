@@ -7,7 +7,7 @@
 <sub>팝오버에서 바로 신청·취소 · 풀탭 주간 시간표 · 빈 시간 기반 검색 · 다크 모드</sub>
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oohcbjjaklphbmoeiecddpdfkbadpaan?logo=googlechrome&logoColor=white&label=Chrome%20Web%20Store&style=flat-square)](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)
-[![version](https://img.shields.io/badge/version-1.11.0-blue?style=flat-square)](./manifest.json)
+[![version](https://img.shields.io/badge/version-1.16.1-blue?style=flat-square)](./manifest.json)
 [![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)](#라이선스)
 
 [**스토어에서 설치 →**](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)
@@ -32,8 +32,8 @@ SW마에스트로(swmaestro.ai) 멘토링/특강 게시판은 **목록 뷰만** 
 
 ## 스크린샷
 
-### 검색 + 필터 + 내 신청 탭
-<img src="docs/screenshots/2_timetable_basic.png" alt="시간표 기본 뷰" width="900">
+### 자연어 검색 + 시간표
+<img src="docs/screenshots/2_timetable_basic.png" alt="NLS chips + 시간표" width="900">
 
 ### 빈 시간대 선택 → 매칭 강연 필터
 <img src="docs/screenshots/3_slot_selection.png" alt="시간대 드래그 선택" width="900">
@@ -41,8 +41,11 @@ SW마에스트로(swmaestro.ai) 멘토링/특강 게시판은 **목록 뷰만** 
 ### 팝오버에서 즉시 신청·취소
 <img src="docs/screenshots/4_popover.png" alt="강연 팝오버" width="900">
 
+### 🎨 팔레트 테마 (Google Calendar · 벚꽃 · 파스텔 · 네온)
+<img src="docs/screenshots/5_theme.png" alt="팔레트 테마" width="900">
+
 ### 다크 모드
-<img src="docs/screenshots/5_dark_mode.png" alt="다크 모드" width="900">
+<img src="docs/screenshots/6_dark_mode.png" alt="다크 모드" width="900">
 
 ## 기능
 
@@ -134,6 +137,9 @@ git clone https://github.com/colswap/swm-lecture-helper.git
 
 | 버전 | 주요 변경 |
 |---|---|
+| **1.15.0** | 자연어 검색 (2-layer 하이브리드: `@멘토 #주제 -제외` + 무-prefix 휴리스틱), chip preview + help popover, Coachmark 투어 (팝업 5스텝 + 시간표 2스텝, SNUTT 스타일 카피), welcome deep-link, ⋯ 메뉴 "투어 다시 보기" |
+| **1.14.1** | shadcn 디자인 토큰, 팝업 간소화 + 검색 아코디언, 18색 카테고리 팔레트, 토글 스위치, 이미지 추출, F3 일정 충돌 감지+대안, 온보딩 (welcome+update toast), 파싱 개행 보존, .ics UID/SEQUENCE |
+| **1.14.0** | 24시간 취소/신청 경고, 적응형 폴링(6h), 주제 카테고리 필터+칩(18종 multi-label), 관심 멘토 알림 |
 | **1.11.0** | 팝오버 즉시 신청/취소 |
 | **1.10.x** | 다크 모드, 팝업 ⋯ 메뉴, hasStarted 필터, 색 분리 |
 | **1.9.x** | "내 빈 시간 전체", 우클릭 슬롯 제거, 인포 블록 |

@@ -1,0 +1,187 @@
+/* welcome.css — onboarding landing styling
+ * Inlines the base brand/slate palette tokens.css depends on,
+ * then uses semantic tokens from tokens.css for layout.
+ */
+
+:root {
+  --brand-50:  #E6F2FA;
+  --brand-100: #CCE5F5;
+  --brand-500: #006EB7;
+  --brand-600: #005B99;
+  --brand-700: #004A7D;
+  --slate-50:  #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-700: #334155;
+  --slate-900: #0f172a;
+  --emerald-50:  #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-700: #047857;
+  --rose-50:  #fff1f2;
+  --rose-500: #f43f5e;
+  --rose-700: #be123c;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Apple SD Gothic Neo", sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.welcome {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 56px 28px 40px;
+}
+
+/* ─── Hero ─── */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.hero-logo {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+.hero-text h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hero-text .badge-version {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: transparent;
+}
+.tagline {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+/* ─── Feature grid ─── */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+}
+@media (max-width: 640px) {
+  .features { grid-template-columns: 1fr; }
+  .welcome { padding: 32px 20px 28px; }
+}
+
+.feature-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+.feature-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+.feature-icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.feature-card h2 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.feature-card p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  text-align: center;
+  padding: 28px 0 20px;
+  margin-bottom: 24px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 22px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: background var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+.cta:hover {
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.cta:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--ring-soft);
+}
+.cta-hint {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+/* ─── Footer ─── */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+  padding-top: 8px;
+}
+.foot a {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 1px;
+  transition: color var(--dur-fast);
+}
+.foot a:hover { color: var(--primary); border-bottom-color: var(--primary); }

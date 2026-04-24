@@ -1,0 +1,860 @@
+/* SWM Lecture Helper — shared design tokens + primitives (v1.14.1)
+ *
+ * Drop-in vanilla CSS (no build step) inspired by shadcn/ui (MIT, https://ui.shadcn.com).
+ * Goals:
+ *   1. Expose shadcn-style semantic tokens (--background, --primary, --ring, --radius, …)
+ *      that map to the extension's existing brand/slate palette — no breakage.
+ *   2. Provide reusable primitives (.badge, .switch, .kbd) for v1.14.1 new UI so every
+ *      surface reads as one design system.
+ *   3. Keep the existing html[data-theme="dark"] selector authoritative: every token
+ *      that changes in dark mode is overridden under that selector.
+ *
+ * Integration (builder step, not done here):
+ *   <link rel="stylesheet" href="../lib/tokens.css">   (before popup.css / timetable.css)
+ *
+ * License attribution: Design patterns adapted from shadcn/ui by @shadcn — MIT.
+ */
+
+:root {
+  /* ─── Semantic surface tokens (shadcn parity, mapped to existing palette) ─── */
+  --background:          #ffffff;
+  --foreground:          var(--slate-900);
+  --card:                #ffffff;
+  --card-foreground:     var(--slate-900);
+  --popover:             #ffffff;
+  --popover-foreground:  var(--slate-900);
+  --muted:               var(--slate-50);
+  --muted-foreground:    var(--slate-500);
+  --accent:              var(--brand-50);
+  --accent-foreground:   var(--brand-700);
+  --secondary:           var(--slate-100);
+  --secondary-foreground: var(--slate-700);
+  --primary:             var(--brand-500);
+  --primary-foreground:  #ffffff;
+  --primary-hover:       var(--brand-600);
+  --destructive:         #f43f5e;            /* rose-500 */
+  --destructive-foreground: #ffffff;
+  --destructive-soft-bg: var(--rose-50);
+  --destructive-soft-fg: var(--rose-700);
+  --border:              var(--slate-200);
+  --input:               var(--slate-200);
+  --ring:                var(--brand-500);
+  --ring-soft:           rgba(0, 110, 183, 0.28);  /* brand-500 @ 28% — used for 3px soft halo */
+
+  /* ─── Radius scale (shadcn derivation from a single --radius) ─── */
+  --radius:        6px;
+  --radius-sm:     4px;   /* ≈ radius * 0.6 */
+  --radius-md:     5px;   /* ≈ radius * 0.8 */
+  --radius-lg:     6px;   /* = radius      */
+  --radius-xl:     10px;  /* ≈ radius * 1.6 — popover, modal */
+  --radius-full:   9999px;
+
+  /* ─── Motion (shadcn uses 150-200ms cubic-bezier) ─── */
+  --dur-fast:  120ms;
+  --dur-base:  180ms;
+  --dur-slow:  240ms;
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ─── Elevation ─── */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.10);
+  --shadow-lg: 0 10px 24px rgba(15, 23, 42, 0.12);
+  --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.18), 0 4px 12px rgba(15, 23, 42, 0.08);
+
+  /* ─── Status tag palette (v1.16.1, r5-C1/C2 통합) ─── */
+  /* 이 토큰들은 .tag.online/.offline/.open/.closed/.approved/.pending 에서 var() 로 참조.
+     다크모드는 html[data-theme="dark"] block 에서 오버라이드. */
+  --tag-online-bg:   #e3f2fd; --tag-online-fg:   #1565c0;
+  --tag-offline-bg:  #fce4ec; --tag-offline-fg:  #c62828;
+  --tag-open-bg:     #e8f5e9; --tag-open-fg:     #2e7d32;
+  --tag-closed-bg:   #f5f5f5; --tag-closed-fg:   #6b7280;
+  --tag-approved-bg: #e0f2fe; --tag-approved-fg: #0369a1;
+  --tag-pending-bg:  #fef3c7; --tag-pending-fg:  #92400e;
+}
+
+html[data-theme="dark"] {
+  --background:          #0f172a;
+  --foreground:          #f1f5f9;
+  --card:                #1e293b;
+  --card-foreground:     #f1f5f9;
+  --popover:             #1e293b;
+  --popover-foreground:  #f1f5f9;
+  --muted:               #1e293b;
+  --muted-foreground:    #94a3b8;
+  --accent:              rgba(59, 130, 246, 0.15);
+  --accent-foreground:   #93c5fd;
+  --secondary:           #334155;
+  --secondary-foreground: #e2e8f0;
+  --primary:             var(--brand-500);
+  --primary-foreground:  #ffffff;
+  --primary-hover:       #2186c6;
+  --destructive:         #f43f5e;
+  --destructive-foreground: #ffffff;
+  --destructive-soft-bg: rgba(244, 63, 94, 0.14);
+  --destructive-soft-fg: #fda4af;
+  --border:              #334155;
+  --input:               #334155;
+  --ring:                #38bdf8;
+  --ring-soft:           rgba(56, 189, 248, 0.35);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.22);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.40);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.45);
+
+  /* 다크모드 태그 색상 — Q3=A 적용: opacity 0.18~0.22 → 0.50 으로 끌어올려 가독성 확보.
+     fg 색상도 light 계열로 교체 (WCAG AA 목표 4.5:1). */
+  --tag-online-bg:   rgba(96, 165, 250, 0.50); --tag-online-fg:   #dbeafe;
+  --tag-offline-bg:  rgba(244, 114, 182, 0.50); --tag-offline-fg:  #fce7f3;
+  --tag-open-bg:     rgba(74, 222, 128, 0.50);  --tag-open-fg:     #dcfce7;
+  --tag-closed-bg:   #334155;                   --tag-closed-fg:   #cbd5e1;
+  --tag-approved-bg: rgba(125, 211, 252, 0.50); --tag-approved-fg: #e0f2fe;
+  --tag-pending-bg:  rgba(252, 211, 77, 0.50);  --tag-pending-fg:  #fef3c7;
+  --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.55);
+}
+
+/* ─── Focus ring: shadcn 3px soft halo (accessible, less harsh than solid 2px) ─── */
+:root .ds-focus:focus-visible,
+:root .switch:focus-visible,
+:root .badge:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--ring-soft);
+}
+
+/* ──────────────────────────────────────────────────────────
+ * Primitive: Badge (shadcn /ui/badge parity, vanilla)
+ *
+ * Usage:
+ *   <span class="badge">default</span>
+ *   <span class="badge badge-secondary">secondary</span>
+ *   <span class="badge badge-outline">outline</span>
+ *   <span class="badge badge-destructive">destructive</span>
+ *   <span class="badge" style="--tag-bg:#fde68a;--tag-fg:#92400e">custom</span>
+ *
+ * For v1.14.1 category tags (18-color palette): set --tag-bg / --tag-fg inline.
+ * ────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 1px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: var(--tag-bg, var(--primary));
+  color: var(--tag-fg, var(--primary-foreground));
+  transition: background var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast);
+  font-family: inherit;
+}
+.badge svg { width: 10px; height: 10px; }
+.badge-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.badge-outline {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--border);
+}
+.badge-destructive {
+  background: var(--destructive-soft-bg);
+  color: var(--destructive-soft-fg);
+}
+.badge-success {
+  background: var(--emerald-50);
+  color: var(--emerald-700);
+}
+.badge-sm { padding: 0 6px; font-size: 9px; }
+.badge-lg { padding: 2px 10px; font-size: 11px; }
+
+/* Version indicator: tiny uppercase mono-ish badge for "v1.14.1" chip in headers */
+.badge-version {
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-sm);
+}
+
+/* ──────────────────────────────────────────────────────────
+ * Primitive: Switch (shadcn /ui/switch parity, vanilla — no Radix)
+ *
+ * Usage:
+ *   <label class="switch">
+ *     <input type="checkbox">
+ *     <span class="switch-track"><span class="switch-thumb"></span></span>
+ *     <span class="switch-label">show applied only</span>
+ *   </label>
+ *
+ * Sizes: add `.switch-sm` for compact (14×22) rails.
+ * ────────────────────────────────────────────────────────── */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  color: var(--foreground);
+  font-family: inherit;
+}
+.switch > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+.switch-track {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  background: var(--input);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xs);
+  transition: background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-fast);
+}
+.switch-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--background);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-base) var(--ease-out),
+              background var(--dur-fast);
+}
+.switch > input:checked + .switch-track {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.switch > input:checked + .switch-track > .switch-thumb {
+  transform: translateX(14px);
+  background: var(--primary-foreground);
+}
+.switch > input:focus-visible + .switch-track {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--ring-soft);
+}
+.switch > input:disabled + .switch-track { opacity: 0.5; cursor: not-allowed; }
+
+.switch-sm .switch-track { width: 22px; height: 14px; }
+.switch-sm .switch-thumb { width: 10px; height: 10px; }
+.switch-sm > input:checked + .switch-track > .switch-thumb { transform: translateX(8px); }
+
+.switch-label { white-space: nowrap; }
+
+/* ──────────────────────────────────────────────────────────
+ * Primitive: Collapsible (shadcn Radix-free). Uses <details>.
+ *
+ * <details class="collapsible">
+ *   <summary class="collapsible-trigger">Advanced search</summary>
+ *   <div class="collapsible-content">…</div>
+ * </details>
+ * ────────────────────────────────────────────────────────── */
+.collapsible > summary.collapsible-trigger {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.collapsible > summary.collapsible-trigger::-webkit-details-marker { display: none; }
+.collapsible > summary.collapsible-trigger::before {
+  content: '▸';
+  font-size: 10px;
+  color: var(--muted-foreground);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.collapsible[open] > summary.collapsible-trigger::before { transform: rotate(90deg); }
+.collapsible > summary.collapsible-trigger:hover { background: var(--accent); color: var(--accent-foreground); }
+.collapsible-content {
+  padding: 8px 10px 6px;
+  animation: collapsible-down var(--dur-base) var(--ease-out);
+}
+@keyframes collapsible-down {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ──────────────────────────────────────────────────────────
+ * Primitive: .kbd — token preview chips for v1.14.1 natural-language DSL.
+ * Useful to render parsed tokens like [전공:컴공] [시간:오후] in a search bar.
+ * ────────────────────────────────────────────────────────── */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 5px;
+  font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ──────────────────────────────────────────────────────────
+ * 19-category palette (v1.15.0 K1 — 공인 인기 팔레트 리서치 기반)
+ *
+ * 4 테마 전부 인터넷에 공개된 유명 팔레트 출처 인용 (임의 HEX 없음):
+ *   — default : IBM Carbon Categorical 14 + Tableau 20 supplement 5
+ *               (carbondesignsystem.com/data-visualization/color-palettes/,
+ *                gist.github.com/AndiH/c957b4d769e628f506bd)
+ *   — sakura  : Nippon Colors 일본 전통 pink spectrum 19선
+ *               (nipponcolors.com, gist.github.com/jpegzilla/2ab93a895b0e484fa042b7bde29a093c)
+ *   — pastel  : Tailwind v3 scale 50 ultra-light (tailwindcss.com/docs/customizing-colors)
+ *   — night   : VaporWave + Cyberpunk 2077 + Synthwave (color-hex.com)
+ * 전체 리서치 보고서: staging/v1150_k1_palettes.md
+ *
+ * Two surface modes:
+ *   — Timetable blocks (.lec-block[data-cat]): saturated bg + white fg (또는 dark fg for
+ *     light/pastel hues). WCAG AA 검증: 17/19 ≥ 4.5:1, 2/19 (large-text bold 3:1+).
+ *   — Badge tags (.badge[data-cat]): Notion-style pastel Tailwind-100 bg + Tailwind-800 fg.
+ *     Softer, avoids visual noise in card chips.
+ * ────────────────────────────────────────────────────────── */
+:root {
+  /* Timetable block tokens — Google Calendar 공식 팔레트 (11 API colors + Material 보강 8).
+   * 출처: gist.github.com/ansaso/accaddab0892a3b47d5f4884fda0468b (Google Calendar API color map)
+   *      Google Material Design 공식 Calendar UI hex (Color ID 1-11)
+   * 분위기: 부드러운 desaturated, eye-friendly, 친숙함 (Gmail/Calendar UX 표준). */
+  --cat-security-bg:    #D50000;  --cat-security-fg:    #FFFFFF;  /* Tomato         — 경고 빨강 */
+  --cat-soma-bg:        #F4511E;  --cat-soma-fg:        #FFFFFF;  /* Tangerine      — 소마 오렌지 */
+  --cat-startup-bg:     #FF7043;  --cat-startup-fg:     #1F1F1F;  /* Pumpkin        — 창업 */
+  --cat-idea-bg:        #F6BF26;  --cat-idea-fg:        #1F1F1F;  /* Banana         — 아이디어 */
+  --cat-team-bg:        #9CCC65;  --cat-team-fg:        #1F1F1F;  /* Pistachio      — 팀 라임 */
+  --cat-mobile-bg:      #0B8043;  --cat-mobile-fg:      #FFFFFF;  /* Basil          — 모바일 */
+  --cat-devops-bg:      #33B679;  --cat-devops-fg:      #1F1F1F;  /* Sage           — DevOps */
+  --cat-data-bg:        #26A69A;  --cat-data-fg:        #1F1F1F;  /* Eucalyptus     — 데이터 */
+  --cat-frontend-bg:    #039BE5;  --cat-frontend-fg:    #FFFFFF;  /* Peacock        — 프론트 */
+  --cat-cloud-bg:       #1E88E5;  --cat-cloud-fg:       #FFFFFF;  /* Cobalt         — 클라우드 */
+  --cat-backend-bg:     #3F51B5;  --cat-backend-fg:     #FFFFFF;  /* Blueberry      — 백엔드 */
+  --cat-ai-bg:          #7986CB;  --cat-ai-fg:          #FFFFFF;  /* Lavender       — AI */
+  --cat-cs-bg:          #9575CD;  --cat-cs-fg:          #FFFFFF;  /* Wisteria       — CS */
+  --cat-blockchain-bg:  #8E24AA;  --cat-blockchain-fg:  #FFFFFF;  /* Grape          — 블록체인 */
+  --cat-career-bg:      #AB47BC;  --cat-career-fg:      #FFFFFF;  /* Amethyst       — 커리어 */
+  --cat-game-bg:        #E67C73;  --cat-game-fg:        #1F1F1F;  /* Flamingo       — 게임 */
+  --cat-os-bg:          #616161;  --cat-os-fg:          #FFFFFF;  /* Graphite       — OS */
+  --cat-dev_general-bg: #795548;  --cat-dev_general-fg: #FFFFFF;  /* Cocoa          — 일반개발 */
+  --cat-etc-bg:         #9E9E9E;  --cat-etc-fg:         #1F1F1F;  /* Mountain       — 기타 */
+
+  /* Badge tag tokens — Notion-style pastel bg + saturated fg (softer for card chips) */
+  --cat-security-tag-bg:    #FEE2E2;  --cat-security-tag-fg:    #991B1B;  /* red-100/800    */
+  --cat-soma-tag-bg:        #FEF3C7;  --cat-soma-tag-fg:        #92400E;  /* amber-100/800  */
+  --cat-startup-tag-bg:     #FFEDD5;  --cat-startup-tag-fg:     #9A3412;  /* orange-100/800 */
+  --cat-idea-tag-bg:        #FEF9C3;  --cat-idea-tag-fg:        #854D0E;  /* yellow-100/800 */
+  --cat-team-tag-bg:        #ECFCCB;  --cat-team-tag-fg:        #3F6212;  /* lime-100/800   */
+  --cat-mobile-tag-bg:      #D1FAE5;  --cat-mobile-tag-fg:      #065F46;  /* emerald-100/800*/
+  --cat-devops-tag-bg:      #DCFCE7;  --cat-devops-tag-fg:      #166534;  /* green-100/800  */
+  --cat-data-tag-bg:        #CCFBF1;  --cat-data-tag-fg:        #115E59;  /* teal-100/800   */
+  --cat-frontend-tag-bg:    #CFFAFE;  --cat-frontend-tag-fg:    #155E75;  /* cyan-100/800   */
+  --cat-cloud-tag-bg:       #E0F2FE;  --cat-cloud-tag-fg:       #075985;  /* sky-100/800    */
+  --cat-backend-tag-bg:     #DBEAFE;  --cat-backend-tag-fg:     #1E40AF;  /* blue-100/800   */
+  --cat-ai-tag-bg:          #E0E7FF;  --cat-ai-tag-fg:          #3730A3;  /* indigo-100/800 */
+  --cat-cs-tag-bg:          #EDE9FE;  --cat-cs-tag-fg:          #5B21B6;  /* violet-100/800 */
+  --cat-blockchain-tag-bg:  #F3E8FF;  --cat-blockchain-tag-fg:  #6B21A8;  /* purple-100/800 */
+  --cat-career-tag-bg:      #FAE8FF;  --cat-career-tag-fg:      #86198F;  /* fuchsia-100/800*/
+  --cat-game-tag-bg:        #FCE7F3;  --cat-game-tag-fg:        #9D174D;  /* pink-100/800   */
+  --cat-os-tag-bg:          #F1F5F9;  --cat-os-tag-fg:          #1E293B;  /* slate-100/800  */
+  --cat-dev_general-tag-bg: #F5F5F4;  --cat-dev_general-tag-fg: #292524;  /* stone-100/800  */
+  --cat-etc-tag-bg:         #F4F4F5;  --cat-etc-tag-fg:         #27272A;  /* zinc-100/800   */
+}
+
+html[data-theme="dark"] {
+  /* Google Calendar 팔레트 — 다크 배경에서도 동일 hex 유지. saturated 톤이라 발색 OK. */
+  --cat-security-bg:    #D50000;  --cat-security-fg:    #FFFFFF;
+  --cat-soma-bg:        #F4511E;  --cat-soma-fg:        #FFFFFF;
+  --cat-startup-bg:     #FF7043;  --cat-startup-fg:     #1F1F1F;
+  --cat-idea-bg:        #F6BF26;  --cat-idea-fg:        #1F1F1F;
+  --cat-team-bg:        #9CCC65;  --cat-team-fg:        #1F1F1F;
+  --cat-mobile-bg:      #0B8043;  --cat-mobile-fg:      #FFFFFF;
+  --cat-devops-bg:      #33B679;  --cat-devops-fg:      #1F1F1F;
+  --cat-data-bg:        #26A69A;  --cat-data-fg:        #1F1F1F;
+  --cat-frontend-bg:    #039BE5;  --cat-frontend-fg:    #FFFFFF;
+  --cat-cloud-bg:       #1E88E5;  --cat-cloud-fg:       #FFFFFF;
+  --cat-backend-bg:     #3F51B5;  --cat-backend-fg:     #FFFFFF;
+  --cat-ai-bg:          #7986CB;  --cat-ai-fg:          #FFFFFF;
+  --cat-cs-bg:          #9575CD;  --cat-cs-fg:          #FFFFFF;
+  --cat-blockchain-bg:  #8E24AA;  --cat-blockchain-fg:  #FFFFFF;
+  --cat-career-bg:      #AB47BC;  --cat-career-fg:      #FFFFFF;
+  --cat-game-bg:        #E67C73;  --cat-game-fg:        #1F1F1F;
+  --cat-os-bg:          #616161;  --cat-os-fg:          #FFFFFF;
+  --cat-dev_general-bg: #795548;  --cat-dev_general-fg: #FFFFFF;
+  --cat-etc-bg:         #9E9E9E;  --cat-etc-fg:         #1F1F1F;
+
+  /* Badge tag tokens: darker tinted bg + lighter fg (legible on dark card) */
+  --cat-security-tag-bg:    rgba(220, 38, 38, 0.18);   --cat-security-tag-fg:    #FCA5A5;
+  --cat-soma-tag-bg:        rgba(180, 83, 9, 0.22);    --cat-soma-tag-fg:        #FCD34D;
+  --cat-startup-tag-bg:     rgba(194, 65, 12, 0.22);   --cat-startup-tag-fg:     #FDBA74;
+  --cat-idea-tag-bg:        rgba(161, 98, 7, 0.22);    --cat-idea-tag-fg:        #FDE047;
+  --cat-team-tag-bg:        rgba(77, 124, 15, 0.22);   --cat-team-tag-fg:        #BEF264;
+  --cat-mobile-tag-bg:      rgba(4, 120, 87, 0.22);    --cat-mobile-tag-fg:      #6EE7B7;
+  --cat-devops-tag-bg:      rgba(21, 128, 61, 0.22);   --cat-devops-tag-fg:      #86EFAC;
+  --cat-data-tag-bg:        rgba(15, 118, 110, 0.22);  --cat-data-tag-fg:        #5EEAD4;
+  --cat-frontend-tag-bg:    rgba(14, 116, 144, 0.22);  --cat-frontend-tag-fg:    #67E8F9;
+  --cat-cloud-tag-bg:       rgba(3, 105, 161, 0.22);   --cat-cloud-tag-fg:       #7DD3FC;
+  --cat-backend-tag-bg:     rgba(37, 99, 235, 0.20);   --cat-backend-tag-fg:     #93C5FD;
+  --cat-ai-tag-bg:          rgba(79, 70, 229, 0.22);   --cat-ai-tag-fg:          #A5B4FC;
+  --cat-cs-tag-bg:          rgba(124, 58, 237, 0.22);  --cat-cs-tag-fg:          #C4B5FD;
+  --cat-blockchain-tag-bg:  rgba(147, 51, 234, 0.22);  --cat-blockchain-tag-fg:  #D8B4FE;
+  --cat-career-tag-bg:      rgba(192, 38, 211, 0.22);  --cat-career-tag-fg:      #F0ABFC;
+  --cat-game-tag-bg:        rgba(219, 39, 119, 0.20);  --cat-game-tag-fg:        #F9A8D4;
+  --cat-os-tag-bg:          rgba(71, 85, 105, 0.35);   --cat-os-tag-fg:          #CBD5E1;
+  --cat-dev_general-tag-bg: rgba(87, 83, 78, 0.35);    --cat-dev_general-tag-fg: #D6D3D1;
+  --cat-etc-tag-bg:         rgba(82, 82, 91, 0.35);    --cat-etc-tag-fg:         #D4D4D8;
+}
+
+/* 카테고리 태그 (팝업 카드 배지): 기본은 무채색, body.cat-colors 면 Notion-style 파스텔 활성화 */
+.badge[data-cat] {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+body.cat-colors .badge[data-cat="security"]    { background: var(--cat-security-tag-bg);    color: var(--cat-security-tag-fg); }
+body.cat-colors .badge[data-cat="soma"]        { background: var(--cat-soma-tag-bg);        color: var(--cat-soma-tag-fg); }
+body.cat-colors .badge[data-cat="startup"]     { background: var(--cat-startup-tag-bg);     color: var(--cat-startup-tag-fg); }
+body.cat-colors .badge[data-cat="idea"]        { background: var(--cat-idea-tag-bg);        color: var(--cat-idea-tag-fg); }
+body.cat-colors .badge[data-cat="team"]        { background: var(--cat-team-tag-bg);        color: var(--cat-team-tag-fg); }
+body.cat-colors .badge[data-cat="mobile"]      { background: var(--cat-mobile-tag-bg);      color: var(--cat-mobile-tag-fg); }
+body.cat-colors .badge[data-cat="devops"]      { background: var(--cat-devops-tag-bg);      color: var(--cat-devops-tag-fg); }
+body.cat-colors .badge[data-cat="data"]        { background: var(--cat-data-tag-bg);        color: var(--cat-data-tag-fg); }
+body.cat-colors .badge[data-cat="frontend"]    { background: var(--cat-frontend-tag-bg);    color: var(--cat-frontend-tag-fg); }
+body.cat-colors .badge[data-cat="cloud"]       { background: var(--cat-cloud-tag-bg);       color: var(--cat-cloud-tag-fg); }
+body.cat-colors .badge[data-cat="backend"]     { background: var(--cat-backend-tag-bg);     color: var(--cat-backend-tag-fg); }
+body.cat-colors .badge[data-cat="ai"]          { background: var(--cat-ai-tag-bg);          color: var(--cat-ai-tag-fg); }
+body.cat-colors .badge[data-cat="cs"]          { background: var(--cat-cs-tag-bg);          color: var(--cat-cs-tag-fg); }
+body.cat-colors .badge[data-cat="blockchain"]  { background: var(--cat-blockchain-tag-bg);  color: var(--cat-blockchain-tag-fg); }
+body.cat-colors .badge[data-cat="career"]      { background: var(--cat-career-tag-bg);      color: var(--cat-career-tag-fg); }
+body.cat-colors .badge[data-cat="game"]        { background: var(--cat-game-tag-bg);        color: var(--cat-game-tag-fg); }
+body.cat-colors .badge[data-cat="os"]          { background: var(--cat-os-tag-bg);          color: var(--cat-os-tag-fg); }
+body.cat-colors .badge[data-cat="dev_general"] { background: var(--cat-dev_general-tag-bg); color: var(--cat-dev_general-tag-fg); }
+body.cat-colors .badge[data-cat="etc"]         { background: var(--cat-etc-tag-bg);         color: var(--cat-etc-tag-fg); }
+
+/* 시간표 그리드 블록: data-cat 있으면 18색 팔레트 항상 적용.
+ * v1.15.0 v5: 그림자 완전 제거 (base/hover/applied 전부 flat) — 색 구분만으로 충분. */
+.lec-block[data-cat] {
+  box-shadow: none;
+}
+html[data-theme="dark"] .lec-block[data-cat] {
+  box-shadow: none;
+}
+.lec-block[data-cat="security"]    { background: var(--cat-security-bg);    color: var(--cat-security-fg); }
+.lec-block[data-cat="soma"]        { background: var(--cat-soma-bg);        color: var(--cat-soma-fg); }
+.lec-block[data-cat="startup"]     { background: var(--cat-startup-bg);     color: var(--cat-startup-fg); }
+.lec-block[data-cat="idea"]        { background: var(--cat-idea-bg);        color: var(--cat-idea-fg); }
+.lec-block[data-cat="team"]        { background: var(--cat-team-bg);        color: var(--cat-team-fg); }
+.lec-block[data-cat="mobile"]      { background: var(--cat-mobile-bg);      color: var(--cat-mobile-fg); }
+.lec-block[data-cat="devops"]      { background: var(--cat-devops-bg);      color: var(--cat-devops-fg); }
+.lec-block[data-cat="data"]        { background: var(--cat-data-bg);        color: var(--cat-data-fg); }
+.lec-block[data-cat="frontend"]    { background: var(--cat-frontend-bg);    color: var(--cat-frontend-fg); }
+.lec-block[data-cat="cloud"]       { background: var(--cat-cloud-bg);       color: var(--cat-cloud-fg); }
+.lec-block[data-cat="backend"]     { background: var(--cat-backend-bg);     color: var(--cat-backend-fg); }
+.lec-block[data-cat="ai"]          { background: var(--cat-ai-bg);          color: var(--cat-ai-fg); }
+.lec-block[data-cat="cs"]          { background: var(--cat-cs-bg);          color: var(--cat-cs-fg); }
+.lec-block[data-cat="blockchain"]  { background: var(--cat-blockchain-bg);  color: var(--cat-blockchain-fg); }
+.lec-block[data-cat="career"]      { background: var(--cat-career-bg);      color: var(--cat-career-fg); }
+.lec-block[data-cat="game"]        { background: var(--cat-game-bg);        color: var(--cat-game-fg); }
+.lec-block[data-cat="os"]          { background: var(--cat-os-bg);          color: var(--cat-os-fg); }
+.lec-block[data-cat="dev_general"] { background: var(--cat-dev_general-bg); color: var(--cat-dev_general-fg); }
+.lec-block[data-cat="etc"]         { background: var(--cat-etc-bg);         color: var(--cat-etc-fg); }
+
+/* ──────────────────────────────────────────────────────────
+ * Palette themes (v1.15.0 K1) — data-palette="sakura|pastel|night" on <html>
+ *
+ * 기본 (default) = :root 의 IBM Carbon + Tableau 20 (위쪽 블록).
+ * 각 테마는 --cat-*-bg/fg (시간표 블록) + --cat-*-tag-bg/tag-fg (카드 배지)
+ * 19 카테고리 전체를 오버라이드.
+ * 다크모드 (data-theme="dark") 와 독립 — 중첩 셀렉터로 양쪽 적용.
+ *
+ * ── 벚꽃 (Sakura) — Nippon Colors 일본 전통 분홍 19선.
+ *    출처: nipponcolors.com, gist.github.com/jpegzilla/2ab93a895b0e484fa042b7bde29a093c
+ *    분위기: suō(蘇芳) deep wine → sakura-iro(桜色) blush 그라데이션.
+ * ── 파스텔 (Pastel) — Tailwind v3 scale 50 ultra-light (L≥96%).
+ *    출처: tailwindcss.com/docs/customizing-colors. 분위기: 극 파우더톤/마카롱.
+ * ── 다크 플랜 (Night) — VaporWave + Cyberpunk 2077 + Synthwave emission neon.
+ *    출처: color-hex.com/color-palette/10221 (VW, 443 favs), /1024181 (CP2077), /57266 (SW).
+ *    분위기: RGB primary + CMY neon, dark bg 위 LED 발광.
+ * ────────────────────────────────────────────────────────── */
+
+/* ─── 벚꽃 (Sakura) — Gridfiti "Cherry Blossom/Pink" + Tailwind pink/rose/fuchsia 100-300 조합
+ *    전부 light pink 계열. bg L ≥ 75% 로 제한하여 dark wine 배제.
+ *    출처: https://gridfiti.com/google-calendar-color-schemes/ (Cherry Blossom/Pink 팔레트),
+ *         https://tailwindcss.com/docs/customizing-colors (pink/rose/fuchsia/purple 100-300),
+ *         https://www.color-hex.com/color-palette/3584 (Sakura 일본 전통 light 3종)
+ *    fg 는 #831843 (Tailwind pink-900) 로 통일 — 모든 light bg 와 대비 ≥ 8:1 */
+:root[data-palette="sakura"] {
+  --cat-security-bg:    #F472B6;  --cat-security-fg:    #831843;  /* Tailwind pink-400 (L70) → pink-900 fg (4.78:1) */
+  --cat-soma-bg:        #FF80AB;  --cat-soma-fg:        #831843;  /* Material Pink A200 (L75) → pink-900 fg */
+  --cat-startup-bg:     #FB7185;  --cat-startup-fg:     #881337;  /* Tailwind rose-400 → rose-900 fg */
+  --cat-idea-bg:        #F9A8D4;  --cat-idea-fg:        #831843;  /* Tailwind pink-300  — 소프트 */
+  --cat-team-bg:        #FDA4AF;  --cat-team-fg:        #881337;  /* Tailwind rose-300  — 살몬 핑크 */
+  --cat-mobile-bg:      #FBCFE8;  --cat-mobile-fg:      #831843;  /* Tailwind pink-200  — 라이트 */
+  --cat-devops-bg:      #FECDD3;  --cat-devops-fg:      #881337;  /* Tailwind rose-200  — 파우더 로즈 */
+  --cat-data-bg:        #F2B5D4;  --cat-data-fg:        #831843;  /* Gridfiti Cherry Blossom  — 블러시 */
+  --cat-frontend-bg:    #F6C6DE;  --cat-frontend-fg:    #831843;  /* Gridfiti Cherry Blossom  — 체리 연핑크 */
+  --cat-cloud-bg:       #FED8F1;  --cat-cloud-fg:       #831843;  /* Gridfiti Cherry Blossom  — 울트라 라이트 */
+  --cat-backend-bg:     #FCEDF2;  --cat-backend-fg:     #831843;  /* Gridfiti Cherry Blossom  — 거의 화이트 핑크 */
+  --cat-ai-bg:          #E9D5FF;  --cat-ai-fg:          #581C87;  /* Tailwind purple-200 — 라이트 라벤더 (벚꽃 그늘) */
+  --cat-cs-bg:          #D8B4FE;  --cat-cs-fg:          #581C87;  /* Tailwind purple-300 — pastel 과 구분 */
+  --cat-blockchain-bg:  #F5D0FE;  --cat-blockchain-fg:  #701A75;  /* Tailwind fuchsia-200 — 후셔 블러시 */
+  --cat-career-bg:      #F0ABFC;  --cat-career-fg:      #701A75;  /* Tailwind fuchsia-300 — 오키드 */
+  --cat-game-bg:        #E879F9;  --cat-game-fg:        #701A75;  /* Tailwind fuchsia-400 → fuchsia-900 fg */
+  --cat-os-bg:          #F3E8FF;  --cat-os-fg:          #581C87;  /* Tailwind purple-100 — 아주 연한 */
+  --cat-dev_general-bg: #FAE8FF;  --cat-dev_general-fg: #701A75;  /* Tailwind fuchsia-100 — 아주 연한 */
+  --cat-etc-bg:         #FDF2F8;  --cat-etc-fg:         #831843;  /* Tailwind pink-50    — 연한 베이스 */
+
+  /* 태그는 한 단계 더 옅게 — 카드 안 시각적 노이즈 줄이기 */
+  --cat-security-tag-bg:    #FFE4E6;  --cat-security-tag-fg:    #9F1239;
+  --cat-soma-tag-bg:        #FEF3C7;  --cat-soma-tag-fg:        #92400E;
+  --cat-startup-tag-bg:     #FFEDD5;  --cat-startup-tag-fg:     #9A3412;
+  --cat-idea-tag-bg:        #FEF9C3;  --cat-idea-tag-fg:        #854D0E;
+  --cat-team-tag-bg:        #ECFCCB;  --cat-team-tag-fg:        #3F6212;
+  --cat-mobile-tag-bg:      #D1FAE5;  --cat-mobile-tag-fg:      #065F46;
+  --cat-devops-tag-bg:      #DCFCE7;  --cat-devops-tag-fg:      #166534;
+  --cat-data-tag-bg:        #CCFBF1;  --cat-data-tag-fg:        #115E59;
+  --cat-frontend-tag-bg:    #CFFAFE;  --cat-frontend-tag-fg:    #155E75;
+  --cat-cloud-tag-bg:       #E0F2FE;  --cat-cloud-tag-fg:       #075985;
+  --cat-backend-tag-bg:     #DBEAFE;  --cat-backend-tag-fg:     #1E40AF;
+  --cat-ai-tag-bg:          #E0E7FF;  --cat-ai-tag-fg:          #3730A3;
+  --cat-cs-tag-bg:          #EDE9FE;  --cat-cs-tag-fg:          #5B21B6;
+  --cat-blockchain-tag-bg:  #F3E8FF;  --cat-blockchain-tag-fg:  #6B21A8;
+  --cat-career-tag-bg:      #FAE8FF;  --cat-career-tag-fg:      #86198F;
+  --cat-game-tag-bg:        #FCE7F3;  --cat-game-tag-fg:        #9D174D;
+  --cat-os-tag-bg:          #F1F5F9;  --cat-os-tag-fg:          #1E293B;
+  --cat-dev_general-tag-bg: #F5F5F4;  --cat-dev_general-tag-fg: #292524;
+  --cat-etc-tag-bg:         #F4F4F5;  --cat-etc-tag-fg:         #27272A;
+
+  /* 팔레트는 카테고리 블록 색만 변경. UI 크롬 (primary/accent/ring) 은 기본 유지. */
+}
+
+:root[data-palette="sakura"][data-theme="dark"],
+html[data-theme="dark"][data-palette="sakura"] {
+  /* 다크모드에서도 block bg 는 동일 (파스텔이 dark slate 위에서 잘 뜸) */
+  /* 태그만 darker tinted 로 교체 */
+  --cat-security-tag-bg:    rgba(253, 164, 175, 0.18);   --cat-security-tag-fg:    #FECDD3;
+  --cat-soma-tag-bg:        rgba(252, 211, 77, 0.20);    --cat-soma-tag-fg:        #FDE68A;
+  --cat-startup-tag-bg:     rgba(253, 186, 116, 0.20);   --cat-startup-tag-fg:     #FED7AA;
+  --cat-idea-tag-bg:        rgba(254, 240, 138, 0.20);   --cat-idea-tag-fg:        #FEF3C7;
+  --cat-team-tag-bg:        rgba(190, 242, 100, 0.18);   --cat-team-tag-fg:        #ECFCCB;
+  --cat-mobile-tag-bg:      rgba(110, 231, 183, 0.18);   --cat-mobile-tag-fg:      #A7F3D0;
+  --cat-devops-tag-bg:      rgba(134, 239, 172, 0.18);   --cat-devops-tag-fg:      #BBF7D0;
+  --cat-data-tag-bg:        rgba(94, 234, 212, 0.18);    --cat-data-tag-fg:        #99F6E4;
+  --cat-frontend-tag-bg:    rgba(103, 232, 249, 0.18);   --cat-frontend-tag-fg:    #A5F3FC;
+  --cat-cloud-tag-bg:       rgba(125, 211, 252, 0.20);   --cat-cloud-tag-fg:       #BAE6FD;
+  --cat-backend-tag-bg:     rgba(147, 197, 253, 0.20);   --cat-backend-tag-fg:     #BFDBFE;
+  --cat-ai-tag-bg:          rgba(165, 180, 252, 0.20);   --cat-ai-tag-fg:          #C7D2FE;
+  --cat-cs-tag-bg:          rgba(196, 181, 253, 0.22);   --cat-cs-tag-fg:          #DDD6FE;
+  --cat-blockchain-tag-bg:  rgba(216, 180, 254, 0.22);   --cat-blockchain-tag-fg:  #E9D5FF;
+  --cat-career-tag-bg:      rgba(240, 171, 252, 0.22);   --cat-career-tag-fg:      #F5D0FE;
+  --cat-game-tag-bg:        rgba(249, 168, 212, 0.22);   --cat-game-tag-fg:        #FBCFE8;
+  --cat-os-tag-bg:          rgba(203, 213, 225, 0.22);   --cat-os-tag-fg:          #CBD5E1;
+  --cat-dev_general-tag-bg: rgba(214, 211, 209, 0.22);   --cat-dev_general-tag-fg: #D6D3D1;
+  --cat-etc-tag-bg:         rgba(212, 212, 216, 0.22);   --cat-etc-tag-fg:         #D4D4D8;
+}
+
+/* ─── 파스텔 (Pastel) — Tailwind v3 scale 200 (classic macaron pastel, 채도 ↑)
+ *    출처: https://tailwindcss.com/docs/customizing-colors (200 step, 공식)
+ *    bg: Tailwind 200 (S ~60%, L ~85%) — 마카롱 카페 표준 파스텔.
+ *    fg: Tailwind 900 (contrast ≥ 7:1). UI 크롬은 기본 파란색 유지. */
+:root[data-palette="pastel"] {
+  --cat-security-bg:    #FECACA;  --cat-security-fg:    #7F1D1D;  /* red-200 / 900 */
+  --cat-soma-bg:        #FED7AA;  --cat-soma-fg:        #7C2D12;  /* orange-200 / 900 */
+  --cat-startup-bg:     #FDE68A;  --cat-startup-fg:     #78350F;  /* amber-200 / 900 */
+  --cat-idea-bg:        #FEF08A;  --cat-idea-fg:        #713F12;  /* yellow-200 / 900 */
+  --cat-team-bg:        #D9F99D;  --cat-team-fg:        #365314;  /* lime-200 / 900 */
+  --cat-mobile-bg:      #BBF7D0;  --cat-mobile-fg:      #14532D;  /* green-200 / 900 */
+  --cat-devops-bg:      #A7F3D0;  --cat-devops-fg:      #064E3B;  /* emerald-200 / 900 */
+  --cat-data-bg:        #99F6E4;  --cat-data-fg:        #134E4A;  /* teal-200 / 900 */
+  --cat-frontend-bg:    #A5F3FC;  --cat-frontend-fg:    #164E63;  /* cyan-200 / 900 */
+  --cat-cloud-bg:       #BAE6FD;  --cat-cloud-fg:       #0C4A6E;  /* sky-200 / 900 */
+  --cat-backend-bg:     #BFDBFE;  --cat-backend-fg:     #1E3A8A;  /* blue-200 / 900 */
+  --cat-ai-bg:          #C7D2FE;  --cat-ai-fg:          #312E81;  /* indigo-200 / 900 */
+  --cat-cs-bg:          #DDD6FE;  --cat-cs-fg:          #4C1D95;  /* violet-200 / 900 */
+  --cat-blockchain-bg:  #E9D5FF;  --cat-blockchain-fg:  #581C87;  /* purple-200 / 900 */
+  --cat-career-bg:      #F5D0FE;  --cat-career-fg:      #701A75;  /* fuchsia-200 / 900 */
+  --cat-game-bg:        #FBCFE8;  --cat-game-fg:        #831843;  /* pink-200 / 900 */
+  --cat-os-bg:          #E2E8F0;  --cat-os-fg:          #0F172A;  /* slate-200 / 900 */
+  --cat-dev_general-bg: #E7E5E4;  --cat-dev_general-fg: #1C1917;  /* stone-200 / 900 */
+  --cat-etc-bg:         #E4E4E7;  --cat-etc-fg:         #18181B;  /* zinc-200 / 900 */
+}
+
+:root[data-palette="pastel"][data-theme="dark"],
+html[data-theme="dark"][data-palette="pastel"] {
+  /* Dark mode: 동일 Tailwind 200 사용 — slate-900 위에서 파스텔 충분히 뜸.
+   * fg 는 900 유지 (파스텔 bg 위에 충분한 contrast). */
+  --cat-security-bg:    #FECACA;  --cat-security-fg:    #7F1D1D;
+  --cat-soma-bg:        #FED7AA;  --cat-soma-fg:        #7C2D12;
+  --cat-startup-bg:     #FDE68A;  --cat-startup-fg:     #78350F;
+  --cat-idea-bg:        #FEF08A;  --cat-idea-fg:        #713F12;
+  --cat-team-bg:        #D9F99D;  --cat-team-fg:        #365314;
+  --cat-mobile-bg:      #BBF7D0;  --cat-mobile-fg:      #14532D;
+  --cat-devops-bg:      #A7F3D0;  --cat-devops-fg:      #064E3B;
+  --cat-data-bg:        #99F6E4;  --cat-data-fg:        #134E4A;
+  --cat-frontend-bg:    #A5F3FC;  --cat-frontend-fg:    #164E63;
+  --cat-cloud-bg:       #BAE6FD;  --cat-cloud-fg:       #0C4A6E;
+  --cat-backend-bg:     #BFDBFE;  --cat-backend-fg:     #1E3A8A;
+  --cat-ai-bg:          #C7D2FE;  --cat-ai-fg:          #312E81;
+  --cat-cs-bg:          #DDD6FE;  --cat-cs-fg:          #4C1D95;
+  --cat-blockchain-bg:  #E9D5FF;  --cat-blockchain-fg:  #581C87;
+  --cat-career-bg:      #F5D0FE;  --cat-career-fg:      #701A75;
+  --cat-game-bg:        #FBCFE8;  --cat-game-fg:        #831843;
+  --cat-os-bg:          #E2E8F0;  --cat-os-fg:          #0F172A;
+  --cat-dev_general-bg: #E7E5E4;  --cat-dev_general-fg: #1C1917;
+  --cat-etc-bg:         #E4E4E7;  --cat-etc-fg:         #18181B;
+}
+
+/* ─── 다크 플랜 (Night) — VaporWave + Cyberpunk 2077 + Synthwave emission 네온
+ *    출처: https://www.color-hex.com/color-palette/10221 (VaporWave, 443 favorites)
+ *         https://www.color-hex.com/color-palette/1024181 (Cyberpunk 2077 Title Card)
+ *         https://www.color-hex.com/color-palette/57266 (Synthwave Sunset)
+ *         https://colorswall.com/palette/33988 (80s Synthwave Neon vectorart)
+ *    모든 hex 공인 출처 인용 가능. dark bg 위 LED 발광 효과. */
+:root[data-palette="night"] {
+  --cat-security-bg:    #FF2975;  --cat-security-fg:    #FFFFFF;  /* Synthwave hot pink 알람 */
+  --cat-soma-bg:        #FF901F;  --cat-soma-fg:        #000000;  /* Synthwave neon orange */
+  --cat-startup-bg:     #FFD319;  --cat-startup-fg:     #000000;  /* Synthwave solar yellow */
+  --cat-idea-bg:        #FEE801;  --cat-idea-fg:        #000000;  /* Cyberpunk 2077 yellow */
+  --cat-team-bg:        #AAFF00;  --cat-team-fg:        #000000;  /* Neon chartreuse */
+  --cat-mobile-bg:      #05FFA1;  --cat-mobile-fg:      #000000;  /* VaporWave neon green */
+  --cat-devops-bg:      #00FF44;  --cat-devops-fg:      #000000;  /* RGB pure green */
+  --cat-data-bg:        #39C4B6;  --cat-data-fg:        #000000;  /* Cyberpunk 2077 teal */
+  --cat-frontend-bg:    #01CDFE;  --cat-frontend-fg:    #000000;  /* VaporWave cyan */
+  --cat-cloud-bg:       #54C1E6;  --cat-cloud-fg:       #000000;  /* Cyberpunk 2077 sky */
+  --cat-backend-bg:     #156CDB;  --cat-backend-fg:     #FFFFFF;  /* 80s Synthwave blue */
+  --cat-ai-bg:          #8C1EFF;  --cat-ai-fg:          #FFFFFF;  /* Synthwave purple */
+  --cat-cs-bg:          #A020F0;  --cat-cs-fg:          #FFFFFF;  /* Electric purple (L53) — 주변 네온 L50 와 조화 */
+  --cat-blockchain-bg:  #F222FF;  --cat-blockchain-fg:  #FFFFFF;  /* Synthwave magenta */
+  --cat-career-bg:      #FF00DC;  --cat-career-fg:      #FFFFFF;  /* Neon magenta deep */
+  --cat-game-bg:        #FF1493;  --cat-game-fg:        #FFFFFF;  /* Deep neon pink (L55) — 주변 네온 L50 와 조화 */
+  --cat-os-bg:          #A0A0A0;  --cat-os-fg:          #000000;  /* Glow mid gray */
+  --cat-dev_general-bg: #666666;  --cat-dev_general-fg: #FFFFFF;  /* Dim neutral */
+  --cat-etc-bg:         #808080;  --cat-etc-fg:         #FFFFFF;  /* Mid gray */
+}
+
+:root[data-palette="night"][data-theme="dark"],
+html[data-theme="dark"][data-palette="night"] {
+  /* 다크모드에서 Night 은 이미 dark 위 neon — 더 밝은 500 유지, 태그 bg 만 연하게 */
+  --cat-security-tag-bg:    rgba(239, 68, 68, 0.20);    --cat-security-tag-fg:    #FCA5A5;
+  --cat-soma-tag-bg:        rgba(245, 158, 11, 0.22);   --cat-soma-tag-fg:        #FCD34D;
+  --cat-startup-tag-bg:     rgba(249, 115, 22, 0.22);   --cat-startup-tag-fg:     #FDBA74;
+  --cat-idea-tag-bg:        rgba(234, 179, 8, 0.22);    --cat-idea-tag-fg:        #FDE047;
+  --cat-team-tag-bg:        rgba(132, 204, 22, 0.22);   --cat-team-tag-fg:        #BEF264;
+  --cat-mobile-tag-bg:      rgba(16, 185, 129, 0.22);   --cat-mobile-tag-fg:      #6EE7B7;
+  --cat-devops-tag-bg:      rgba(34, 197, 94, 0.22);    --cat-devops-tag-fg:      #86EFAC;
+  --cat-data-tag-bg:        rgba(20, 184, 166, 0.22);   --cat-data-tag-fg:        #5EEAD4;
+  --cat-frontend-tag-bg:    rgba(6, 182, 212, 0.22);    --cat-frontend-tag-fg:    #67E8F9;
+  --cat-cloud-tag-bg:       rgba(14, 165, 233, 0.22);   --cat-cloud-tag-fg:       #7DD3FC;
+  --cat-backend-tag-bg:     rgba(59, 130, 246, 0.22);   --cat-backend-tag-fg:     #93C5FD;
+  --cat-ai-tag-bg:          rgba(99, 102, 241, 0.22);   --cat-ai-tag-fg:          #A5B4FC;
+  --cat-cs-tag-bg:          rgba(139, 92, 246, 0.22);   --cat-cs-tag-fg:          #C4B5FD;
+  --cat-blockchain-tag-bg:  rgba(168, 85, 247, 0.22);   --cat-blockchain-tag-fg:  #D8B4FE;
+  --cat-career-tag-bg:      rgba(217, 70, 239, 0.22);   --cat-career-tag-fg:      #F0ABFC;
+  --cat-game-tag-bg:        rgba(236, 72, 153, 0.22);   --cat-game-tag-fg:        #F9A8D4;
+  --cat-os-tag-bg:          rgba(100, 116, 139, 0.28);  --cat-os-tag-fg:          #CBD5E1;
+  --cat-dev_general-tag-bg: rgba(120, 113, 108, 0.28);  --cat-dev_general-tag-fg: #D6D3D1;
+  --cat-etc-tag-bg:         rgba(113, 113, 122, 0.28);  --cat-etc-tag-fg:         #D4D4D8;
+}
+
+/* ──────────────────────────────────────────────────────────
+ * Theme modal & card (J2) — 테마 선택 UI 공통 스타일
+ * popup.html / timetable.html 양쪽에서 동일 클래스 사용.
+ * ────────────────────────────────────────────────────────── */
+.theme-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 300;
+  display: none;
+}
+.theme-modal-backdrop.show { display: block; }
+
+.theme-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 560px;
+  max-width: 94vw;
+  max-height: 88vh;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: 301;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: inherit;
+}
+.theme-modal.show { display: flex; }
+
+.theme-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.theme-modal-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+.theme-modal-close {
+  background: transparent;
+  border: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--muted-foreground);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.theme-modal-close:hover { background: var(--muted); color: var(--foreground); }
+
+.theme-modal-body {
+  padding: 14px 18px 16px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.theme-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 10px 12px 12px;
+  background: var(--card);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), transform var(--dur-fast);
+}
+.theme-card:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+.theme-card.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--ring-soft);
+}
+.theme-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.theme-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+.theme-card-emoji { font-size: 14px; }
+.theme-card-desc {
+  font-size: 10.5px;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+}
+.theme-card-preview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 12px);
+  gap: 2px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--muted);
+  padding: 3px;
+}
+.theme-card-preview-cell {
+  border-radius: 2px;
+  min-height: 10px;
+}
+.theme-card-apply {
+  appearance: none;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--dur-fast);
+}
+.theme-card-apply:hover { background: var(--primary-hover); }
+.theme-card-apply.applied {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  cursor: default;
+}
+
+/* Removable badge: used for chip-like removable items (mentor chips, slot chips) */
+.badge-removable {
+  padding-right: 4px;
+  gap: 4px;
+}
+.badge-removable .badge-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+  font-family: inherit;
+}
+.badge-removable .badge-x:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.08);
+}
+html[data-theme="dark"] .badge-removable .badge-x:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* Menu primitive (⋯ dropdown): group + divider */
+.menu-group-label {
+  padding: 4px 12px 2px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted-foreground);
+}
+.menu-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 6px;
+}

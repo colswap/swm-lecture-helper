@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "SWM Lecture Helper",
-  "version": "1.13.0",
+  "version": "1.16.1",
   "description": "SW마에스트로 멘토링/특강 검색, 필터, 즐겨찾기, 알림",
-  "permissions": ["storage", "alarms", "notifications", "tabs"],
+  "permissions": ["storage", "alarms", "notifications", "tabs", "activeTab", "scripting"],
   "host_permissions": [
     "https://swmaestro.ai/*",
     "https://www.swmaestro.ai/*"
@@ -16,7 +16,7 @@
       "https://swmaestro.ai/*",
       "https://www.swmaestro.ai/*"
     ],
-    "js": ["lib/storage.js", "content/content.js", "content/detail.js"],
+    "js": ["lib/storage.js", "lib/time_utils.js", "content/content.js", "content/detail.js"],
     "css": ["content/content.css"],
     "run_at": "document_idle"
   }],
@@ -28,6 +28,10 @@
       "128": "icons/icon128.png"
     }
   },
+  "web_accessible_resources": [{
+    "resources": ["welcome.html", "welcome.css", "welcome.js", "icons/*.png", "lib/tokens.css"],
+    "matches": ["<all_urls>"]
+  }],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
