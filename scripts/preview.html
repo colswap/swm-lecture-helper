@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<title>SWM v1.14.1 Preview</title>
+<link rel="stylesheet" href="../lib/tokens.css">
+<style>
+body{font-family:'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  background:var(--background); color:var(--foreground);
+  padding:24px; max-width:1200px; margin:0 auto;}
+h2{margin:24px 0 12px; font-size:18px; letter-spacing:-0.3px;}
+h3{margin:16px 0 8px; font-size:13px; color:var(--muted-foreground); font-weight:600;}
+.row{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
+.block{padding:16px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); margin-bottom:16px;}
+.card{padding:10px 12px; border-left:3px solid var(--primary); background:var(--card); margin-bottom:6px; border-radius:var(--radius-md);}
+.card .meta{display:flex; gap:6px; font-size:11px; color:var(--muted-foreground); margin-bottom:4px; align-items:center;}
+.card .title{font-size:13px; font-weight:600;}
+.card .mentor{font-size:11px; color:var(--muted-foreground); margin-top:2px;}
+.tag{display:inline-block; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:700;}
+.tag.online{background:#e3f2fd; color:#1565c0;}
+.tag.open{background:#e8f5e9; color:#2e7d32;}
+.grid-mock{display:grid; grid-template-columns:40px repeat(7, 1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius-md); overflow:hidden; margin-top:8px;}
+.grid-mock>div{background:var(--background); padding:4px 6px; font-size:10px; min-height:28px;}
+.grid-mock .hdr{font-weight:700; text-align:center; background:var(--muted);}
+.lec-block{border-left:3px solid; padding:2px 4px; margin:1px 0; border-radius:2px; font-size:10px; line-height:1.2;}
+.toggle-btn{position:fixed; top:16px; right:16px; padding:8px 14px; background:var(--primary); color:var(--primary-foreground); border:0; border-radius:var(--radius-md); font-weight:600; cursor:pointer;}
+.theme-btn{position:fixed; top:16px; right:180px; padding:8px 14px; background:var(--secondary); color:var(--secondary-foreground); border:1px solid var(--border); border-radius:var(--radius-md); cursor:pointer;}
+</style>
+</head>
+<body>
+<button class="toggle-btn" onclick="document.body.classList.toggle('cat-colors')">🎨 18색 팔레트 토글</button>
+<button class="theme-btn" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">🌓 다크 토글</button>
+
+<h2>1. 18 카테고리 배지 (회색 기본 vs 18색 토글)</h2>
+<div class="block">
+  <div class="row">
+    <span class="badge" data-cat="ai">🤖 AI/LLM</span>
+    <span class="badge" data-cat="backend">⚙️ 백엔드</span>
+    <span class="badge" data-cat="frontend">🌐 프론트엔드</span>
+    <span class="badge" data-cat="mobile">📱 모바일</span>
+    <span class="badge" data-cat="data">📊 데이터</span>
+    <span class="badge" data-cat="cloud">☁️ 클라우드</span>
+    <span class="badge" data-cat="devops">🛠️ DevOps</span>
+    <span class="badge" data-cat="security">🔒 보안</span>
+    <span class="badge" data-cat="game">🎮 게임</span>
+    <span class="badge" data-cat="blockchain">⛓️ 블록체인</span>
+    <span class="badge" data-cat="os">🖥️ OS/임베디드</span>
+    <span class="badge" data-cat="cs">📘 CS/알고리즘</span>
+    <span class="badge" data-cat="pm">📋 PM/기획</span>
+    <span class="badge" data-cat="startup">🚀 창업/비즈</span>
+    <span class="badge" data-cat="career">💼 커리어</span>
+    <span class="badge" data-cat="idea">💡 아이디어</span>
+    <span class="badge" data-cat="team">🤝 팀/프로세스</span>
+    <span class="badge" data-cat="soma">🍊 소마</span>
+    <span class="badge" data-cat="dev_general">👩‍💻 개발 일반</span>
+    <span class="badge" data-cat="etc">📌 기타</span>
+  </div>
+</div>
+
+<h2>2. 강연 카드 (목록 뷰 — 팝업/시간표 사이드바)</h2>
+<div class="block">
+  <div class="card">
+    <div class="meta">
+      <span class="tag online">온라인</span>
+      <span class="tag open">접수중</span>
+      <span>04/20 (토)</span><span>14:00~16:00</span><span>8/12</span>
+    </div>
+    <div class="title">[멘토 특강] LLM 파인튜닝 실전 — Llama/Qwen 로드맵</div>
+    <div class="mentor">이현수</div>
+    <div class="row" style="margin-top:6px">
+      <span class="badge" data-cat="ai">🤖 AI/LLM</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="meta">
+      <span class="tag online">온라인</span>
+      <span class="tag open">접수중</span>
+      <span>04/21 (일)</span><span>19:00~21:00</span><span>3/4</span>
+    </div>
+    <div class="title">[자유 멘토링] MSA 마이크로서비스 Kafka 설계</div>
+    <div class="mentor">오하늘</div>
+    <div class="row" style="margin-top:6px">
+      <span class="badge" data-cat="backend">⚙️ 백엔드</span>
+      <span class="badge" data-cat="devops">🛠️ DevOps</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="meta">
+      <span class="tag online">온라인</span>
+      <span class="tag open">접수중</span>
+      <span>04/22 (월)</span><span>10:00~12:00</span><span>7/12</span>
+    </div>
+    <div class="title">[멘토 특강] 스타트업 투자 유치 전략과 IR</div>
+    <div class="mentor">한수정</div>
+    <div class="row" style="margin-top:6px">
+      <span class="badge" data-cat="startup">🚀 창업/비즈</span>
+      <span class="badge" data-cat="pm">📋 PM/기획</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="meta">
+      <span class="tag online">온라인</span>
+      <span class="tag open">접수중</span>
+      <span>04/23 (화)</span><span>20:00~22:00</span><span>2/4</span>
+    </div>
+    <div class="title">[자유 멘토링] Unity 게임 개발 그래픽스</div>
+    <div class="mentor">이지은</div>
+    <div class="row" style="margin-top:6px">
+      <span class="badge" data-cat="game">🎮 게임</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="meta">
+      <span class="tag online">온라인</span>
+      <span class="tag open">접수중</span>
+      <span>04/24 (수)</span><span>18:00~20:00</span><span>11/12</span>
+    </div>
+    <div class="title">[멘토 특강] 블록체인 스마트 컨트랙트 Web3</div>
+    <div class="mentor">박준호</div>
+    <div class="row" style="margin-top:6px">
+      <span class="badge" data-cat="blockchain">⛓️ 블록체인</span>
+    </div>
+  </div>
+</div>
+
+<h2>3. 주간 시간표 그리드 (색상 블록 적용)</h2>
+<div class="block">
+  <div class="grid-mock">
+    <div class="hdr"></div>
+    <div class="hdr">월</div>
+    <div class="hdr">화</div>
+    <div class="hdr">수</div>
+    <div class="hdr">목</div>
+    <div class="hdr">금</div>
+    <div class="hdr">토</div>
+    <div class="hdr">일</div>
+    <div>09</div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-ai-fg); background:var(--cat-ai-bg)">🤖 AI/LLM</div></div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-mobile-fg); background:var(--cat-mobile-bg)">📱 iOS</div></div>
+    <div></div>
+    <div>10</div>
+    <div><div class="lec-block" style="border-color:var(--cat-startup-fg); background:var(--cat-startup-bg)">🚀 스타트업</div></div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-idea-fg); background:var(--cat-idea-bg)">💡 아이디어</div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div>14</div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-cloud-fg); background:var(--cat-cloud-bg)">☁️ AWS</div></div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-cs-fg); background:var(--cat-cs-bg)">📘 CS</div></div>
+    <div></div>
+    <div>18</div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-blockchain-fg); background:var(--cat-blockchain-bg)">⛓️ Web3</div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div>19</div>
+    <div><div class="lec-block" style="border-color:var(--cat-frontend-fg); background:var(--cat-frontend-bg)">🌐 React</div></div>
+    <div></div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-team-fg); background:var(--cat-team-bg)">🤝 팀 회고</div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-backend-fg); background:var(--cat-backend-bg)">⚙️ 백엔드</div></div>
+    <div></div>
+    <div></div>
+    <div>20</div>
+    <div></div>
+    <div><div class="lec-block" style="border-color:var(--cat-game-fg); background:var(--cat-game-bg)">🎮 Unity</div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<p style="color:var(--muted-foreground); font-size:12px; margin-top:24px;">
+  화살표 버튼으로 18색 팔레트 ON/OFF, 다크/라이트 토글 비교.
+</p>
+</body>
+</html>

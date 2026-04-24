@@ -1,0 +1,148 @@
+{
+  "ranAt": "2026-04-19T09:21:34.737Z",
+  "total": 22,
+  "pass": 22,
+  "fail": 0,
+  "consoleErrorCount": 0,
+  "pageErrorCount": 0,
+  "unhandledCount": 0,
+  "fatalCount": 0,
+  "results": [
+    {
+      "id": "A1",
+      "name": "Query \"내일 비대면 접수중\" → 3 chips (date/loc/status)",
+      "status": "PASS",
+      "note": "len=3 labels=🌐 비대면 | 🟢 접수중 | 📅 내일"
+    },
+    {
+      "id": "A2",
+      "name": "Query \"이현수 AI 특강\" → derivedCat(ai)+category(MRC020) chips",
+      "status": "PASS",
+      "note": "chips=2 labels=🎤 특강 | 🤖 AI/LLM"
+    },
+    {
+      "id": "A3",
+      "name": "Prefix mode \"@이현수 -카카오\" still renders mentor+exclude chips",
+      "status": "PASS",
+      "note": "labels=이현수 (멘토) | 제외: 카카오"
+    },
+    {
+      "id": "A4",
+      "name": "Chip × click removes exclude + rewrites input",
+      "status": "PASS",
+      "note": "before=\"@이현수 -카카오\" after=\"@이현수\" remaining=[\"mentor\"]"
+    },
+    {
+      "id": "A5",
+      "name": "Help popover open + 4 examples rendered",
+      "status": "PASS",
+      "note": "visible=true examples=4 first=\"내일 비대면 접수중\""
+    },
+    {
+      "id": "B1",
+      "name": "18색 팔레트: 10/10 applied blocks have data-cat across 7 palette(s)",
+      "status": "PASS",
+      "note": "cats=ai,backend,data,soma,startup,team,idea sample={\"cat\":\"ai\",\"bg\":\"rgb(199, 210, 254)\",\"color\":\"rgb(49, 46, 129)\",\"boxShadow\":\"rgb(49, 46, 129) 0px 0px 0px 1.5px inset, rgba(15, 23, 42, 0.1) 0px 1px 3px 0px\",\"borderLeftWidth\":\"0px\"}"
+    },
+    {
+      "id": "B2",
+      "name": "applied[data-cat] blocks: border-left=0 + inset box-shadow",
+      "status": "PASS",
+      "note": "noBorderLeft=true hasInset=true sample.boxShadow=\"rgb(49, 46, 129) 0px 0px 0px 1.5px inset, rgba(15, 23, 42, 0.1) 0px 1px 3px 0px\""
+    },
+    {
+      "id": "B3",
+      "name": "Dark mode: applied blocks keep palette colors (bg+fg from vars)",
+      "status": "PASS",
+      "note": "theme=dark sample={\"cat\":\"ai\",\"bg\":\"rgba(99, 102, 241, 0.35)\",\"color\":\"rgb(165, 180, 252)\"}"
+    },
+    {
+      "id": "B4",
+      "name": "Popup badge[data-cat]: gray (body.cat-colors not applied)",
+      "status": "PASS",
+      "note": "hasCatColorsClass=false sample={\"hasCatColorsClass\":false,\"found\":false}"
+    },
+    {
+      "id": "C1",
+      "name": "Popup onboarding auto-triggers (onboardingSeen=false)",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C2.1",
+      "name": "Step 1 \"💡 키워드만 넣으세요\" live demo",
+      "status": "PASS",
+      "note": "hasDemo=true active=1/5 w=380px"
+    },
+    {
+      "id": "C2.2",
+      "name": "Step 2 \"🎯 자연어로 검색\" live demo",
+      "status": "PASS",
+      "note": "hasDemo=true active=2/5 w=380px"
+    },
+    {
+      "id": "C2.3",
+      "name": "Step 3 \"🏷️ 주제별 18가지\" live demo",
+      "status": "PASS",
+      "note": "hasDemo=true active=3/5 w=380px"
+    },
+    {
+      "id": "C2.4",
+      "name": "Step 4 \"📅 주간 시간표\" live demo",
+      "status": "PASS",
+      "note": "hasDemo=true active=4/5 w=380px"
+    },
+    {
+      "id": "C2.5",
+      "name": "Step 5 \"⚙️ 알림 · 저장 · 내보내기\" live demo",
+      "status": "PASS",
+      "note": "hasDemo=true active=5/5 w=380px"
+    },
+    {
+      "id": "C3",
+      "name": "Bubble width ~380px across steps (observed 380,380,380,380,380)",
+      "status": "PASS",
+      "note": "widths=380,380,380,380,380"
+    },
+    {
+      "id": "C4",
+      "name": "\"사용법 보기\" CTA exists on welcome.html",
+      "status": "PASS",
+      "note": "label=\"💡 사용법 보기\""
+    },
+    {
+      "id": "C5",
+      "name": "Timetable tour: 2 steps + live demo",
+      "status": "PASS",
+      "note": "dots=2 title=\"🔍 상세 검색\" hasDemo=true"
+    },
+    {
+      "id": "C6",
+      "name": "⋯ → \"💡 설명 다시 보기\" re-triggers tour",
+      "status": "PASS",
+      "note": "menuOk=true replayLabel=\"💡 설명 다시 보기\" newBubble=true"
+    },
+    {
+      "id": "D1",
+      "name": "Debounce: 15 rapid storage writes → 1 render(s)",
+      "status": "PASS",
+      "note": "mutations=1 (expected ≤3 via 80ms debounce)"
+    },
+    {
+      "id": "D2",
+      "name": "Classifier cache: 2nd injectInto call 0ms vs 1st 0.2ms",
+      "status": "PASS",
+      "note": "{\"skip\":false,\"first\":0.2,\"second\":0,\"cvCount\":33,\"total\":33}"
+    },
+    {
+      "id": "D3",
+      "name": "Favorite toggle optimistic UI (<100ms rerender)",
+      "status": "PASS",
+      "note": "{\"skip\":false,\"snBefore\":\"9801\",\"wasOn\":true,\"dtMs\":120.4}"
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "unhandled": [],
+  "fatalErrors": []
+}

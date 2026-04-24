@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>SWM Lecture Helper — 18 Category Palette v2 Preview</title>
+<link rel="stylesheet" href="../lib/tokens.css">
+<style>
+  /* Brand/slate tokens referenced by tokens.css — inlined for standalone preview */
+  :root {
+    --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0; --slate-300:#cbd5e1;
+    --slate-500:#64748b; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+    --brand-50:#eff9ff; --brand-500:#006EB7; --brand-600:#005a94; --brand-700:#004A7D;
+    --emerald-50:#ecfdf5; --emerald-500:#10b981; --emerald-700:#047857;
+    --rose-50:#fff1f2; --rose-500:#f43f5e; --rose-700:#be123c;
+    --amber-500:#f59e0b;
+    --z-hover:5; --z-applied:4; --z-fav:3; --z-preview:6;
+    --hour-height:36px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Pretendard', sans-serif;
+         background: var(--background); color: var(--foreground); padding: 24px; margin: 0; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  h2 { font-size: 14px; margin: 24px 0 8px; color: var(--muted-foreground); text-transform: uppercase;
+       letter-spacing: 0.5px; font-weight: 600; }
+  .controls { display: flex; gap: 12px; margin-bottom: 16px; }
+  button { padding: 6px 12px; border-radius: var(--radius-md); border: 1px solid var(--border);
+           background: var(--card); color: var(--foreground); cursor: pointer; font-size: 12px; }
+  button.active { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .swatch { padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.08); }
+  .swatch small { display: block; font-size: 10px; font-weight: 500; opacity: 0.75; margin-top: 4px;
+                  font-family: ui-monospace, monospace; }
+  html[data-theme="dark"] .swatch { box-shadow: 0 1px 3px rgba(0,0,0,0.35); }
+
+  /* Mini timetable mock */
+  .tt-mock { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding: 10px;
+             background: var(--muted); border-radius: var(--radius-md); margin-top: 8px; }
+  .tt-col { display: flex; flex-direction: column; gap: 3px; min-height: 180px; }
+  .lec-block { position: relative; padding: 6px 8px; border-radius: var(--radius-md); font-size: 10px;
+               line-height: 1.3; cursor: default; }
+  .lec-block .bt { font-weight: 700; font-size: 11px; letter-spacing: -0.2px; }
+  .lec-block .bl { font-size: 10px; opacity: 0.82; }
+  .lec-block.applied { font-weight: 700; box-shadow: inset 0 0 0 1.5px currentColor, 0 1px 3px rgba(15,23,42,0.10); }
+  .lec-block.favorite { background: rgba(251,191,36,0.14); border: 1px dashed var(--amber-500); color: var(--slate-800); }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: var(--muted);
+               border-radius: var(--radius-md); }
+</style>
+</head>
+<body>
+  <h1>18 카테고리 팔레트 v2 프리뷰 — v1.15.0</h1>
+  <p style="color:var(--muted-foreground); font-size:13px; margin:4px 0 12px;">
+    Tailwind-200 bg + Tailwind-900 fg (light) / Tailwind-500 @ 0.32-0.35 alpha + Tailwind-300 fg (dark).
+    Border-left 제거, applied 상태는 inset ring 으로 구분.
+  </p>
+  <div class="controls">
+    <button id="btn-light" class="active">Light</button>
+    <button id="btn-dark">Dark</button>
+    <button id="btn-cat-on" class="active">body.cat-colors ON (badges)</button>
+  </div>
+
+  <h2>Swatches (bg + fg contrast)</h2>
+  <div class="grid" id="swatches"></div>
+
+  <h2>Badges (body.cat-colors)</h2>
+  <div class="badge-row" id="badges"></div>
+
+  <h2>Grid .lec-block — normal vs applied vs favorite</h2>
+  <div class="tt-mock" id="tt-mock"></div>
+
+<script>
+const cats = [
+  ['security', '🔒 보안', 'red-200/900'],
+  ['soma', '🧩 SOMA', 'amber-200/900'],
+  ['startup', '🚀 창업', 'orange-200/900'],
+  ['idea', '💡 아이디어', 'yellow-200/900'],
+  ['team', '👥 팀빌딩', 'lime-200/900'],
+  ['mobile', '📱 모바일', 'emerald-200/900'],
+  ['devops', '⚙️ DevOps', 'green-200/900'],
+  ['data', '📊 데이터', 'teal-200/900'],
+  ['frontend', '🎨 프론트', 'cyan-200/900'],
+  ['cloud', '☁️ 클라우드', 'sky-200/900'],
+  ['backend', '🔧 백엔드', 'blue-200/900'],
+  ['ai', '🤖 AI/LLM', 'indigo-200/900'],
+  ['cs', '🎓 CS', 'violet-200/900'],
+  ['blockchain', '⛓️ 블록체인', 'purple-200/900'],
+  ['career', '💼 커리어', 'fuchsia-200/900'],
+  ['game', '🎮 게임', 'pink-200/900'],
+  ['os', '🖥️ OS', 'slate-300/900'],
+  ['dev_general', '🔩 개발일반', 'stone-300/900'],
+  ['etc', '📦 기타', 'zinc-300/900'],
+];
+
+const sw = document.getElementById('swatches');
+cats.forEach(([id, label, note]) => {
+  const d = document.createElement('div');
+  d.className = 'swatch';
+  d.style.background = `var(--cat-${id}-bg)`;
+  d.style.color = `var(--cat-${id}-fg)`;
+  d.innerHTML = `${label}<small>${id} · ${note}</small>`;
+  sw.appendChild(d);
+});
+
+const bg = document.getElementById('badges');
+document.body.classList.add('cat-colors');
+cats.forEach(([id, label]) => {
+  const b = document.createElement('span');
+  b.className = 'badge';
+  b.setAttribute('data-cat', id);
+  b.textContent = label;
+  bg.appendChild(b);
+});
+
+const tt = document.getElementById('tt-mock');
+const sample = cats.slice(0, 10);
+for (let col = 0; col < 5; col++) {
+  const c = document.createElement('div'); c.className = 'tt-col';
+  const pair = sample.slice(col*2, col*2+2);
+  pair.forEach(([id, label], i) => {
+    const b = document.createElement('div');
+    b.className = 'lec-block' + (col === 1 && i === 0 ? ' applied' : col === 2 && i === 1 ? ' favorite' : '');
+    b.setAttribute('data-cat', id);
+    b.innerHTML = `<div class="bt">${label}</div><div class="bl">강연자 · 강남</div>`;
+    c.appendChild(b);
+  });
+  tt.appendChild(c);
+}
+
+const btnL = document.getElementById('btn-light');
+const btnD = document.getElementById('btn-dark');
+btnL.onclick = () => { document.documentElement.removeAttribute('data-theme'); btnL.classList.add('active'); btnD.classList.remove('active'); };
+btnD.onclick = () => { document.documentElement.setAttribute('data-theme','dark'); btnD.classList.add('active'); btnL.classList.remove('active'); };
+const btnC = document.getElementById('btn-cat-on');
+btnC.onclick = () => { document.body.classList.toggle('cat-colors'); btnC.classList.toggle('active'); };
+</script>
+</body>
+</html>

@@ -50,7 +50,7 @@ const TITLES_FREE = [
 ];
 
 const LOC_ONLINE = [
-  '온라인 Webex https://webex.meeting/swm-mentor',
+  '온라인(Webex)',
   '온라인 Zoom',
   '온라인 Google Meet',
   '온라인 Discord 보이스 채널',
@@ -140,6 +140,10 @@ const settings = {
   notifyMentorMatch: false,
   watchedMentors: [],
   keywords: [],
+  onboardingSeen: true,
+  timetableCoachmarkSeen: true,
+  palette: 'default',
+  themeMode: 'light',
 };
 
 module.exports = { lectures, favorites, meta, settings };

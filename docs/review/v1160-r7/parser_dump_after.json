@@ -1,0 +1,3637 @@
+{
+  "meta": {
+    "version": "2026-04-20-nls4-bm25-r7",
+    "now": "2026-04-14T03:00:00.000Z",
+    "n_lectures": 113,
+    "n_queries": 30
+  },
+  "queries": [
+    {
+      "id": "F1",
+      "q": "김멘토",
+      "ast": {
+        "freeText": [
+          "김멘토"
+        ]
+      },
+      "parseMs": 11.766,
+      "applyMs": 2.079,
+      "rankMs": 71.04,
+      "filtered_n": 1,
+      "ranked_n": 1,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 0.01,
+          "sn": "9577",
+          "title": "[자유 멘토링] [김영웅멘토] 게인엔진 활용 프로덕트기획",
+          "mentor": "김영웅",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 20:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "q": "이세진",
+      "ast": {
+        "freeText": [
+          "이세진"
+        ]
+      },
+      "parseMs": 1.778,
+      "applyMs": 1.419,
+      "rankMs": 5.725,
+      "filtered_n": 1,
+      "ranked_n": 1,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 19.221,
+          "sn": "8962",
+          "title": "[멘토 특강] 내 아이디어를 '진짜 비즈니스'로 기획하고 검증하는 방법 (in SOMA)",
+          "mentor": "이세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 16:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "F3",
+      "q": "이멘토님",
+      "ast": {
+        "freeText": [
+          "이멘토님"
+        ]
+      },
+      "parseMs": 0.939,
+      "applyMs": 1.004,
+      "rankMs": 0.777,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "F4",
+      "q": "김 멘토",
+      "ast": {
+        "freeText": [
+          "김",
+          "멘토"
+        ]
+      },
+      "parseMs": 0.917,
+      "applyMs": 0.854,
+      "rankMs": 1.206,
+      "filtered_n": 30,
+      "ranked_n": 30,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 0.021,
+          "sn": "9546",
+          "title": "[자유 멘토링] 김민장 멘토 자유멘토링",
+          "mentor": "김민장",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 14:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 0.021,
+          "sn": "9613",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 20:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 0.021,
+          "sn": "9614",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 0.021,
+          "sn": "9615",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 0.021,
+          "sn": "9114",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 6,
+          "score": 0.021,
+          "sn": "9115",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 0.021,
+          "sn": "9262",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "12:00 ~ 13:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 0.021,
+          "sn": "9263",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "11:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 0.021,
+          "sn": "9577",
+          "title": "[자유 멘토링] [김영웅멘토] 게인엔진 활용 프로덕트기획",
+          "mentor": "김영웅",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 20:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 0.021,
+          "sn": "9708",
+          "title": "[자유 멘토링] [팀 멘토링] 함께 기획하기",
+          "mentor": "문승현",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "idea",
+            "team"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:30 ~ 16:30",
+          "isOnline": true
+        }
+      ]
+    },
+    {
+      "id": "F5",
+      "q": "벡엔드",
+      "ast": {
+        "derivedCat": [
+          "backend"
+        ]
+      },
+      "parseMs": 0.494,
+      "applyMs": 0.852,
+      "rankMs": 1.917,
+      "filtered_n": 36,
+      "ranked_n": 36,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 9.198,
+          "sn": "9587",
+          "title": "[멘토 특강] [1차] 스파이크 트래픽 생존기 (대규모 트래픽 처리하기)",
+          "mentor": "안재홍",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "data",
+            "backend",
+            "career"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 8.835,
+          "sn": "9324",
+          "title": "[멘토 특강] 웹 개발자를 위한 모던 웹 엔지니어링",
+          "mentor": "강상진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "security",
+            "backend",
+            "devops",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "11:00 ~ 13:30",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 8.091,
+          "sn": "9508",
+          "title": "[자유 멘토링] 이커머스 핵심 도메인 톺아보기 (Ecommerce CSP 1부)",
+          "mentor": "김선우",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 4,
+          "score": 7.877,
+          "sn": "9120",
+          "title": "[자유 멘토링] [이남권]보안개론 및 기초적인 해킹방법과 방어1",
+          "mentor": "이남권",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "backend"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 5.691,
+          "sn": "9121",
+          "title": "[멘토 특강] [한유일] AI 코딩 에이전트 101 feat. Claude Code설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "startup",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 5.632,
+          "sn": "9759",
+          "title": "[자유 멘토링] [한유일] AI 코딩 에이전트 101 feat. Claude Code 설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9262",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "12:00 ~ 13:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9263",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "11:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "9010",
+          "title": "[자유 멘토링] [이호연] ChatGPT(LLM) API로 뭘 할 수 있을까? — 텍스트 토큰으로 1천만 원 이상 써본 이야기",
+          "mentor": "이호연",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9299",
+          "title": "[멘토 특강] 토큰이란 무엇인가? (기초)",
+          "mentor": "이제우",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "21:30 ~ 23:30",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "F6",
+      "q": "AI 파인튜딩",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ]
+      },
+      "parseMs": 0.294,
+      "applyMs": 0.804,
+      "rankMs": 3.061,
+      "filtered_n": 58,
+      "ranked_n": 58,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 2.095,
+          "sn": "9493",
+          "title": "[멘토 특강] Agentic AI 제품 작동 원리 이해하기",
+          "mentor": "박성준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "startup",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 2.079,
+          "sn": "9265",
+          "title": "[자유 멘토링] 게임산업의 게임체인저 AI 개론 특강",
+          "mentor": "홍윤석",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 2.006,
+          "sn": "9397",
+          "title": "[자유 멘토링] 자유 멘토링 - 드론, 로봇,   physical ai, 임베디드",
+          "mentor": "김윤래",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "os",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 1.996,
+          "sn": "9642",
+          "title": "[자유 멘토링] AI 에이전트가 계속 일하도록 '빠르게' 구성한 방법 (Part. 2)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 1.982,
+          "sn": "9580",
+          "title": "[자유 멘토링] 게임 개발 AI 활용법",
+          "mentor": "전우성",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 19:30",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 1.976,
+          "sn": "9641",
+          "title": "[자유 멘토링] 혼자 3개 프로젝트를 끝낼수 있었던 이유 (AI 에이전트 Part1)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 1.968,
+          "sn": "8993",
+          "title": "[멘토 특강] 아이디어는 있는데 돈이 될까? → AI 스타트업 트렌드로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 1.882,
+          "sn": "9097",
+          "title": "[멘토 특강] [정경민 멘토] AI-SW Maestro Preview 특강",
+          "mentor": "정경민",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 1.856,
+          "sn": "9075",
+          "title": "[자유 멘토링] 네이버에서 AI Research Engineer/Scientist가 하는 일 - 서비스부터 논문까지",
+          "mentor": "이호연",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:30 ~ 20:30",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 1.846,
+          "sn": "9549",
+          "title": "[자유 멘토링] 바이브코딩 시대의 클린코드",
+          "mentor": "조재홍",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "F7",
+      "q": "@김-홍길동",
+      "ast": {
+        "mentor": [
+          "김-홍길동"
+        ]
+      },
+      "parseMs": 0.232,
+      "applyMs": 3.668,
+      "rankMs": 0.67,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "F8",
+      "q": "AI",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ]
+      },
+      "parseMs": 0.397,
+      "applyMs": 0.607,
+      "rankMs": 0.732,
+      "filtered_n": 58,
+      "ranked_n": 58,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 2.095,
+          "sn": "9493",
+          "title": "[멘토 특강] Agentic AI 제품 작동 원리 이해하기",
+          "mentor": "박성준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "startup",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 2.079,
+          "sn": "9265",
+          "title": "[자유 멘토링] 게임산업의 게임체인저 AI 개론 특강",
+          "mentor": "홍윤석",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 2.006,
+          "sn": "9397",
+          "title": "[자유 멘토링] 자유 멘토링 - 드론, 로봇,   physical ai, 임베디드",
+          "mentor": "김윤래",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "os",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 1.996,
+          "sn": "9642",
+          "title": "[자유 멘토링] AI 에이전트가 계속 일하도록 '빠르게' 구성한 방법 (Part. 2)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 1.982,
+          "sn": "9580",
+          "title": "[자유 멘토링] 게임 개발 AI 활용법",
+          "mentor": "전우성",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 19:30",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 1.976,
+          "sn": "9641",
+          "title": "[자유 멘토링] 혼자 3개 프로젝트를 끝낼수 있었던 이유 (AI 에이전트 Part1)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 1.968,
+          "sn": "8993",
+          "title": "[멘토 특강] 아이디어는 있는데 돈이 될까? → AI 스타트업 트렌드로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 1.882,
+          "sn": "9097",
+          "title": "[멘토 특강] [정경민 멘토] AI-SW Maestro Preview 특강",
+          "mentor": "정경민",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 1.856,
+          "sn": "9075",
+          "title": "[자유 멘토링] 네이버에서 AI Research Engineer/Scientist가 하는 일 - 서비스부터 논문까지",
+          "mentor": "이호연",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:30 ~ 20:30",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 1.846,
+          "sn": "9549",
+          "title": "[자유 멘토링] 바이브코딩 시대의 클린코드",
+          "mentor": "조재홍",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "F9",
+      "q": "Agentic AI",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ]
+      },
+      "parseMs": 0.103,
+      "applyMs": 0.589,
+      "rankMs": 0.783,
+      "filtered_n": 58,
+      "ranked_n": 58,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 6.859,
+          "sn": "9493",
+          "title": "[멘토 특강] Agentic AI 제품 작동 원리 이해하기",
+          "mentor": "박성준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "startup",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 6.395,
+          "sn": "9029",
+          "title": "[멘토 특강] [멘토 특강] [오프라인] Agentic AI, 무엇을 만들고 어떻게 좋은결과를 만들까?",
+          "mentor": "김동현",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 6.266,
+          "sn": "9096",
+          "title": "[멘토 특강] [오프라인] Agentic AI, 무엇을 만들고 어떻게 좋은결과를 만들까?",
+          "mentor": "김동현",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "15:30 ~ 18:30",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 4.97,
+          "sn": "8993",
+          "title": "[멘토 특강] 아이디어는 있는데 돈이 될까? → AI 스타트업 트렌드로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 5,
+          "score": 4.161,
+          "sn": "9584",
+          "title": "[멘토 특강] NVIDIA는 대체 뭘 잘한 걸까? — 역사, 해자, 그리고 GTC 2026",
+          "mentor": "박민재",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": true
+        },
+        {
+          "rank": 6,
+          "score": 4.146,
+          "sn": "9675",
+          "title": "[자유 멘토링] NVIDIA는 대체 뭘 잘한 걸까? — 역사, 해자, 그리고 GTC 2026",
+          "mentor": "박민재",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 3.922,
+          "sn": "9118",
+          "title": "[멘토 특강] 실전 딥러닝 퀀트 1조 AUM의 프로젝트 만들기",
+          "mentor": "이태영",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 13:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 2.079,
+          "sn": "9265",
+          "title": "[자유 멘토링] 게임산업의 게임체인저 AI 개론 특강",
+          "mentor": "홍윤석",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 2.006,
+          "sn": "9397",
+          "title": "[자유 멘토링] 자유 멘토링 - 드론, 로봇,   physical ai, 임베디드",
+          "mentor": "김윤래",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "os",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 1.996,
+          "sn": "9642",
+          "title": "[자유 멘토링] AI 에이전트가 계속 일하도록 '빠르게' 구성한 방법 (Part. 2)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "F10",
+      "q": "창업 IR",
+      "ast": {
+        "derivedCat": [
+          "startup"
+        ]
+      },
+      "parseMs": 0.103,
+      "applyMs": 0.572,
+      "rankMs": 0.669,
+      "filtered_n": 37,
+      "ranked_n": 37,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 8.081,
+          "sn": "9534",
+          "title": "[자유 멘토링] 자유멘토링 _ 창업과 취업 그 어딘가",
+          "mentor": "이상현",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "cloud",
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 7.956,
+          "sn": "9478",
+          "title": "[자유 멘토링] AI 시대의 창업 — 아이디어에서 MVP까지",
+          "mentor": "김선만",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "frontend",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 7.511,
+          "sn": "9370",
+          "title": "[자유 멘토링] 1인 창업 솔로프리너의 모든 것 A-Z",
+          "mentor": "윤성민",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 6.617,
+          "sn": "9097",
+          "title": "[멘토 특강] [정경민 멘토] AI-SW Maestro Preview 특강",
+          "mentor": "정경민",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 5,
+          "score": 6.511,
+          "sn": "9630",
+          "title": "[자유 멘토링] '1원이라도 틀리면 안 되는 세계' — 핀테크 아이디어 모여라",
+          "mentor": "정문창",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 6.087,
+          "sn": "8962",
+          "title": "[멘토 특강] 내 아이디어를 '진짜 비즈니스'로 기획하고 검증하는 방법 (in SOMA)",
+          "mentor": "이세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 5.048,
+          "sn": "9493",
+          "title": "[멘토 특강] Agentic AI 제품 작동 원리 이해하기",
+          "mentor": "박성준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "startup",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 5.029,
+          "sn": "9026",
+          "title": "[멘토 특강] [전세진] [센터] 개발자를 위한 아이디에이션 - 제품 개발 전에 시장에서 먹히는지 실험하는 법",
+          "mentor": "전세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 4.385,
+          "sn": "9161",
+          "title": "[멘토 특강] SOTA 코드가 내 프로젝트에서 안 되는 이유 → 프라이머 투자팀 케이스 공개",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "16:00 ~ 18:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 4.355,
+          "sn": "9160",
+          "title": "[멘토 특강] Fine-tuning vs RAG, 내 도메인엔 뭐가 맞을까? → 소마 케이스로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "T1",
+      "q": "내일",
+      "ast": {
+        "date": "2026-04-15..2026-04-15"
+      },
+      "parseMs": 0.478,
+      "applyMs": 0.576,
+      "rankMs": 0.715,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "T2",
+      "q": "이번주",
+      "ast": {
+        "date": "2026-04-13..2026-04-19"
+      },
+      "parseMs": 0.913,
+      "applyMs": 2.057,
+      "rankMs": 3.601,
+      "filtered_n": 53,
+      "ranked_n": 53,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 0,
+          "sn": "8962",
+          "title": "[멘토 특강] 내 아이디어를 '진짜 비즈니스'로 기획하고 검증하는 방법 (in SOMA)",
+          "mentor": "이세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 0,
+          "sn": "9218",
+          "title": "[자유 멘토링] [유호균] 팀매칭 전 자유 멘토링",
+          "mentor": "유호균",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "backend",
+            "devops",
+            "startup",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "15:00 ~ 17:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 0,
+          "sn": "8963",
+          "title": "[멘토 특강] 1,000명 사용자 모으기 - 개발자가 할 수 있는 최고의 마케팅, SEO",
+          "mentor": "강준혁",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 20:30",
+          "isOnline": true
+        },
+        {
+          "rank": 4,
+          "score": 0,
+          "sn": "9478",
+          "title": "[자유 멘토링] AI 시대의 창업 — 아이디어에서 MVP까지",
+          "mentor": "김선만",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "frontend",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 0,
+          "sn": "9489",
+          "title": "[자유 멘토링] [유호균] 수제 검색엔진 만들어보기: 검색 오픈소스 없이 '맨땅'부터 시작하는 검색엔진 (2)",
+          "mentor": "유호균",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops",
+            "startup",
+            "team",
+            "cs",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 23:00",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 0,
+          "sn": "9751",
+          "title": "[자유 멘토링] [이찬형] 팀 매칭을 위한 티타임 및 멘토링 방향성 공유",
+          "mentor": "이찬형",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "team"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9752",
+          "title": "[자유 멘토링] [이찬형] 팀 매칭을 위한 티타임 및 멘토링 방향성 공유",
+          "mentor": "이찬형",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "team"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "22:00 ~ 23:00",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9759",
+          "title": "[자유 멘토링] [한유일] AI 코딩 에이전트 101 feat. Claude Code 설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "8993",
+          "title": "[멘토 특강] 아이디어는 있는데 돈이 될까? → AI 스타트업 트렌드로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9253",
+          "title": "[자유 멘토링] AI 시대, 왜 Agile하게 일해야 할까?",
+          "mentor": "남상수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "idea",
+            "team",
+            "career",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "16:00 ~ 18:00",
+          "isOnline": true
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "q": "4월 24일 이후",
+      "ast": {
+        "freeText": [
+          "이후"
+        ],
+        "date": "2026-04-24..2026-04-24"
+      },
+      "parseMs": 0.287,
+      "applyMs": 0.745,
+      "rankMs": 0.737,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "T4",
+      "q": "오후 7시 이후",
+      "ast": {
+        "time": "1140..null"
+      },
+      "parseMs": 0.084,
+      "applyMs": 0.992,
+      "rankMs": 0.748,
+      "filtered_n": 45,
+      "ranked_n": 45,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 0,
+          "sn": "9508",
+          "title": "[자유 멘토링] 이커머스 핵심 도메인 톺아보기 (Ecommerce CSP 1부)",
+          "mentor": "김선우",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 0,
+          "sn": "9528",
+          "title": "[자유 멘토링] 프로젝트 기획 멘토링 (온라인)",
+          "mentor": "김형국",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 0,
+          "sn": "9554",
+          "title": "[자유 멘토링] [염승헌] 동준님 팀 결성 및 프로젝트 방향 코칭",
+          "mentor": "YUM SEUNGHEON",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "etc"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 0,
+          "sn": "9299",
+          "title": "[멘토 특강] 토큰이란 무엇인가? (기초)",
+          "mentor": "이제우",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "21:30 ~ 23:30",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 0,
+          "sn": "9075",
+          "title": "[자유 멘토링] 네이버에서 AI Research Engineer/Scientist가 하는 일 - 서비스부터 논문까지",
+          "mentor": "이호연",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:30 ~ 20:30",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 0,
+          "sn": "9587",
+          "title": "[멘토 특강] [1차] 스파이크 트래픽 생존기 (대규모 트래픽 처리하기)",
+          "mentor": "안재홍",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "data",
+            "backend",
+            "career"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9349",
+          "title": "[멘토 특강] 아주 간단한 AI모델 서버 만들어보기",
+          "mentor": "김동우(5714)",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "21:00 ~ 22:30",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9097",
+          "title": "[멘토 특강] [정경민 멘토] AI-SW Maestro Preview 특강",
+          "mentor": "정경민",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "9385",
+          "title": "[멘토 특강] 전통 금융에서 현대 거래소까지: 시장 구조, 데이터, 그리고 AI로 이어지는 기술 이야기",
+          "mentor": "오성진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:00 ~ 20:30",
+          "isOnline": true
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9688",
+          "title": "[자유 멘토링] 팀 목표에 맞는 프로젝트 운영 계획 수립",
+          "mentor": "박주람",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "team"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 21:30",
+          "isOnline": true
+        }
+      ]
+    },
+    {
+      "id": "T5",
+      "q": "주말",
+      "ast": {
+        "date": "2026-04-18..2026-04-19"
+      },
+      "parseMs": 0.486,
+      "applyMs": 0.55,
+      "rankMs": 0.579,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "M1",
+      "q": "@이세진",
+      "ast": {
+        "mentor": [
+          "이세진"
+        ]
+      },
+      "parseMs": 0.09,
+      "applyMs": 0.542,
+      "rankMs": 0.534,
+      "filtered_n": 1,
+      "ranked_n": 1,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 0,
+          "sn": "8962",
+          "title": "[멘토 특강] 내 아이디어를 '진짜 비즈니스'로 기획하고 검증하는 방법 (in SOMA)",
+          "mentor": "이세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 16:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "q": "박주람 멘토님",
+      "ast": {
+        "freeText": [
+          "박주람",
+          "멘토님"
+        ]
+      },
+      "parseMs": 0.454,
+      "applyMs": 0.874,
+      "rankMs": 1.22,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "C1",
+      "q": "백엔드",
+      "ast": {
+        "derivedCat": [
+          "backend"
+        ]
+      },
+      "parseMs": 0.374,
+      "applyMs": 1.094,
+      "rankMs": 5.241,
+      "filtered_n": 36,
+      "ranked_n": 36,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 9.198,
+          "sn": "9587",
+          "title": "[멘토 특강] [1차] 스파이크 트래픽 생존기 (대규모 트래픽 처리하기)",
+          "mentor": "안재홍",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "data",
+            "backend",
+            "career"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 8.835,
+          "sn": "9324",
+          "title": "[멘토 특강] 웹 개발자를 위한 모던 웹 엔지니어링",
+          "mentor": "강상진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "security",
+            "backend",
+            "devops",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "11:00 ~ 13:30",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 8.091,
+          "sn": "9508",
+          "title": "[자유 멘토링] 이커머스 핵심 도메인 톺아보기 (Ecommerce CSP 1부)",
+          "mentor": "김선우",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 4,
+          "score": 7.877,
+          "sn": "9120",
+          "title": "[자유 멘토링] [이남권]보안개론 및 기초적인 해킹방법과 방어1",
+          "mentor": "이남권",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "backend"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 5.691,
+          "sn": "9121",
+          "title": "[멘토 특강] [한유일] AI 코딩 에이전트 101 feat. Claude Code설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "startup",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 5.632,
+          "sn": "9759",
+          "title": "[자유 멘토링] [한유일] AI 코딩 에이전트 101 feat. Claude Code 설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9262",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "12:00 ~ 13:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9263",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "11:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "9010",
+          "title": "[자유 멘토링] [이호연] ChatGPT(LLM) API로 뭘 할 수 있을까? — 텍스트 토큰으로 1천만 원 이상 써본 이야기",
+          "mentor": "이호연",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9299",
+          "title": "[멘토 특강] 토큰이란 무엇인가? (기초)",
+          "mentor": "이제우",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "21:30 ~ 23:30",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "q": "#창업",
+      "ast": {
+        "derivedCat": [
+          "startup"
+        ]
+      },
+      "parseMs": 0.235,
+      "applyMs": 0.666,
+      "rankMs": 0.656,
+      "filtered_n": 37,
+      "ranked_n": 37,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 8.081,
+          "sn": "9534",
+          "title": "[자유 멘토링] 자유멘토링 _ 창업과 취업 그 어딘가",
+          "mentor": "이상현",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "cloud",
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 7.956,
+          "sn": "9478",
+          "title": "[자유 멘토링] AI 시대의 창업 — 아이디어에서 MVP까지",
+          "mentor": "김선만",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "frontend",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 7.511,
+          "sn": "9370",
+          "title": "[자유 멘토링] 1인 창업 솔로프리너의 모든 것 A-Z",
+          "mentor": "윤성민",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 6.617,
+          "sn": "9097",
+          "title": "[멘토 특강] [정경민 멘토] AI-SW Maestro Preview 특강",
+          "mentor": "정경민",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 5,
+          "score": 6.511,
+          "sn": "9630",
+          "title": "[자유 멘토링] '1원이라도 틀리면 안 되는 세계' — 핀테크 아이디어 모여라",
+          "mentor": "정문창",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 6.087,
+          "sn": "8962",
+          "title": "[멘토 특강] 내 아이디어를 '진짜 비즈니스'로 기획하고 검증하는 방법 (in SOMA)",
+          "mentor": "이세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 5.048,
+          "sn": "9493",
+          "title": "[멘토 특강] Agentic AI 제품 작동 원리 이해하기",
+          "mentor": "박성준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "startup",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 5.029,
+          "sn": "9026",
+          "title": "[멘토 특강] [전세진] [센터] 개발자를 위한 아이디에이션 - 제품 개발 전에 시장에서 먹히는지 실험하는 법",
+          "mentor": "전세진",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 4.385,
+          "sn": "9161",
+          "title": "[멘토 특강] SOTA 코드가 내 프로젝트에서 안 되는 이유 → 프라이머 투자팀 케이스 공개",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "16:00 ~ 18:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 4.355,
+          "sn": "9160",
+          "title": "[멘토 특강] Fine-tuning vs RAG, 내 도메인엔 뭐가 맞을까? → 소마 케이스로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "q": "기획",
+      "ast": {
+        "derivedCat": [
+          "idea"
+        ]
+      },
+      "parseMs": 0.034,
+      "applyMs": 0.499,
+      "rankMs": 0.715,
+      "filtered_n": 49,
+      "ranked_n": 49,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 7.351,
+          "sn": "9528",
+          "title": "[자유 멘토링] 프로젝트 기획 멘토링 (온라인)",
+          "mentor": "김형국",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 7.332,
+          "sn": "9728",
+          "title": "[자유 멘토링] T-GATES팀 기획 아이데이션 자유멘토링",
+          "mentor": "안서형",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "15:00 ~ 16:00",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 7.089,
+          "sn": "9718",
+          "title": "[자유 멘토링] 팀단위 프로젝트 기획 피드백",
+          "mentor": "김관영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 4,
+          "score": 7.013,
+          "sn": "9708",
+          "title": "[자유 멘토링] [팀 멘토링] 함께 기획하기",
+          "mentor": "문승현",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "idea",
+            "team"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:30 ~ 16:30",
+          "isOnline": true
+        },
+        {
+          "rank": 5,
+          "score": 7.008,
+          "sn": "9307",
+          "title": "[자유 멘토링] [기획멘토] 기획자의 뇌를 2시간 빌려드립니다",
+          "mentor": "김찬수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai",
+            "idea",
+            "team",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 6.935,
+          "sn": "9577",
+          "title": "[자유 멘토링] [김영웅멘토] 게인엔진 활용 프로덕트기획",
+          "mentor": "김영웅",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 20:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 6.833,
+          "sn": "9297",
+          "title": "[멘토 특강] [기획멘토] 코드 짜기 전에 해야 할 것들",
+          "mentor": "김찬수",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "game",
+            "ai",
+            "idea",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "13:00 ~ 14:00",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 6.582,
+          "sn": "9183",
+          "title": "[자유 멘토링] 생성형 AI 서비스 기획을 위한 멘토링",
+          "mentor": "이태영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 6.344,
+          "sn": "9444",
+          "title": "[자유 멘토링] 샘 알트만은 더이상 코딩을 하지 않는가? (기술 스택을 넘어선 비즈니스 기획의 힘)",
+          "mentor": "구원모",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "11:00 ~ 13:00",
+          "isOnline": true
+        },
+        {
+          "rank": 10,
+          "score": 6.05,
+          "sn": "9073",
+          "title": "[자유 멘토링] [센터] 팀빌딩, 과제기획(범위,일정,예산), 우수사례 및 성공노하우",
+          "mentor": "정철웅",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "startup",
+            "idea",
+            "team",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "16:00 ~ 18:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "q": "프론트엔드",
+      "ast": {
+        "derivedCat": [
+          "frontend"
+        ]
+      },
+      "parseMs": 0.045,
+      "applyMs": 0.601,
+      "rankMs": 0.597,
+      "filtered_n": 10,
+      "ranked_n": 10,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 10.155,
+          "sn": "9121",
+          "title": "[멘토 특강] [한유일] AI 코딩 에이전트 101 feat. Claude Code설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "startup",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 10.044,
+          "sn": "9759",
+          "title": "[자유 멘토링] [한유일] AI 코딩 에이전트 101 feat. Claude Code 설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 0,
+          "sn": "9299",
+          "title": "[멘토 특강] 토큰이란 무엇인가? (기초)",
+          "mentor": "이제우",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "21:30 ~ 23:30",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 0,
+          "sn": "9478",
+          "title": "[자유 멘토링] AI 시대의 창업 — 아이디어에서 MVP까지",
+          "mentor": "김선만",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "frontend",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 0,
+          "sn": "9489",
+          "title": "[자유 멘토링] [유호균] 수제 검색엔진 만들어보기: 검색 오픈소스 없이 '맨땅'부터 시작하는 검색엔진 (2)",
+          "mentor": "유호균",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops",
+            "startup",
+            "team",
+            "cs",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 23:00",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 0,
+          "sn": "9591",
+          "title": "[멘토 특강] terraform으로 시작하는 IaC 입문",
+          "mentor": "김민수",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "mobile",
+            "backend",
+            "frontend",
+            "cloud",
+            "startup",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "18:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9613",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 20:00",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9614",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "9615",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9696",
+          "title": "[자유 멘토링] [DevOps] 왜 수많은 AI 스타트업은 무너질까? 서비스 운영을 결정하는 Infrastructure & DevOps Engineering 의 이해 (온라인)",
+          "mentor": "박재호",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "cloud",
+            "devops",
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        }
+      ]
+    },
+    {
+      "id": "X1",
+      "q": "내일 비대면 AI",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ],
+        "online": true,
+        "date": "2026-04-15..2026-04-15"
+      },
+      "parseMs": 0.176,
+      "applyMs": 0.988,
+      "rankMs": 0.562,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "X2",
+      "q": "이번주 대면 백엔드",
+      "ast": {
+        "derivedCat": [
+          "backend"
+        ],
+        "online": false,
+        "date": "2026-04-13..2026-04-19"
+      },
+      "parseMs": 0.156,
+      "applyMs": 1.371,
+      "rankMs": 0.632,
+      "filtered_n": 11,
+      "ranked_n": 11,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 7.877,
+          "sn": "9120",
+          "title": "[자유 멘토링] [이남권]보안개론 및 기초적인 해킹방법과 방어1",
+          "mentor": "이남권",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "backend"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 0,
+          "sn": "9218",
+          "title": "[자유 멘토링] [유호균] 팀매칭 전 자유 멘토링",
+          "mentor": "유호균",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "backend",
+            "devops",
+            "startup",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "15:00 ~ 17:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 0,
+          "sn": "9489",
+          "title": "[자유 멘토링] [유호균] 수제 검색엔진 만들어보기: 검색 오픈소스 없이 '맨땅'부터 시작하는 검색엔진 (2)",
+          "mentor": "유호균",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops",
+            "startup",
+            "team",
+            "cs",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 23:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 0,
+          "sn": "9776",
+          "title": "[자유 멘토링] AI가 코드를 짜주는 시대, 개발자에게 남은 진짜 역량 — 이중화 설계 사례로 알아보기",
+          "mentor": "강민준",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 0,
+          "sn": "9777",
+          "title": "[자유 멘토링] AI가 코드를 짜주는 시대, 개발자에게 남은 진짜 역량 — 이중화 설계 사례로 알아보기",
+          "mentor": "강민준",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "13:00 ~ 15:00",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 0,
+          "sn": "9778",
+          "title": "[자유 멘토링] AI가 코드를 짜주는 시대, 개발자에게 남은 진짜 역량 — 이중화 설계 사례로 알아보기",
+          "mentor": "강민준",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "15:30 ~ 17:30",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9534",
+          "title": "[자유 멘토링] 자유멘토링 _ 창업과 취업 그 어딘가",
+          "mentor": "이상현",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "cloud",
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9591",
+          "title": "[멘토 특강] terraform으로 시작하는 IaC 입문",
+          "mentor": "김민수",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "mobile",
+            "backend",
+            "frontend",
+            "cloud",
+            "startup",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "18:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "9630",
+          "title": "[자유 멘토링] '1원이라도 틀리면 안 되는 세계' — 핀테크 아이디어 모여라",
+          "mentor": "정문창",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9641",
+          "title": "[자유 멘토링] 혼자 3개 프로젝트를 끝낼수 있었던 이유 (AI 에이전트 Part1)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "X3",
+      "q": "@김멘토 #AI -카카오",
+      "ast": {
+        "mentor": [
+          "김멘토"
+        ],
+        "derivedCat": [
+          "ai"
+        ],
+        "exclude": [
+          "카카오"
+        ]
+      },
+      "parseMs": 0.136,
+      "applyMs": 1.298,
+      "rankMs": 2.897,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "Y1",
+      "q": "AI 에이전트",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ]
+      },
+      "parseMs": 0.106,
+      "applyMs": 0.581,
+      "rankMs": 0.868,
+      "filtered_n": 58,
+      "ranked_n": 58,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 26.563,
+          "sn": "9642",
+          "title": "[자유 멘토링] AI 에이전트가 계속 일하도록 '빠르게' 구성한 방법 (Part. 2)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 26.265,
+          "sn": "9641",
+          "title": "[자유 멘토링] 혼자 3개 프로젝트를 끝낼수 있었던 이유 (AI 에이전트 Part1)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 20.349,
+          "sn": "9121",
+          "title": "[멘토 특강] [한유일] AI 코딩 에이전트 101 feat. Claude Code설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "startup",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 19.246,
+          "sn": "9759",
+          "title": "[자유 멘토링] [한유일] AI 코딩 에이전트 101 feat. Claude Code 설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 5,
+          "score": 13.619,
+          "sn": "9571",
+          "title": "[멘토 특강] OpenCode 하네스 만들어보기 (전수열)",
+          "mentor": "전수열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "mobile",
+            "ai",
+            "startup",
+            "career",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "16:30 ~ 18:00",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 2.095,
+          "sn": "9493",
+          "title": "[멘토 특강] Agentic AI 제품 작동 원리 이해하기",
+          "mentor": "박성준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "startup",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 2.079,
+          "sn": "9265",
+          "title": "[자유 멘토링] 게임산업의 게임체인저 AI 개론 특강",
+          "mentor": "홍윤석",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 2.006,
+          "sn": "9397",
+          "title": "[자유 멘토링] 자유 멘토링 - 드론, 로봇,   physical ai, 임베디드",
+          "mentor": "김윤래",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "os",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 1.982,
+          "sn": "9580",
+          "title": "[자유 멘토링] 게임 개발 AI 활용법",
+          "mentor": "전우성",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 19:30",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 1.968,
+          "sn": "8993",
+          "title": "[멘토 특강] 아이디어는 있는데 돈이 될까? → AI 스타트업 트렌드로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        }
+      ]
+    },
+    {
+      "id": "Z1",
+      "q": "내일 오후 비대면으로 진행하는 AI 관련 김멘토의 강연",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ],
+        "freeText": [
+          "진행하는",
+          "관련",
+          "김멘토의",
+          "강연"
+        ],
+        "online": true,
+        "date": "2026-04-15..2026-04-15",
+        "time": "720..1440"
+      },
+      "parseMs": 1.073,
+      "applyMs": 0.727,
+      "rankMs": 0.645,
+      "filtered_n": 0,
+      "ranked_n": 0,
+      "top10": []
+    },
+    {
+      "id": "V1",
+      "q": "김멘토",
+      "ast": {
+        "freeText": [
+          "김멘토"
+        ]
+      },
+      "parseMs": 0.217,
+      "applyMs": 0.598,
+      "rankMs": 0.726,
+      "filtered_n": 1,
+      "ranked_n": 1,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 0.01,
+          "sn": "9577",
+          "title": "[자유 멘토링] [김영웅멘토] 게인엔진 활용 프로덕트기획",
+          "mentor": "김영웅",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "idea"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "18:00 ~ 20:00",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "V2",
+      "q": "오늘 AI",
+      "ast": {
+        "derivedCat": [
+          "ai"
+        ],
+        "date": "2026-04-14..2026-04-14"
+      },
+      "parseMs": 0.143,
+      "applyMs": 1.632,
+      "rankMs": 0.711,
+      "filtered_n": 26,
+      "ranked_n": 26,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 2.006,
+          "sn": "9397",
+          "title": "[자유 멘토링] 자유 멘토링 - 드론, 로봇,   physical ai, 임베디드",
+          "mentor": "김윤래",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "os",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 1.996,
+          "sn": "9642",
+          "title": "[자유 멘토링] AI 에이전트가 계속 일하도록 '빠르게' 구성한 방법 (Part. 2)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 3,
+          "score": 1.976,
+          "sn": "9641",
+          "title": "[자유 멘토링] 혼자 3개 프로젝트를 끝낼수 있었던 이유 (AI 에이전트 Part1)",
+          "mentor": "이정영",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "idea",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 1.968,
+          "sn": "8993",
+          "title": "[멘토 특강] 아이디어는 있는데 돈이 될까? → AI 스타트업 트렌드로 판단하기",
+          "mentor": "최학열",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 5,
+          "score": 1.842,
+          "sn": "9296",
+          "title": "[자유 멘토링] [AI 기초] RAG 기초 이론 & 실습",
+          "mentor": "문승현",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 6,
+          "score": 1.81,
+          "sn": "9277",
+          "title": "[자유 멘토링] AI 시대, 음성 AI의 현재와 미래 읽기",
+          "mentor": "홍윤석",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "game",
+            "ai"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:30 ~ 21:30",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 1.782,
+          "sn": "9478",
+          "title": "[자유 멘토링] AI 시대의 창업 — 아이디어에서 MVP까지",
+          "mentor": "김선만",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "frontend",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 1.728,
+          "sn": "9253",
+          "title": "[자유 멘토링] AI 시대, 왜 Agile하게 일해야 할까?",
+          "mentor": "남상수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "idea",
+            "team",
+            "career",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "16:00 ~ 18:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 1.649,
+          "sn": "9776",
+          "title": "[자유 멘토링] AI가 코드를 짜주는 시대, 개발자에게 남은 진짜 역량 — 이중화 설계 사례로 알아보기",
+          "mentor": "강민준",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 1.649,
+          "sn": "9778",
+          "title": "[자유 멘토링] AI가 코드를 짜주는 시대, 개발자에게 남은 진짜 역량 — 이중화 설계 사례로 알아보기",
+          "mentor": "강민준",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "15:30 ~ 17:30",
+          "isOnline": false
+        }
+      ]
+    },
+    {
+      "id": "V3",
+      "q": "데이터 분석",
+      "ast": {
+        "derivedCat": [
+          "data"
+        ]
+      },
+      "parseMs": 0.092,
+      "applyMs": 0.654,
+      "rankMs": 0.989,
+      "filtered_n": 19,
+      "ranked_n": 19,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 8.032,
+          "sn": "9168",
+          "title": "[멘토 특강] Google에서는 AI시대에 어떻게 일할까? (본질적으로 변한 것은 없다)",
+          "mentor": "곽영준",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "idea",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": true
+        },
+        {
+          "rank": 2,
+          "score": 7.603,
+          "sn": "9450",
+          "title": "[멘토 특강] 0에서 1,000만까지: 뻗지 않는 단계 별 스타트업 실전 아키텍처 A to Z",
+          "mentor": "박순영",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "devops",
+            "startup",
+            "idea",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "10:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 7.551,
+          "sn": "9184",
+          "title": "[멘토 특강] 0에서 1,000만까지: 뻗지 않는 단계 별 스타트업 실전 아키텍처 A to Z",
+          "mentor": "박순영",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "backend",
+            "cloud",
+            "devops",
+            "startup",
+            "idea",
+            "career",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 6.218,
+          "sn": "9630",
+          "title": "[자유 멘토링] '1원이라도 틀리면 안 되는 세계' — 핀테크 아이디어 모여라",
+          "mentor": "정문창",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "backend",
+            "startup",
+            "idea",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "10:30 ~ 12:30",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 5.371,
+          "sn": "9114",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": true
+        },
+        {
+          "rank": 6,
+          "score": 5.371,
+          "sn": "9115",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 7,
+          "score": 5.249,
+          "sn": "9262",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "12:00 ~ 13:00",
+          "isOnline": true
+        },
+        {
+          "rank": 8,
+          "score": 5.249,
+          "sn": "9263",
+          "title": "[자유 멘토링] 좋은 팀 빌딩 + 트로젝트 선정 + 잘맞는 멘토 결정 방법",
+          "mentor": "김종욱",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "11:00 ~ 12:00",
+          "isOnline": true
+        },
+        {
+          "rank": 9,
+          "score": 5.224,
+          "sn": "9332",
+          "title": "[멘토 특강] DB JOIN에 대해서 알아보기",
+          "mentor": "강성욱",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "security",
+            "ai",
+            "data",
+            "cloud",
+            "team",
+            "career",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 10,
+          "score": 3.699,
+          "sn": "9395",
+          "title": "[멘토 특강] 실전 RAG: 답변의 질을 결정하는 검색과 최적화의 기술",
+          "mentor": "이상호",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "startup",
+            "soma"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "14:00 ~ 16:00",
+          "isOnline": true
+        }
+      ]
+    },
+    {
+      "id": "V4",
+      "q": "React 프론트",
+      "ast": {
+        "derivedCat": [
+          "frontend"
+        ]
+      },
+      "parseMs": 0.053,
+      "applyMs": 0.56,
+      "rankMs": 0.599,
+      "filtered_n": 10,
+      "ranked_n": 10,
+      "top10": [
+        {
+          "rank": 1,
+          "score": 5.402,
+          "sn": "9121",
+          "title": "[멘토 특강] [한유일] AI 코딩 에이전트 101 feat. Claude Code설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "startup",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "",
+          "isOnline": false
+        },
+        {
+          "rank": 2,
+          "score": 5.341,
+          "sn": "9759",
+          "title": "[자유 멘토링] [한유일] AI 코딩 에이전트 101 feat. Claude Code 설치부터 실전 세팅까지",
+          "mentor": "한유일",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "data",
+            "backend",
+            "frontend",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        },
+        {
+          "rank": 3,
+          "score": 3.596,
+          "sn": "9613",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "19:00 ~ 20:00",
+          "isOnline": false
+        },
+        {
+          "rank": 4,
+          "score": 3.596,
+          "sn": "9614",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 21:00",
+          "isOnline": false
+        },
+        {
+          "rank": 5,
+          "score": 3.596,
+          "sn": "9615",
+          "title": "[자유 멘토링] 김민수 멘토 - 자유멘토링",
+          "mentor": "김민수",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "mobile",
+            "frontend",
+            "cloud",
+            "team",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 22:00",
+          "isOnline": false
+        },
+        {
+          "rank": 6,
+          "score": 3.359,
+          "sn": "9591",
+          "title": "[멘토 특강] terraform으로 시작하는 IaC 입문",
+          "mentor": "김민수",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "mobile",
+            "backend",
+            "frontend",
+            "cloud",
+            "startup",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "18:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 7,
+          "score": 0,
+          "sn": "9299",
+          "title": "[멘토 특강] 토큰이란 무엇인가? (기초)",
+          "mentor": "이제우",
+          "categoryNm": "멘토 특강",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops"
+          ],
+          "lecDate": "2026-04-12",
+          "lecTime": "21:30 ~ 23:30",
+          "isOnline": false
+        },
+        {
+          "rank": 8,
+          "score": 0,
+          "sn": "9478",
+          "title": "[자유 멘토링] AI 시대의 창업 — 아이디어에서 MVP까지",
+          "mentor": "김선만",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "frontend",
+            "startup",
+            "idea",
+            "team",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "17:00 ~ 19:00",
+          "isOnline": false
+        },
+        {
+          "rank": 9,
+          "score": 0,
+          "sn": "9489",
+          "title": "[자유 멘토링] [유호균] 수제 검색엔진 만들어보기: 검색 오픈소스 없이 '맨땅'부터 시작하는 검색엔진 (2)",
+          "mentor": "유호균",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "devops",
+            "startup",
+            "team",
+            "cs",
+            "soma",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "21:00 ~ 23:00",
+          "isOnline": false
+        },
+        {
+          "rank": 10,
+          "score": 0,
+          "sn": "9696",
+          "title": "[자유 멘토링] [DevOps] 왜 수많은 AI 스타트업은 무너질까? 서비스 운영을 결정하는 Infrastructure & DevOps Engineering 의 이해 (온라인)",
+          "mentor": "박재호",
+          "categoryNm": "자유 멘토링",
+          "derivedCategories": [
+            "ai",
+            "backend",
+            "frontend",
+            "cloud",
+            "devops",
+            "startup",
+            "idea",
+            "team",
+            "career",
+            "dev_general"
+          ],
+          "lecDate": "2026-04-14",
+          "lecTime": "20:00 ~ 22:00",
+          "isOnline": true
+        }
+      ]
+    }
+  ],
+  "perf": {
+    "n_samples": 6000,
+    "n_lectures": 113,
+    "avg_ms": 1.095,
+    "p50_ms": 0.667,
+    "p95_ms": 3.62,
+    "p99_ms": 10.854,
+    "max_ms": 13.631,
+    "note": "113건 기준. 971건 환산 p95 ≈ 31.11ms (linear)"
+  }
+}

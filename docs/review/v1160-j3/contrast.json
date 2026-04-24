@@ -1,0 +1,589 @@
+{
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "med": 14,
+    "ok": 62,
+    "total": 76
+  },
+  "matrix": {
+    "default": {
+      "security": {
+        "bg": "#D50000",
+        "fg": "#FFFFFF",
+        "ratio": 5.48,
+        "level": "AA-pass"
+      },
+      "soma": {
+        "bg": "#F4511E",
+        "fg": "#FFFFFF",
+        "ratio": 3.48,
+        "level": "AA-large-only"
+      },
+      "startup": {
+        "bg": "#FF7043",
+        "fg": "#1F1F1F",
+        "ratio": 6.01,
+        "level": "AA-pass"
+      },
+      "idea": {
+        "bg": "#F6BF26",
+        "fg": "#1F1F1F",
+        "ratio": 9.73,
+        "level": "AA-pass"
+      },
+      "team": {
+        "bg": "#9CCC65",
+        "fg": "#1F1F1F",
+        "ratio": 8.82,
+        "level": "AA-pass"
+      },
+      "mobile": {
+        "bg": "#0B8043",
+        "fg": "#FFFFFF",
+        "ratio": 5.02,
+        "level": "AA-pass"
+      },
+      "devops": {
+        "bg": "#33B679",
+        "fg": "#1F1F1F",
+        "ratio": 6.36,
+        "level": "AA-pass"
+      },
+      "data": {
+        "bg": "#26A69A",
+        "fg": "#1F1F1F",
+        "ratio": 5.5,
+        "level": "AA-pass"
+      },
+      "frontend": {
+        "bg": "#039BE5",
+        "fg": "#FFFFFF",
+        "ratio": 3.08,
+        "level": "AA-large-only"
+      },
+      "cloud": {
+        "bg": "#1E88E5",
+        "fg": "#FFFFFF",
+        "ratio": 3.68,
+        "level": "AA-large-only"
+      },
+      "backend": {
+        "bg": "#3F51B5",
+        "fg": "#FFFFFF",
+        "ratio": 6.87,
+        "level": "AA-pass"
+      },
+      "ai": {
+        "bg": "#7986CB",
+        "fg": "#FFFFFF",
+        "ratio": 3.45,
+        "level": "AA-large-only"
+      },
+      "cs": {
+        "bg": "#9575CD",
+        "fg": "#FFFFFF",
+        "ratio": 3.68,
+        "level": "AA-large-only"
+      },
+      "blockchain": {
+        "bg": "#8E24AA",
+        "fg": "#FFFFFF",
+        "ratio": 7.04,
+        "level": "AA-pass"
+      },
+      "career": {
+        "bg": "#AB47BC",
+        "fg": "#FFFFFF",
+        "ratio": 4.82,
+        "level": "AA-pass"
+      },
+      "game": {
+        "bg": "#E67C73",
+        "fg": "#1F1F1F",
+        "ratio": 5.88,
+        "level": "AA-pass"
+      },
+      "os": {
+        "bg": "#616161",
+        "fg": "#FFFFFF",
+        "ratio": 6.19,
+        "level": "AA-pass"
+      },
+      "dev_general": {
+        "bg": "#795548",
+        "fg": "#FFFFFF",
+        "ratio": 6.55,
+        "level": "AA-pass"
+      },
+      "etc": {
+        "bg": "#9E9E9E",
+        "fg": "#1F1F1F",
+        "ratio": 6.15,
+        "level": "AA-pass"
+      }
+    },
+    "sakura": {
+      "security": {
+        "bg": "#F472B6",
+        "fg": "#831843",
+        "ratio": 3.64,
+        "level": "AA-large-only"
+      },
+      "soma": {
+        "bg": "#FF80AB",
+        "fg": "#831843",
+        "ratio": 4.1,
+        "level": "AA-large-only"
+      },
+      "startup": {
+        "bg": "#FB7185",
+        "fg": "#881337",
+        "ratio": 3.55,
+        "level": "AA-large-only"
+      },
+      "idea": {
+        "bg": "#F9A8D4",
+        "fg": "#831843",
+        "ratio": 5.32,
+        "level": "AA-pass"
+      },
+      "team": {
+        "bg": "#FDA4AF",
+        "fg": "#881337",
+        "ratio": 5.06,
+        "level": "AA-pass"
+      },
+      "mobile": {
+        "bg": "#FBCFE8",
+        "fg": "#831843",
+        "ratio": 6.98,
+        "level": "AA-pass"
+      },
+      "devops": {
+        "bg": "#FECDD3",
+        "fg": "#881337",
+        "ratio": 6.78,
+        "level": "AA-pass"
+      },
+      "data": {
+        "bg": "#F2B5D4",
+        "fg": "#831843",
+        "ratio": 5.67,
+        "level": "AA-pass"
+      },
+      "frontend": {
+        "bg": "#F6C6DE",
+        "fg": "#831843",
+        "ratio": 6.45,
+        "level": "AA-pass"
+      },
+      "cloud": {
+        "bg": "#FED8F1",
+        "fg": "#831843",
+        "ratio": 7.49,
+        "level": "AA-pass"
+      },
+      "backend": {
+        "bg": "#FCEDF2",
+        "fg": "#831843",
+        "ratio": 8.51,
+        "level": "AA-pass"
+      },
+      "ai": {
+        "bg": "#E9D5FF",
+        "fg": "#581C87",
+        "ratio": 7.99,
+        "level": "AA-pass"
+      },
+      "cs": {
+        "bg": "#D8B4FE",
+        "fg": "#581C87",
+        "ratio": 6.15,
+        "level": "AA-pass"
+      },
+      "blockchain": {
+        "bg": "#F5D0FE",
+        "fg": "#701A75",
+        "ratio": 7.33,
+        "level": "AA-pass"
+      },
+      "career": {
+        "bg": "#F0ABFC",
+        "fg": "#701A75",
+        "ratio": 5.7,
+        "level": "AA-pass"
+      },
+      "game": {
+        "bg": "#E879F9",
+        "fg": "#701A75",
+        "ratio": 4.08,
+        "level": "AA-large-only"
+      },
+      "os": {
+        "bg": "#F3E8FF",
+        "fg": "#581C87",
+        "ratio": 9.22,
+        "level": "AA-pass"
+      },
+      "dev_general": {
+        "bg": "#FAE8FF",
+        "fg": "#701A75",
+        "ratio": 8.62,
+        "level": "AA-pass"
+      },
+      "etc": {
+        "bg": "#FDF2F8",
+        "fg": "#831843",
+        "ratio": 8.84,
+        "level": "AA-pass"
+      }
+    },
+    "pastel": {
+      "security": {
+        "bg": "#FECACA",
+        "fg": "#7F1D1D",
+        "ratio": 6.93,
+        "level": "AA-pass"
+      },
+      "soma": {
+        "bg": "#FED7AA",
+        "fg": "#7C2D12",
+        "ratio": 6.92,
+        "level": "AA-pass"
+      },
+      "startup": {
+        "bg": "#FDE68A",
+        "fg": "#78350F",
+        "ratio": 7.28,
+        "level": "AA-pass"
+      },
+      "idea": {
+        "bg": "#FEF08A",
+        "fg": "#713F12",
+        "ratio": 7.45,
+        "level": "AA-pass"
+      },
+      "team": {
+        "bg": "#D9F99D",
+        "fg": "#365314",
+        "ratio": 7.48,
+        "level": "AA-pass"
+      },
+      "mobile": {
+        "bg": "#BBF7D0",
+        "fg": "#14532D",
+        "ratio": 7.52,
+        "level": "AA-pass"
+      },
+      "devops": {
+        "bg": "#A7F3D0",
+        "fg": "#064E3B",
+        "ratio": 7.58,
+        "level": "AA-pass"
+      },
+      "data": {
+        "bg": "#99F6E4",
+        "fg": "#134E4A",
+        "ratio": 7.52,
+        "level": "AA-pass"
+      },
+      "frontend": {
+        "bg": "#A5F3FC",
+        "fg": "#164E63",
+        "ratio": 7.3,
+        "level": "AA-pass"
+      },
+      "cloud": {
+        "bg": "#BAE6FD",
+        "fg": "#0C4A6E",
+        "ratio": 7.13,
+        "level": "AA-pass"
+      },
+      "backend": {
+        "bg": "#BFDBFE",
+        "fg": "#1E3A8A",
+        "ratio": 7.29,
+        "level": "AA-pass"
+      },
+      "ai": {
+        "bg": "#C7D2FE",
+        "fg": "#312E81",
+        "ratio": 7.66,
+        "level": "AA-pass"
+      },
+      "cs": {
+        "bg": "#DDD6FE",
+        "fg": "#4C1D95",
+        "ratio": 7.89,
+        "level": "AA-pass"
+      },
+      "blockchain": {
+        "bg": "#E9D5FF",
+        "fg": "#581C87",
+        "ratio": 7.99,
+        "level": "AA-pass"
+      },
+      "career": {
+        "bg": "#F5D0FE",
+        "fg": "#701A75",
+        "ratio": 7.33,
+        "level": "AA-pass"
+      },
+      "game": {
+        "bg": "#FBCFE8",
+        "fg": "#831843",
+        "ratio": 6.98,
+        "level": "AA-pass"
+      },
+      "os": {
+        "bg": "#E2E8F0",
+        "fg": "#0F172A",
+        "ratio": 14.48,
+        "level": "AA-pass"
+      },
+      "dev_general": {
+        "bg": "#E7E5E4",
+        "fg": "#1C1917",
+        "ratio": 13.93,
+        "level": "AA-pass"
+      },
+      "etc": {
+        "bg": "#E4E4E7",
+        "fg": "#18181B",
+        "ratio": 13.96,
+        "level": "AA-pass"
+      }
+    },
+    "night": {
+      "security": {
+        "bg": "#FF2975",
+        "fg": "#FFFFFF",
+        "ratio": 3.6,
+        "level": "AA-large-only"
+      },
+      "soma": {
+        "bg": "#FF901F",
+        "fg": "#000000",
+        "ratio": 9.26,
+        "level": "AA-pass"
+      },
+      "startup": {
+        "bg": "#FFD319",
+        "fg": "#000000",
+        "ratio": 14.58,
+        "level": "AA-pass"
+      },
+      "idea": {
+        "bg": "#FEE801",
+        "fg": "#000000",
+        "ratio": 16.76,
+        "level": "AA-pass"
+      },
+      "team": {
+        "bg": "#AAFF00",
+        "fg": "#000000",
+        "ratio": 17.01,
+        "level": "AA-pass"
+      },
+      "mobile": {
+        "bg": "#05FFA1",
+        "fg": "#000000",
+        "ratio": 15.83,
+        "level": "AA-pass"
+      },
+      "devops": {
+        "bg": "#00FF44",
+        "fg": "#000000",
+        "ratio": 15.39,
+        "level": "AA-pass"
+      },
+      "data": {
+        "bg": "#39C4B6",
+        "fg": "#000000",
+        "ratio": 9.75,
+        "level": "AA-pass"
+      },
+      "frontend": {
+        "bg": "#01CDFE",
+        "fg": "#000000",
+        "ratio": 11.16,
+        "level": "AA-pass"
+      },
+      "cloud": {
+        "bg": "#54C1E6",
+        "fg": "#000000",
+        "ratio": 10.15,
+        "level": "AA-pass"
+      },
+      "backend": {
+        "bg": "#156CDB",
+        "fg": "#FFFFFF",
+        "ratio": 5,
+        "level": "AA-pass"
+      },
+      "ai": {
+        "bg": "#8C1EFF",
+        "fg": "#FFFFFF",
+        "ratio": 5.61,
+        "level": "AA-pass"
+      },
+      "cs": {
+        "bg": "#A020F0",
+        "fg": "#FFFFFF",
+        "ratio": 5.3,
+        "level": "AA-pass"
+      },
+      "blockchain": {
+        "bg": "#F222FF",
+        "fg": "#FFFFFF",
+        "ratio": 3.26,
+        "level": "AA-large-only"
+      },
+      "career": {
+        "bg": "#FF00DC",
+        "fg": "#FFFFFF",
+        "ratio": 3.34,
+        "level": "AA-large-only"
+      },
+      "game": {
+        "bg": "#FF1493",
+        "fg": "#FFFFFF",
+        "ratio": 3.64,
+        "level": "AA-large-only"
+      },
+      "os": {
+        "bg": "#A0A0A0",
+        "fg": "#000000",
+        "ratio": 8.03,
+        "level": "AA-pass"
+      },
+      "dev_general": {
+        "bg": "#666666",
+        "fg": "#FFFFFF",
+        "ratio": 5.74,
+        "level": "AA-pass"
+      },
+      "etc": {
+        "bg": "#808080",
+        "fg": "#FFFFFF",
+        "ratio": 3.95,
+        "level": "AA-large-only"
+      }
+    }
+  },
+  "fails": [
+    {
+      "pal": "default",
+      "cat": "soma",
+      "ratio": "3.48",
+      "bg": "#F4511E",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "default",
+      "cat": "frontend",
+      "ratio": "3.08",
+      "bg": "#039BE5",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "default",
+      "cat": "cloud",
+      "ratio": "3.68",
+      "bg": "#1E88E5",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "default",
+      "cat": "ai",
+      "ratio": "3.45",
+      "bg": "#7986CB",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "default",
+      "cat": "cs",
+      "ratio": "3.68",
+      "bg": "#9575CD",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "sakura",
+      "cat": "security",
+      "ratio": "3.64",
+      "bg": "#F472B6",
+      "fg": "#831843",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "sakura",
+      "cat": "soma",
+      "ratio": "4.10",
+      "bg": "#FF80AB",
+      "fg": "#831843",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "sakura",
+      "cat": "startup",
+      "ratio": "3.55",
+      "bg": "#FB7185",
+      "fg": "#881337",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "sakura",
+      "cat": "game",
+      "ratio": "4.08",
+      "bg": "#E879F9",
+      "fg": "#701A75",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "night",
+      "cat": "security",
+      "ratio": "3.60",
+      "bg": "#FF2975",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "night",
+      "cat": "blockchain",
+      "ratio": "3.26",
+      "bg": "#F222FF",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "night",
+      "cat": "career",
+      "ratio": "3.34",
+      "bg": "#FF00DC",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "night",
+      "cat": "game",
+      "ratio": "3.64",
+      "bg": "#FF1493",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    },
+    {
+      "pal": "night",
+      "cat": "etc",
+      "ratio": "3.95",
+      "bg": "#808080",
+      "fg": "#FFFFFF",
+      "level": "AA-large-only"
+    }
+  ]
+}

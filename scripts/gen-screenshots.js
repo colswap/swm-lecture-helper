@@ -111,7 +111,7 @@ async function compositePopupOnto1280(ctx, popupPath, outPath) {
   console.log('[ss] extension ID:', extId);
 
   // ── 1. 팝업 ──
-  console.log('[ss] 1/5: popup');
+  console.log('[ss] 1/6: popup');
   const popupTab = await ctx.newPage();
   await popupTab.setViewportSize({ width: 420, height: 720 });
   try {
@@ -146,18 +146,27 @@ async function compositePopupOnto1280(ctx, popupPath, outPath) {
   await compositePopupOnto1280(ctx, popupRaw, path.join(OUT_DIR, '1_popup.png'));
   fs.unlinkSync(popupRaw);
 
-  // ── 2. 시간표 기본 뷰 ──
-  console.log('[ss] 2/5: timetable basic');
+  // ── 2. 시간표 + NLS 칩 (자연어 검색) ──
+  console.log('[ss] 2/6: timetable + NLS chips');
   const ttTab = await ctx.newPage();
   await ttTab.setViewportSize(VIEWPORT);
   await ttTab.goto(`chrome-extension://${extId}/timetable/timetable.html`);
   await injectDummy(ttTab);
   await ttTab.reload();
   await waitMs(1500);
+  // 자연어 쿼리 입력 → chips 생성
+  await ttTab.click('#searchInput').catch(() => {});
+  await ttTab.fill('#searchInput', '내일 비대면 AI');
+  await ttTab.keyboard.press('Enter');
+  await waitMs(800);
   await ttTab.screenshot({ path: path.join(OUT_DIR, '2_timetable_basic.png'), fullPage: false });
+  // 쿼리 클리어 (다음 시나리오 영향 방지)
+  await ttTab.fill('#searchInput', '');
+  await ttTab.keyboard.press('Enter');
+  await waitMs(400);
 
   // ── 3. 상세검색 ON + 빈 시간 전체 선택 ──
-  console.log('[ss] 3/5: drag slot selection');
+  console.log('[ss] 3/6: drag slot selection');
   await ttTab.click('#advancedToggle').catch(() => {});
   await waitMs(400);
   await ttTab.click('#slotFreeBtn').catch(() => {});
@@ -169,7 +178,7 @@ async function compositePopupOnto1280(ctx, popupPath, outPath) {
   await waitMs(400);
 
   // ── 4. 팝오버 (강연 클릭) ──
-  console.log('[ss] 4/5: popover');
+  console.log('[ss] 4/6: popover');
   // 미래 applied 블록 클릭 → "신청 취소" 버튼 노출 (rose color, 눈에 띔)
   const clicked = await ttTab.evaluate(() => {
     const today = (() => {
@@ -195,16 +204,20 @@ async function compositePopupOnto1280(ctx, popupPath, outPath) {
   await ttTab.keyboard.press('Escape');
   await waitMs(300);
 
-  // ── 5. 다크 모드 ──
-  console.log('[ss] 5/5: dark mode');
+  // ── 5. 팔레트 테마 모달 ──
+  console.log('[ss] 5/6: theme palette modal');
+  await ttTab.click('#menuBtn').catch(() => ttTab.click('#fsMenuBtn').catch(() => {}));
+  await waitMs(300);
+  await ttTab.click('[data-action="palette"]').catch(() => {});
+  await waitMs(800);
+  await ttTab.screenshot({ path: path.join(OUT_DIR, '5_theme.png'), fullPage: false });
+  // 모달 닫기
+  await ttTab.keyboard.press('Escape').catch(() => {});
+  await waitMs(300);
+
+  // ── 6. 다크 모드 ──
+  console.log('[ss] 6/6: dark mode');
   await ttTab.evaluate(() => {
-    // 테마 설정 직접 (메뉴 클릭 대신)
-    return new Promise((resolve) => {
-      chrome.storage.local.set({ settings: { ...arguments[0] } }, resolve);
-    });
-  }).catch(() => {});
-  await ttTab.evaluate(() => {
-    // lib/theme.js 의 SWMTheme 있으면 setMode 호출
     if (window.SWMTheme && window.SWMTheme.setMode) {
       window.SWMTheme.setMode('dark');
     } else {
@@ -212,7 +225,7 @@ async function compositePopupOnto1280(ctx, popupPath, outPath) {
     }
   });
   await waitMs(500);
-  await ttTab.screenshot({ path: path.join(OUT_DIR, '5_dark_mode.png'), fullPage: false });
+  await ttTab.screenshot({ path: path.join(OUT_DIR, '6_dark_mode.png'), fullPage: false });
 
   await ctx.close();
   console.log('[ss] done. output:', OUT_DIR);

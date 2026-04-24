@@ -1,0 +1,8 @@
+default  light  bg=255  px= 1732  bbox=(149,340 1612x1482)
+default  dark   bg= 23  px=141603  bbox=(199,340 2130x1398)
+sakura   light  bg=255  px=29775  bbox=(149,340 1612x1482)
+sakura   dark   bg= 23  px=176279  bbox=(199,340 2130x1398)
+pastel   light  bg=255  px=  844  bbox=(149,340 1612x1482)
+pastel   dark   bg= 23  px=139621  bbox=(199,340 2130x1398)
+night    light  bg=255  px= 1821  bbox=(149,340 1612x1482)
+night    dark   bg= 23  px=141150  bbox=(199,340 2130x1398)

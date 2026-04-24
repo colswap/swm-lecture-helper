@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>SWM Lecture Helper — 18 Category Palette v3 Preview</title>
+<link rel="stylesheet" href="../lib/tokens.css">
+<style>
+  /* Brand/slate tokens referenced by tokens.css — inlined for standalone preview */
+  :root {
+    --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0; --slate-300:#cbd5e1;
+    --slate-400:#94a3b8; --slate-500:#64748b; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+    --brand-50:#eff9ff; --brand-100:#CCE5F5; --brand-500:#006EB7; --brand-600:#005a94; --brand-700:#004A7D;
+    --emerald-50:#ecfdf5; --emerald-100:#d1fae5; --emerald-500:#10b981; --emerald-700:#047857;
+    --rose-50:#fff1f2; --rose-500:#f43f5e; --rose-700:#be123c;
+    --amber-400:#fbbf24; --amber-500:#f59e0b;
+    --orange-100:#ffedd5; --orange-700:#c2410c;
+    --z-fav:1; --z-applied:2; --z-preview:4; --z-hover:5;
+    --hour-height:36px;
+  }
+  body { font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Pretendard', sans-serif;
+         background: var(--background); color: var(--foreground); padding: 24px; margin: 0; transition: background 0.2s, color 0.2s; }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 700; letter-spacing: -0.2px; }
+  .lead { font-size: 12px; color: var(--muted-foreground); margin: 0 0 16px; }
+  h2 { font-size: 11px; margin: 24px 0 10px; color: var(--muted-foreground); text-transform: uppercase;
+       letter-spacing: 0.6px; font-weight: 700; }
+
+  .controls { display: flex; gap: 8px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+  button { padding: 6px 14px; border-radius: var(--radius-md); border: 1px solid var(--border);
+           background: var(--card); color: var(--foreground); cursor: pointer; font-size: 12px;
+           font-family: inherit; transition: all 0.15s; }
+  button:hover { background: var(--muted); }
+  button.active { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+
+  /* ─── 18-color swatch grid (solid blocks) ─── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+  .swatch {
+    padding: 14px 14px 12px; border-radius: var(--radius-lg); font-size: 13px; font-weight: 700;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.14), inset 0 1px 0 rgba(255,255,255,0.10);
+    position: relative; min-height: 64px;
+  }
+  html[data-theme="dark"] .swatch { box-shadow: 0 1px 3px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08); }
+  .swatch small { display: block; font-size: 10px; font-weight: 500; opacity: 0.78; margin-top: 4px;
+                  font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.2px; }
+  .swatch .ratio { position: absolute; top: 8px; right: 10px; font-size: 9px; opacity: 0.78;
+                   font-family: ui-monospace, monospace; }
+
+  /* ─── Mini timetable mock ─── */
+  .tt-mock {
+    display: grid; grid-template-columns: 36px repeat(5, 1fr); gap: 0; padding: 0;
+    background: var(--background); border: 1px solid var(--border); border-radius: var(--radius-md);
+    margin-top: 8px; overflow: hidden;
+  }
+  .tt-header { padding: 6px 4px; font-size: 10px; font-weight: 700; text-align: center;
+               background: var(--muted); color: var(--muted-foreground); border-bottom: 1px solid var(--border); }
+  .tt-col-hours { display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--muted); }
+  .tt-hour { padding: 4px; font-size: 9px; color: var(--muted-foreground); height: 40px; text-align: right; padding-right: 6px;
+             border-bottom: 1px solid var(--border); }
+  .tt-col { position: relative; border-right: 1px solid var(--border); min-height: 240px;
+            background: repeating-linear-gradient(
+              to bottom, transparent 0, transparent 39px, var(--border) 39px, var(--border) 40px); }
+  .tt-col:last-child { border-right: none; }
+
+  .lec-block {
+    position: absolute; left: 2px; right: 2px; padding: 5px 8px; border-radius: var(--radius-lg);
+    font-size: 10px; line-height: 1.3; cursor: default; color: #FFFFFF; font-weight: 600;
+    overflow: hidden; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;
+    transition: transform 0.12s, box-shadow 0.12s, filter 0.12s;
+  }
+  .lec-block .bt { font-weight: 700; font-size: 11px; letter-spacing: -0.2px; opacity: 0.98;
+                   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .lec-block .bl { font-size: 10px; opacity: 0.86; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .lec-block[data-cat] {
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  }
+  html[data-theme="dark"] .lec-block[data-cat] {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .lec-block:hover {
+    transform: translateY(-1px) scale(1.015);
+    box-shadow: 0 6px 16px rgba(15,23,42,0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+    filter: brightness(1.08);
+  }
+  .lec-block.applied {
+    font-weight: 800; filter: saturate(1.15) brightness(0.96);
+    box-shadow: 0 2px 6px rgba(15,23,42,0.24), inset 0 1px 0 rgba(255,255,255,0.14);
+  }
+  .lec-block.applied::after {
+    content: ''; position: absolute; top: 5px; right: 6px; width: 6px; height: 6px;
+    border-radius: 50%; background: #fff; box-shadow: 0 0 0 1.5px rgba(0,0,0,0.15); pointer-events: none;
+  }
+  .lec-block.favorite {
+    background: rgba(251,191,36,0.22); color: #78350F; font-weight: 700;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.30);
+  }
+  html[data-theme="dark"] .lec-block.favorite { color: #FCD34D; background: rgba(251,191,36,0.18); }
+  .lec-block.favorite::before {
+    content: '★'; position: absolute; top: 3px; right: 5px; font-size: 11px; line-height: 1;
+    color: var(--amber-500); text-shadow: 0 1px 2px rgba(0,0,0,0.18); pointer-events: none;
+  }
+  .lec-block.preview {
+    background: rgba(16,185,129,0.55); color: #FFFFFF; font-weight: 700;
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.40), 0 4px 12px rgba(16,185,129,0.30);
+    animation: preview-pulse 1.4s ease-in-out infinite;
+  }
+  .lec-block.preview.conflict {
+    background: rgba(244,63,94,0.55);
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,0.40), 0 4px 12px rgba(244,63,94,0.35);
+  }
+  @keyframes preview-pulse { 0%,100% { filter: brightness(1.0); } 50% { filter: brightness(1.12); } }
+  .lec-block.applied.conflicting {
+    animation: conflict-shake 0.4s ease-in-out 0s 2, conflict-glow 1.6s ease-in-out infinite;
+  }
+  @keyframes conflict-glow {
+    0%,100% { box-shadow: 0 2px 6px rgba(244,63,94,0.45), inset 0 0 0 3px rgba(244,63,94,0.55); }
+    50% { box-shadow: 0 2px 8px rgba(244,63,94,0.65), inset 0 0 0 3px rgba(244,63,94,0.85); }
+  }
+  @keyframes conflict-shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-1px); }
+    75% { transform: translateX(1px); }
+  }
+
+  /* ─── Badge row (Notion-style pastel) ─── */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 14px; background: var(--card);
+               border: 1px solid var(--border); border-radius: var(--radius-md); }
+
+  /* ─── State legend ─── */
+  .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px;
+            padding: 10px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .legend > div { position: relative; }
+  .legend-label { font-size: 10px; font-weight: 600; color: var(--muted-foreground); margin-bottom: 4px;
+                  text-transform: uppercase; letter-spacing: 0.4px; }
+
+  /* ─── Adjacent-block harmony test ─── */
+  .harmony { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px;
+             background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .harmony .lec-block { position: relative; width: 140px; height: 44px; }
+
+  .section { margin-bottom: 28px; }
+  code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px;
+         padding: 1px 6px; border-radius: 4px; background: var(--muted); color: var(--foreground); }
+</style>
+</head>
+<body>
+  <h1>18 카테고리 팔레트 v3 — v1.15.0</h1>
+  <p class="lead">Google Calendar / Apple Calendar / IBM Carbon 레퍼런스 기반. 솔리드 Tailwind-600/700 bg + white fg. WCAG AA 19/19 통과.</p>
+
+  <div class="controls">
+    <button id="toggle-theme">🌓 dark mode</button>
+    <button id="toggle-cat-colors" class="active">🎨 cat-colors (badge)</button>
+    <span style="font-size:11px;color:var(--muted-foreground);">시간표 블록은 항상 팔레트 적용, 배지는 <code>body.cat-colors</code> 토글</span>
+  </div>
+
+  <section class="section">
+    <h2>Timetable block palette (19 solid saturated)</h2>
+    <div class="grid" id="swatch-grid"></div>
+  </section>
+
+  <section class="section">
+    <h2>Badge tag palette (Notion-style pastel — 팝업 카드용)</h2>
+    <div class="badge-row" id="badge-row"></div>
+  </section>
+
+  <section class="section">
+    <h2>Adjacent-block harmony test (hue walk)</h2>
+    <p class="lead" style="margin-bottom:8px;">인접 카테고리 블록이 나란히 놓였을 때 자연스러운지 — 한 가족으로 보여야 함.</p>
+    <div class="harmony" id="harmony"></div>
+  </section>
+
+  <section class="section">
+    <h2>Mini timetable mock (실제 시간표와 동일 레이아웃)</h2>
+    <div class="tt-mock">
+      <div class="tt-col-hours">
+        <div class="tt-header">시간</div>
+        <div class="tt-hour">09</div><div class="tt-hour">10</div><div class="tt-hour">11</div>
+        <div class="tt-hour">12</div><div class="tt-hour">13</div><div class="tt-hour">14</div>
+      </div>
+      <div>
+        <div class="tt-header">월</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="ai" style="top:0;height:78px;"><div class="bt">LLM 에이전트 설계</div><div class="bl">김AI 멘토</div></div>
+          <div class="lec-block applied" data-cat="frontend" style="top:80px;height:52px;"><div class="bt">React Server Component</div><div class="bl">이프론트</div></div>
+          <div class="lec-block favorite" style="top:135px;height:40px;"><div class="bt">DevOps CI/CD</div><div class="bl">박데옵</div></div>
+          <div class="lec-block" data-cat="security" style="top:180px;height:60px;"><div class="bt">시큐어 코딩 101</div><div class="bl">최보안</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">화</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="backend" style="top:0;height:60px;"><div class="bt">gRPC 실전</div><div class="bl">정백엔</div></div>
+          <div class="lec-block applied" data-cat="ai" style="top:62px;height:70px;"><div class="bt">RAG 파이프라인</div><div class="bl">김AI 멘토</div></div>
+          <div class="lec-block" data-cat="data" style="top:138px;height:50px;"><div class="bt">데이터 엔지니어링</div><div class="bl">강데이</div></div>
+          <div class="lec-block" data-cat="cloud" style="top:194px;height:46px;"><div class="bt">AWS Cost 최적화</div><div class="bl">윤클라</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">수</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="startup" style="top:0;height:50px;"><div class="bt">린 스타트업</div><div class="bl">한창업</div></div>
+          <div class="lec-block" data-cat="career" style="top:54px;height:60px;"><div class="bt">테크 커리어 빌딩</div><div class="bl">오커리</div></div>
+          <div class="lec-block applied conflicting" data-cat="blockchain" style="top:118px;height:60px;"><div class="bt">Solidity 심화</div><div class="bl">조블록</div></div>
+          <div class="lec-block" data-cat="game" style="top:184px;height:56px;"><div class="bt">Unity ECS</div><div class="bl">임게임</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">목</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="mobile" style="top:0;height:70px;"><div class="bt">Jetpack Compose</div><div class="bl">서모바</div></div>
+          <div class="lec-block" data-cat="team" style="top:72px;height:40px;"><div class="bt">팀빌딩 세션</div><div class="bl">이팀리</div></div>
+          <div class="lec-block preview" style="top:116px;height:54px;"><div class="bt">▸ 프리뷰 (드래그 중)</div><div class="bl">—</div></div>
+          <div class="lec-block" data-cat="soma" style="top:176px;height:64px;"><div class="bt">SW 마에스트로 OT</div><div class="bl">소마 운영</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">금</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="cs" style="top:0;height:56px;"><div class="bt">자료구조 복습</div><div class="bl">백CS</div></div>
+          <div class="lec-block" data-cat="devops" style="top:60px;height:50px;"><div class="bt">Kubernetes 실전</div><div class="bl">류데옵</div></div>
+          <div class="lec-block applied" data-cat="idea" style="top:114px;height:44px;"><div class="bt">아이데이션 워크샵</div><div class="bl">노아이</div></div>
+          <div class="lec-block preview conflict" style="top:162px;height:50px;"><div class="bt">▸ 프리뷰 (충돌)</div><div class="bl">이미 신청됨</div></div>
+          <div class="lec-block" data-cat="etc" style="top:216px;height:24px;"><div class="bt">기타</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Block state legend</h2>
+    <div class="legend">
+      <div>
+        <div class="legend-label">default</div>
+        <div class="lec-block" data-cat="backend" style="position:relative;width:auto;height:44px;"><div class="bt">강연 제목</div><div class="bl">멘토명</div></div>
+      </div>
+      <div>
+        <div class="legend-label">hover (마우스오버)</div>
+        <div class="lec-block" data-cat="ai" style="position:relative;width:auto;height:44px;transform:translateY(-1px) scale(1.015);box-shadow:0 6px 16px rgba(15,23,42,0.28),inset 0 1px 0 rgba(255,255,255,0.18);filter:brightness(1.08);"><div class="bt">hover 상태</div><div class="bl">lift + scale</div></div>
+      </div>
+      <div>
+        <div class="legend-label">applied (신청 완료)</div>
+        <div class="lec-block applied" data-cat="security" style="position:relative;width:auto;height:44px;"><div class="bt">신청 완료</div><div class="bl">weight+dot</div></div>
+      </div>
+      <div>
+        <div class="legend-label">favorite (즐겨찾기)</div>
+        <div class="lec-block favorite" style="position:relative;width:auto;height:44px;"><div class="bt">즐겨찾기</div><div class="bl">amber + star</div></div>
+      </div>
+      <div>
+        <div class="legend-label">preview (드래그 중)</div>
+        <div class="lec-block preview" style="position:relative;width:auto;height:44px;"><div class="bt">프리뷰</div><div class="bl">emerald pulse</div></div>
+      </div>
+      <div>
+        <div class="legend-label">preview.conflict</div>
+        <div class="lec-block preview conflict" style="position:relative;width:auto;height:44px;"><div class="bt">프리뷰 충돌</div><div class="bl">rose pulse</div></div>
+      </div>
+      <div>
+        <div class="legend-label">applied.conflicting</div>
+        <div class="lec-block applied conflicting" data-cat="blockchain" style="position:relative;width:auto;height:44px;"><div class="bt">충돌 알림</div><div class="bl">shake + rose glow</div></div>
+      </div>
+      <div>
+        <div class="legend-label">applied.special (공짜 OT 등)</div>
+        <div class="lec-block applied special" style="position:relative;width:auto;height:44px;background:var(--emerald-700);color:#fff;"><div class="bt">SPECIAL</div><div class="bl">emerald-700</div></div>
+      </div>
+    </div>
+  </section>
+
+<script>
+  const CATS = [
+    ['security', '🛡 보안'], ['soma', '🏅 소마'], ['startup', '🚀 창업'], ['idea', '💡 아이디어'],
+    ['team', '👥 팀빌딩'], ['mobile', '📱 모바일'], ['devops', '🔧 DevOps'], ['data', '📊 데이터'],
+    ['frontend', '🎨 프론트'], ['cloud', '☁ 클라우드'], ['backend', '⚙ 백엔드'], ['ai', '🤖 AI'],
+    ['cs', '📚 CS'], ['blockchain', '⛓ 블록체인'], ['career', '💼 커리어'], ['game', '🎮 게임'],
+    ['os', '💻 OS'], ['dev_general', '🛠 일반개발'], ['etc', '기타'],
+  ];
+  const RATIOS = {
+    security: '5.90:1', soma: '4.74:1', startup: '5.35:1', idea: '5.71:1', team: '5.82:1',
+    mobile: '5.45:1', devops: '5.51:1', data: '5.71:1', frontend: '6.12:1', cloud: '6.71:1',
+    backend: '5.17:1', ai: '6.64:1', cs: '5.37:1', blockchain: '4.94:1', career: '4.63:1',
+    game: '5.00:1', os: '7.25:1', dev_general: '7.70:1', etc: '7.24:1',
+  };
+  const HEX = {
+    security: '#DC2626', soma: '#B45309', startup: '#C2410C', idea: '#A16207', team: '#4D7C0F',
+    mobile: '#047857', devops: '#15803D', data: '#0F766E', frontend: '#0E7490', cloud: '#0369A1',
+    backend: '#2563EB', ai: '#4F46E5', cs: '#7C3AED', blockchain: '#9333EA', career: '#C026D3',
+    game: '#DB2777', os: '#475569', dev_general: '#57534E', etc: '#52525B',
+  };
+
+  // Swatch grid (solid block palette)
+  const grid = document.getElementById('swatch-grid');
+  CATS.forEach(([cat, label]) => {
+    const div = document.createElement('div');
+    div.className = 'swatch';
+    div.setAttribute('data-cat', cat);
+    div.style.background = `var(--cat-${cat}-bg)`;
+    div.style.color = `var(--cat-${cat}-fg)`;
+    div.innerHTML = `<span class="ratio">${RATIOS[cat]}</span>${label}<small>${HEX[cat]} · <code style="opacity:.8;background:rgba(0,0,0,0.15);color:inherit;">${cat}</code></small>`;
+    grid.appendChild(div);
+  });
+
+  // Badge row (pastel)
+  const badgeRow = document.getElementById('badge-row');
+  CATS.forEach(([cat, label]) => {
+    const span = document.createElement('span');
+    span.className = 'badge';
+    span.setAttribute('data-cat', cat);
+    span.textContent = label;
+    badgeRow.appendChild(span);
+  });
+
+  // Harmony test (adjacent hue walk, all as blocks)
+  const harmony = document.getElementById('harmony');
+  CATS.forEach(([cat, label]) => {
+    const div = document.createElement('div');
+    div.className = 'lec-block';
+    div.setAttribute('data-cat', cat);
+    div.innerHTML = `<div class="bt">${label}</div><div class="bl">샘플 멘토</div>`;
+    harmony.appendChild(div);
+  });
+
+  // Toggles
+  document.getElementById('toggle-theme').onclick = () => {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+  };
+  document.body.classList.add('cat-colors');
+  document.getElementById('toggle-cat-colors').onclick = (e) => {
+    document.body.classList.toggle('cat-colors');
+    e.currentTarget.classList.toggle('active');
+  };
+</script>
+</body>
+</html>

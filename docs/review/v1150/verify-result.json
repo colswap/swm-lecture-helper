@@ -1,0 +1,142 @@
+{
+  "ranAt": "2026-04-19T06:43:17.349Z",
+  "total": 22,
+  "pass": 21,
+  "fail": 1,
+  "results": [
+    {
+      "id": "A1",
+      "name": "Popup tour starts on fresh profile",
+      "status": "PASS",
+      "note": "title=\"💡 키워드만 넣으세요\" dot=1/5"
+    },
+    {
+      "id": "A2.1",
+      "name": "Step 1 \"💡 키워드만 넣으세요\"",
+      "status": "PASS",
+      "note": "active=1/5 title=\"💡 키워드만 넣으세요\""
+    },
+    {
+      "id": "A2.2",
+      "name": "Step 2 \"🎯 조합도 알아서 풀어요\"",
+      "status": "PASS",
+      "note": "active=2/5 title=\"🎯 조합도 알아서 풀어요\""
+    },
+    {
+      "id": "A2.3",
+      "name": "Step 3 \"🏷️ 주제별 18가지\"",
+      "status": "PASS",
+      "note": "active=3/5 title=\"🏷️ 주제별 18가지\""
+    },
+    {
+      "id": "A2.4",
+      "name": "Step 4 \"📅 주간 시간표\"",
+      "status": "PASS",
+      "note": "active=4/5 title=\"📅 주간 시간표\""
+    },
+    {
+      "id": "A2.5",
+      "name": "Step 5 \"⚙️ 알림 · 저장 · 내보내기\"",
+      "status": "PASS",
+      "note": "active=5/5 title=\"⚙️ 알림 · 저장 · 내보내기\""
+    },
+    {
+      "id": "A3",
+      "name": "Esc skips tour & persists onboardingSeen=true",
+      "status": "PASS",
+      "note": "bubble_gone=true stored=true"
+    },
+    {
+      "id": "A4",
+      "name": "Tour does not re-trigger after seen",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B1",
+      "name": "Query \"이현수 AI 특강\" produces chips",
+      "status": "PASS",
+      "note": "chips=2 [{\"type\":\"category\",\"val\":\"MRC020\",\"label\":\"#특강\"},{\"type\":\"derivedCat\",\"val\":\"ai\",\"label\":\"#ai\"}]"
+    },
+    {
+      "id": "B2",
+      "name": "Prefix `@이현수 -카카오` → mentor+exclude chips",
+      "status": "PASS",
+      "note": "chips=[{\"type\":\"mentor\",\"val\":\"이현수\"},{\"type\":\"exclude\",\"val\":\"카카오\"}]"
+    },
+    {
+      "id": "B3",
+      "name": "Chip × rewrites input (stringify) + removes chip",
+      "status": "PASS",
+      "note": "before=\"@이현수 -카카오\" after=\"@이현수\" remainingTypes=[\"mentor\"]"
+    },
+    {
+      "id": "B4",
+      "name": "`?` help popover toggles open/close",
+      "status": "PASS",
+      "note": "open=true closed=true"
+    },
+    {
+      "id": "B5",
+      "name": "qa-nls fallback: classifier undefined → \"AI\" still rendered without crash",
+      "status": "PASS",
+      "note": "{\"errorFree\":true,\"chipCount\":1,\"value\":\"AI\"}"
+    },
+    {
+      "id": "C1",
+      "name": "Timetable tour auto-starts (2-step)",
+      "status": "PASS",
+      "note": "dots=2 title=\"🔍 상세 검색\""
+    },
+    {
+      "id": "C2",
+      "name": "Closed <details id=advancedSearchPanel> is pre-opened for tour target",
+      "status": "PASS",
+      "note": "panel.open=true"
+    },
+    {
+      "id": "C3",
+      "name": "Step 2 renders",
+      "status": "PASS",
+      "note": "active=1 title=\"🎯 빈 시간에 맞는 강연\""
+    },
+    {
+      "id": "C4",
+      "name": "Complete persists timetableCoachmarkSeen=true",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "D1",
+      "name": "Timetable menu replay re-triggers tour",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "D2",
+      "name": "Welcome CTA sets forceCoachmark + onboardingSeen=false",
+      "status": "FAIL",
+      "note": "{\"forceCoachmark\":false,\"onboardingSeen\":false}"
+    },
+    {
+      "id": "D3",
+      "name": "Popup after welcome CTA auto-starts tour via force flag",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "E1",
+      "name": "Dark coachmark + chip row renders",
+      "status": "PASS",
+      "note": "theme=dark bubble=true"
+    },
+    {
+      "id": "E2",
+      "name": "Timetable 18-color blocks in dark mode",
+      "status": "PASS",
+      "note": "theme=dark"
+    }
+  ],
+  "consoleErrors": [],
+  "fatalErrors": []
+}

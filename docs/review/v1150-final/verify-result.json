@@ -1,0 +1,270 @@
+{
+  "ranAt": "2026-04-19T10:50:50.751Z",
+  "total": 42,
+  "pass": 42,
+  "fail": 0,
+  "warn": 0,
+  "skip": 0,
+  "consoleErrorCount": 0,
+  "pageErrorCount": 0,
+  "unhandledCount": 0,
+  "fatalCount": 0,
+  "results": [
+    {
+      "id": "A1",
+      "name": "Query \"내일 비대면 접수중\" → date/loc/status chips",
+      "status": "PASS",
+      "note": "len=3 [location:🌐 비대면 | status:🟢 접수중 | date:📅 내일]"
+    },
+    {
+      "id": "A2",
+      "name": "Query \"기획\" → derivedCat(idea) chip (H1 alias fix)",
+      "status": "PASS",
+      "note": "[derivedCat:idea]"
+    },
+    {
+      "id": "A3",
+      "name": "Query \"4월 AI\" → month date chip + derivedCat(ai)",
+      "status": "PASS",
+      "note": "[derivedCat:🤖 AI/LLM | date:📅 04/01~04/30]"
+    },
+    {
+      "id": "A4",
+      "name": "Query \"다음주 주말 백엔드\" → date chip (range) + derivedCat(backend)",
+      "status": "PASS",
+      "note": "len=2 [derivedCat:⚙️ 백엔드 | date:📅 04/25~04/26]"
+    },
+    {
+      "id": "A5",
+      "name": "Prefix \"@김멘토 -카카오\" → mentor+exclude chips",
+      "status": "PASS",
+      "note": "[mentor:김멘토 | exclude:카카오]"
+    },
+    {
+      "id": "A6",
+      "name": "Alias \"바이브코딩\" → derivedCat(ai)",
+      "status": "PASS",
+      "note": "[derivedCat:ai]"
+    },
+    {
+      "id": "A7",
+      "name": "Alias \"디스코드\" → parsed (location:online OR derivedCat:community)",
+      "status": "PASS",
+      "note": "[location:online]"
+    },
+    {
+      "id": "A8",
+      "name": "IME compositionend (no trailing space) → 내일 date chip parses",
+      "status": "PASS",
+      "note": "[date:range]"
+    },
+    {
+      "id": "A9",
+      "name": "Typo \"모래\" → date chip (내일모레 tolerant)",
+      "status": "PASS",
+      "note": "[date:📅 모레]"
+    },
+    {
+      "id": "A10",
+      "name": "Help popover → 4 examples + \"김멘토\" present",
+      "status": "PASS",
+      "note": "visible=true n=4 kim=true examples=[\"내일 비대면 접수중\",\"김멘토 AI 특강\",\"이번주 대면 백엔드\",\"오후 7시 이후 멘토링\"]"
+    },
+    {
+      "id": "A11",
+      "name": "Chip × removes exclude + rewrites input",
+      "status": "PASS",
+      "note": "before=\"@김멘토 -카카오\" after=\"@김멘토\""
+    },
+    {
+      "id": "B1",
+      "name": "I8: applied blocks 10개, unique bg=4, cats=7 — not all same primary",
+      "status": "PASS",
+      "note": "cats=ai,backend,data,soma,startup,team,idea bgs=rgb(4, 120, 87) | rgb(37, 99, 235) | rgb(180, 83, 9) | rgb(77, 124, 15)"
+    },
+    {
+      "id": "B2",
+      "name": "applied blocks: border-left-style=none + outline-style=none (border-less design)",
+      "status": "PASS",
+      "note": "sample borderLeftStyle=\"none\" outlineStyle=\"none\""
+    },
+    {
+      "id": "B3",
+      "name": "I8: 우상단 흰 dot ::after 제거됨",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "B4",
+      "name": "applied has inset box-shadow ring (white dot replacement)",
+      "status": "PASS",
+      "note": "sample.boxShadow=\"rgba(15, 23, 42, 0.26) 0px 2px 6px 0px, rgba(255, 255, 255, 0.32) 0px 0px 0px 1.5px inset\""
+    },
+    {
+      "id": "B5",
+      "name": "favorite ★ ::before indicator 우상단 유지",
+      "status": "PASS",
+      "note": "{\"found\":true,\"content\":\"\\\"★\\\"\",\"position\":\"absolute\",\"top\":\"3px\",\"right\":\"5px\",\"color\":\"rgb(245, 158, 11)\",\"display\":\"block\"}"
+    },
+    {
+      "id": "B6",
+      "name": "applied hover: lift/scale transform",
+      "status": "PASS",
+      "note": "{\"transform\":\"matrix(1.015, 0, 0, 1.015, 0, -1)\",\"boxShadow\":\"rgba(15, 23, 42, 0.26) 0px 2px 6px 0px, rgba(255, 255, 255, 0.32) 0px 0px 0px 1.5px inset\",\"zIndex\":\"2\"}"
+    },
+    {
+      "id": "B7",
+      "name": "Dark mode: applied blocks keep palette colors",
+      "status": "PASS",
+      "note": "{\"theme\":\"dark\",\"cat\":\"ai\",\"bg\":\"rgb(4, 120, 87)\",\"color\":\"rgb(255, 255, 255)\"}"
+    },
+    {
+      "id": "C1",
+      "name": "Popup coachmark auto-triggers (onboardingSeen=false)",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C2.1",
+      "name": "Popup step 1 \"💡 키워드만 넣으세요\" live demo",
+      "status": "PASS",
+      "note": "active=1/5 hasDemo=true"
+    },
+    {
+      "id": "C2.2",
+      "name": "Popup step 2 \"🎯 자연어로 검색\" live demo",
+      "status": "PASS",
+      "note": "active=2/5 hasDemo=true"
+    },
+    {
+      "id": "C2.3",
+      "name": "Popup step 3 \"🏷️ 주제별 18가지\" live demo",
+      "status": "PASS",
+      "note": "active=3/5 hasDemo=true"
+    },
+    {
+      "id": "C2.4",
+      "name": "Popup step 4 \"📅 주간 시간표\" live demo",
+      "status": "PASS",
+      "note": "active=4/5 hasDemo=true"
+    },
+    {
+      "id": "C2.5",
+      "name": "Popup step 5 \"⚙️ 알림 · 저장 · 내보내기\" live demo",
+      "status": "PASS",
+      "note": "active=5/5 hasDemo=true"
+    },
+    {
+      "id": "C3",
+      "name": "Timetable coachmark: 2 steps + live demo (accordion+drag)",
+      "status": "PASS",
+      "note": "dots=2 title=\"🔍 상세 검색\" hasDemo=true"
+    },
+    {
+      "id": "C4",
+      "name": "Timetable step 2 \"🎯 빈 시간에 맞는 강연\" (drag demo)",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "C5",
+      "name": "⋯ → \"💡 설명 다시 보기\" menu item re-triggers tour",
+      "status": "PASS",
+      "note": "label=\"💡 설명 다시 보기\" newBubble=true"
+    },
+    {
+      "id": "C6",
+      "name": "\"사용법 보기\" CTA exists on welcome.html",
+      "status": "PASS",
+      "note": "label=\"💡 사용법 보기\""
+    },
+    {
+      "id": "D1",
+      "name": "Favorite toggle 낙관 UI rerender (<50ms observed)",
+      "status": "PASS",
+      "note": "{\"skip\":false,\"before\":true,\"afterClassCheck\":true,\"dtMs\":0.7}"
+    },
+    {
+      "id": "D2",
+      "name": "Search debounce 200ms: 10 rapid keystrokes → 1 render(s)",
+      "status": "PASS",
+      "note": "renders=1"
+    },
+    {
+      "id": "D3",
+      "name": "storage.onChanged coalesce 80ms: 15 writes → 1 render(s) (≤3)",
+      "status": "PASS",
+      "note": "mutations=1"
+    },
+    {
+      "id": "E1",
+      "name": "Dark popup: theme=dark + chip row renders",
+      "status": "PASS",
+      "note": "theme=dark chips=3"
+    },
+    {
+      "id": "F1",
+      "name": "prefers-reduced-motion=reduce: animation/transition durations 0s",
+      "status": "PASS",
+      "note": "{\"reduceActive\":true,\"baseAnimDuration\":\"0s\",\"baseTransition\":\"0s\",\"previewAnim\":\"none\"}"
+    },
+    {
+      "id": "G1",
+      "name": "role=tablist + tabs + aria-selected sync",
+      "status": "PASS",
+      "note": "{\"hasTablist\":true,\"tabCount\":3,\"selectedCount\":1,\"resultCountLive\":\"polite\",\"menuHasPopup\":\"menu\",\"menuExpanded\":\"false\",\"helpHasPopup\":\"dialog\",\"helpExpanded\":\"false\"}"
+    },
+    {
+      "id": "G2",
+      "name": "aria-live=\"polite\" on #resultCount",
+      "status": "PASS",
+      "note": "live=polite"
+    },
+    {
+      "id": "G3",
+      "name": "menu button aria-haspopup + aria-expanded",
+      "status": "PASS",
+      "note": "haspopup=menu expanded=false"
+    },
+    {
+      "id": "G4",
+      "name": "query help aria-haspopup + aria-expanded",
+      "status": "PASS",
+      "note": "haspopup=dialog expanded=false"
+    },
+    {
+      "id": "G5",
+      "name": "aria-selected moves when tab clicked",
+      "status": "PASS",
+      "note": "[{\"id\":\"search\",\"selected\":\"false\"},{\"id\":\"favorites\",\"selected\":\"true\"},{\"id\":\"applied\",\"selected\":\"false\"}]"
+    },
+    {
+      "id": "G6",
+      "name": "menu button aria-expanded=true after open",
+      "status": "PASS",
+      "note": "expanded=true"
+    },
+    {
+      "id": "G7",
+      "name": "Esc closes menu + aria-expanded back to false",
+      "status": "PASS",
+      "note": "expanded=false"
+    },
+    {
+      "id": "H1",
+      "name": "Console errors total = 0",
+      "status": "PASS",
+      "note": ""
+    },
+    {
+      "id": "H2",
+      "name": "pageerror / unhandled / fatal = 0/0/0",
+      "status": "PASS",
+      "note": ""
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "unhandled": [],
+  "fatalErrors": []
+}

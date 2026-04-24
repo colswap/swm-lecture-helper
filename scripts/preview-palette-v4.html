@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>SWM Lecture Helper — 4 팔레트 테마 v4 Preview (K1)</title>
+<link rel="stylesheet" href="../lib/tokens.css">
+<style>
+  :root {
+    --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0; --slate-300:#cbd5e1;
+    --slate-400:#94a3b8; --slate-500:#64748b; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+    --brand-50:#eff9ff; --brand-100:#CCE5F5; --brand-500:#006EB7; --brand-600:#005a94; --brand-700:#004A7D;
+    --emerald-50:#ecfdf5; --emerald-100:#d1fae5; --emerald-500:#10b981; --emerald-700:#047857;
+    --rose-50:#fff1f2; --rose-500:#f43f5e; --rose-700:#be123c;
+    --amber-400:#fbbf24; --amber-500:#f59e0b;
+    --orange-100:#ffedd5; --orange-700:#c2410c;
+    --hour-height:36px;
+  }
+  body { font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: var(--background); color: var(--foreground); padding: 24px; margin: 0; transition: background 0.2s, color 0.2s; }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 700; letter-spacing: -0.2px; }
+  .lead { font-size: 12px; color: var(--muted-foreground); margin: 0 0 16px; }
+  h2 { font-size: 11px; margin: 24px 0 10px; color: var(--muted-foreground); text-transform: uppercase;
+       letter-spacing: 0.6px; font-weight: 700; }
+
+  .controls { display: flex; gap: 8px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;
+              padding: 10px 12px; background: var(--muted); border-radius: var(--radius-md); }
+  .controls .group { display: flex; gap: 6px; align-items: center; }
+  .controls .group-label { font-size: 10px; font-weight: 700; color: var(--muted-foreground);
+                           text-transform: uppercase; letter-spacing: 0.6px; margin-right: 4px; }
+  button { padding: 6px 12px; border-radius: var(--radius-md); border: 1px solid var(--border);
+           background: var(--card); color: var(--foreground); cursor: pointer; font-size: 12px;
+           font-family: inherit; transition: all 0.15s; }
+  button:hover { background: var(--muted); }
+  button.active { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+
+  .source-note {
+    font-size: 11px; color: var(--muted-foreground); margin-top: 8px; padding: 8px 12px;
+    background: var(--muted); border-left: 3px solid var(--primary); border-radius: var(--radius-sm);
+    line-height: 1.6;
+  }
+  .source-note b { color: var(--foreground); }
+  .source-note a { color: var(--primary); text-decoration: none; }
+  .source-note a:hover { text-decoration: underline; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+  .swatch {
+    padding: 14px 14px 12px; border-radius: var(--radius-lg); font-size: 13px; font-weight: 700;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.14), inset 0 1px 0 rgba(255,255,255,0.10);
+    position: relative; min-height: 72px;
+  }
+  html[data-theme="dark"] .swatch { box-shadow: 0 1px 3px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08); }
+  .swatch small { display: block; font-size: 10px; font-weight: 500; opacity: 0.82; margin-top: 4px;
+                  font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.2px; }
+  .swatch .src { position: absolute; bottom: 6px; right: 8px; font-size: 8.5px; opacity: 0.72;
+                 font-family: ui-monospace, monospace; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  .tt-mock {
+    display: grid; grid-template-columns: 36px repeat(5, 1fr); gap: 0; padding: 0;
+    background: var(--background); border: 1px solid var(--border); border-radius: var(--radius-md);
+    margin-top: 8px; overflow: hidden;
+  }
+  .tt-header { padding: 6px 4px; font-size: 10px; font-weight: 700; text-align: center;
+               background: var(--muted); color: var(--muted-foreground); border-bottom: 1px solid var(--border); }
+  .tt-col-hours { display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--muted); }
+  .tt-hour { padding: 4px; font-size: 9px; color: var(--muted-foreground); height: 40px; text-align: right; padding-right: 6px;
+             border-bottom: 1px solid var(--border); }
+  .tt-col { position: relative; border-right: 1px solid var(--border); min-height: 260px;
+            background: repeating-linear-gradient(
+              to bottom, transparent 0, transparent 39px, var(--border) 39px, var(--border) 40px); }
+  .tt-col:last-child { border-right: none; }
+
+  .lec-block {
+    position: absolute; left: 2px; right: 2px; padding: 5px 8px; border-radius: var(--radius-lg);
+    font-size: 10px; line-height: 1.3; cursor: default; font-weight: 600;
+    overflow: hidden; display: flex; flex-direction: column; gap: 2px; box-sizing: border-box;
+  }
+  .lec-block .bt { font-weight: 700; font-size: 11px; letter-spacing: -0.2px; opacity: 0.98;
+                   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .lec-block .bl { font-size: 10px; opacity: 0.86; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lec-block[data-cat] {
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  }
+  html[data-theme="dark"] .lec-block[data-cat] {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 14px; background: var(--card);
+               border: 1px solid var(--border); border-radius: var(--radius-md); }
+
+  .harmony { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px;
+             background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); }
+  .harmony .lec-block { position: relative; width: 140px; height: 44px; }
+
+  .section { margin-bottom: 28px; }
+  code { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px;
+         padding: 1px 6px; border-radius: 4px; background: var(--muted); color: var(--foreground); }
+
+  .theme-indicator {
+    display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--radius-full);
+    font-size: 10px; font-weight: 700; margin-left: 8px;
+    background: var(--accent); color: var(--accent-foreground);
+  }
+</style>
+</head>
+<body>
+  <h1>4 팔레트 테마 v4 — v1.15.0 K1 <span class="theme-indicator" id="theme-indicator">default</span></h1>
+  <p class="lead">공인된 인기 팔레트 리서치 기반 4 테마 × 19 카테고리. 전체 hex 출처 URL 인용 가능.</p>
+
+  <div class="controls">
+    <div class="group">
+      <span class="group-label">Palette</span>
+      <button data-palette="default" class="active">Default (Google Calendar)</button>
+      <button data-palette="sakura">🌸 Sakura (Cherry Blossom + TW pink)</button>
+      <button data-palette="pastel">☁ Pastel (Tailwind 50)</button>
+      <button data-palette="night">⚡ Night (Vaporwave + CP2077)</button>
+    </div>
+    <div class="group">
+      <span class="group-label">Theme</span>
+      <button id="toggle-theme">🌓 Dark Mode</button>
+      <button id="toggle-cat-colors" class="active">🎨 Badge Colors</button>
+    </div>
+  </div>
+
+  <div class="source-note" id="source-note">
+    <!-- dynamic per palette -->
+  </div>
+
+  <section class="section">
+    <h2>19-category timetable block palette</h2>
+    <div class="grid" id="swatch-grid"></div>
+  </section>
+
+  <section class="section">
+    <h2>Badge tag palette (popup card chips)</h2>
+    <div class="badge-row" id="badge-row"></div>
+  </section>
+
+  <section class="section">
+    <h2>Adjacent-block harmony test (hue walk)</h2>
+    <p class="lead" style="margin-bottom:8px;">인접 카테고리가 나란히 놓였을 때 자연스러운지 — 한 가족으로 보여야 함.</p>
+    <div class="harmony" id="harmony"></div>
+  </section>
+
+  <section class="section">
+    <h2>Mini timetable mock (실제 시간표와 동일 레이아웃)</h2>
+    <div class="tt-mock">
+      <div class="tt-col-hours">
+        <div class="tt-header">시간</div>
+        <div class="tt-hour">09</div><div class="tt-hour">10</div><div class="tt-hour">11</div>
+        <div class="tt-hour">12</div><div class="tt-hour">13</div><div class="tt-hour">14</div>
+      </div>
+      <div>
+        <div class="tt-header">월</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="ai" style="top:0;height:78px;"><div class="bt">LLM 에이전트 설계</div><div class="bl">김AI 멘토</div></div>
+          <div class="lec-block" data-cat="frontend" style="top:80px;height:52px;"><div class="bt">React Server Component</div><div class="bl">이프론트</div></div>
+          <div class="lec-block" data-cat="devops" style="top:135px;height:40px;"><div class="bt">DevOps CI/CD</div><div class="bl">박데옵</div></div>
+          <div class="lec-block" data-cat="security" style="top:180px;height:60px;"><div class="bt">시큐어 코딩 101</div><div class="bl">최보안</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">화</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="backend" style="top:0;height:60px;"><div class="bt">gRPC 실전</div><div class="bl">정백엔</div></div>
+          <div class="lec-block" data-cat="ai" style="top:62px;height:70px;"><div class="bt">RAG 파이프라인</div><div class="bl">김AI 멘토</div></div>
+          <div class="lec-block" data-cat="data" style="top:138px;height:50px;"><div class="bt">데이터 엔지니어링</div><div class="bl">강데이</div></div>
+          <div class="lec-block" data-cat="cloud" style="top:194px;height:46px;"><div class="bt">AWS Cost 최적화</div><div class="bl">윤클라</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">수</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="startup" style="top:0;height:50px;"><div class="bt">린 스타트업</div><div class="bl">한창업</div></div>
+          <div class="lec-block" data-cat="career" style="top:54px;height:60px;"><div class="bt">테크 커리어 빌딩</div><div class="bl">오커리</div></div>
+          <div class="lec-block" data-cat="blockchain" style="top:118px;height:60px;"><div class="bt">Solidity 심화</div><div class="bl">조블록</div></div>
+          <div class="lec-block" data-cat="game" style="top:184px;height:56px;"><div class="bt">Unity ECS</div><div class="bl">임게임</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">목</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="mobile" style="top:0;height:70px;"><div class="bt">Jetpack Compose</div><div class="bl">서모바</div></div>
+          <div class="lec-block" data-cat="team" style="top:72px;height:40px;"><div class="bt">팀빌딩 세션</div><div class="bl">이팀리</div></div>
+          <div class="lec-block" data-cat="idea" style="top:116px;height:54px;"><div class="bt">아이데이션 워크샵</div><div class="bl">노아이</div></div>
+          <div class="lec-block" data-cat="soma" style="top:176px;height:64px;"><div class="bt">SW 마에스트로 OT</div><div class="bl">소마 운영</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-header">금</div>
+        <div class="tt-col">
+          <div class="lec-block" data-cat="cs" style="top:0;height:56px;"><div class="bt">자료구조 복습</div><div class="bl">백CS</div></div>
+          <div class="lec-block" data-cat="dev_general" style="top:60px;height:50px;"><div class="bt">Git 심화</div><div class="bl">류개일</div></div>
+          <div class="lec-block" data-cat="os" style="top:114px;height:44px;"><div class="bt">리눅스 커널</div><div class="bl">이OS</div></div>
+          <div class="lec-block" data-cat="etc" style="top:162px;height:50px;"><div class="bt">기타 세션</div><div class="bl">—</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+  const CATS = [
+    ['security', '🛡 보안'], ['soma', '🏅 소마'], ['startup', '🚀 창업'], ['idea', '💡 아이디어'],
+    ['team', '👥 팀빌딩'], ['mobile', '📱 모바일'], ['devops', '🔧 DevOps'], ['data', '📊 데이터'],
+    ['frontend', '🎨 프론트'], ['cloud', '☁ 클라우드'], ['backend', '⚙ 백엔드'], ['ai', '🤖 AI'],
+    ['cs', '📚 CS'], ['blockchain', '⛓ 블록체인'], ['career', '💼 커리어'], ['game', '🎮 게임'],
+    ['os', '💻 OS'], ['dev_general', '🛠 일반개발'], ['etc', '기타'],
+  ];
+
+  const PALETTE_HEX = {
+    default: {
+      security:'#DA1E28', soma:'#F28E2C', startup:'#BA4E00', idea:'#F1C21B', team:'#42BE65',
+      mobile:'#198038', devops:'#2CA02C', data:'#005D5D', frontend:'#1192E8', cloud:'#0043CE',
+      backend:'#002D9C', ai:'#6929C4', cs:'#8A3FFC', blockchain:'#9F1853', career:'#750E13',
+      game:'#D02670', os:'#525252', dev_general:'#8C564B', etc:'#6F6F6F',
+    },
+    sakura: {
+      security:'#7E2639', soma:'#8F1D21', startup:'#C91F37', idea:'#F7665A', team:'#F8674F',
+      mobile:'#F47983', devops:'#F58F84', data:'#F08F90', frontend:'#FFB3A7', cloud:'#FCC9B9',
+      backend:'#F6ADC6', ai:'#C93756', cs:'#DB5A6B', blockchain:'#A4345D', career:'#9D2933',
+      game:'#F35336', os:'#AC8181', dev_general:'#8F4155', etc:'#B95754',
+    },
+    pastel: {
+      security:'#FEF2F2', soma:'#FFF7ED', startup:'#FFFBEB', idea:'#FEFCE8', team:'#F7FEE7',
+      mobile:'#F0FDF4', devops:'#ECFDF5', data:'#F0FDFA', frontend:'#ECFEFF', cloud:'#F0F9FF',
+      backend:'#EFF6FF', ai:'#EEF2FF', cs:'#F5F3FF', blockchain:'#FAF5FF', career:'#FDF4FF',
+      game:'#FDF2F8', os:'#F8FAFC', dev_general:'#FAFAF9', etc:'#FAFAFA',
+    },
+    night: {
+      security:'#FF2975', soma:'#FF901F', startup:'#FFD319', idea:'#FEE801', team:'#AAFF00',
+      mobile:'#05FFA1', devops:'#00FF44', data:'#39C4B6', frontend:'#01CDFE', cloud:'#54C1E6',
+      backend:'#156CDB', ai:'#8C1EFF', cs:'#B967FF', blockchain:'#F222FF', career:'#FF00DC',
+      game:'#FF71CE', os:'#A0A0A0', dev_general:'#666666', etc:'#808080',
+    },
+  };
+
+  const PALETTE_SOURCE = {
+    default: {
+      security:'IBM red-60', soma:'Tableau 10', startup:'IBM orange-60', idea:'IBM yellow-30',
+      team:'IBM green-40', mobile:'IBM green-60', devops:'Tableau 10', data:'IBM teal-70',
+      frontend:'IBM cyan-50', cloud:'IBM blue-70', backend:'IBM blue-80', ai:'IBM purple-70',
+      cs:'IBM purple-60', blockchain:'IBM mgnt-70', career:'IBM red-80', game:'IBM mgnt-60',
+      os:'IBM gray-70', dev_general:'Tableau 20', etc:'IBM gray-60',
+    },
+    sakura: {
+      security:'suō 蘇芳', soma:'shinshu 真朱', startup:'karakurenai 唐紅', idea:'jinzamomi 甚三紅',
+      team:'sango 珊瑚色', mobile:'momo 桃色', devops:'tokiha 鴇羽色', data:'ikkonzome 一斤染',
+      frontend:'arazome 退紅', cloud:'sakura-iro 桜色', backend:'nadeshiko 撫子',
+      ai:'nakabeni 中紅', cs:'kōbai 紅梅色', blockchain:'bōtan 牡丹', career:'enji 臙脂色',
+      game:'benihi 紅緋', os:'sakuranezumi 桜鼠', dev_general:'umemurasaki 梅紫', etc:'chōshun 長春色',
+    },
+    pastel: {
+      security:'TW red-50', soma:'TW orange-50', startup:'TW amber-50', idea:'TW yellow-50',
+      team:'TW lime-50', mobile:'TW green-50', devops:'TW emerald-50', data:'TW teal-50',
+      frontend:'TW cyan-50', cloud:'TW sky-50', backend:'TW blue-50', ai:'TW indigo-50',
+      cs:'TW violet-50', blockchain:'TW purple-50', career:'TW fuchsia-50', game:'TW pink-50',
+      os:'TW slate-50', dev_general:'TW stone-50', etc:'TW zinc-50',
+    },
+    night: {
+      security:'Synth pink', soma:'Synth orange', startup:'Synth yellow', idea:'CP2077',
+      team:'Neon chart', mobile:'VaporWave', devops:'Pure RGB', data:'CP2077', frontend:'VaporWave',
+      cloud:'CP2077', backend:'80s Synth', ai:'Synth violet', cs:'VaporWave', blockchain:'Synth mgnt',
+      career:'Neon deep', game:'VaporWave', os:'Glow gray', dev_general:'Dim', etc:'Mid gray',
+    },
+  };
+
+  const SOURCE_DESCRIPTION = {
+    default: `<b>Default:</b> IBM Carbon Design System Categorical Palette (14 colors) + Tableau 20 supplement (5). ` +
+      `출처: <a href="https://carbondesignsystem.com/data-visualization/color-palettes/" target="_blank">carbondesignsystem.com</a> · ` +
+      `<a href="https://gist.github.com/AndiH/c957b4d769e628f506bd" target="_blank">Tableau 20 gist</a>. ` +
+      `데이터 시각화 공인 표준 — 엔터프라이즈 대시보드 검증 팔레트.`,
+    sakura: `<b>Sakura:</b> Nippon Colors 일본 전통 분홍 스펙트럼 19선 — suō 蘇芳 wine → sakura-iro 桜色 blush. ` +
+      `출처: <a href="https://nipponcolors.com/" target="_blank">nipponcolors.com</a> · ` +
+      `<a href="https://gist.github.com/jpegzilla/2ab93a895b0e484fa042b7bde29a093c" target="_blank">Wikipedia hex array</a>. ` +
+      `1000년+ 역사 일본 전통 색채 — 키모노/우키요에 표준.`,
+    pastel: `<b>Pastel:</b> Tailwind CSS v3 scale 50 (L≥96% ultra-light powder). ` +
+      `출처: <a href="https://tailwindcss.com/docs/customizing-colors" target="_blank">tailwindcss.com</a>. ` +
+      `1M+ 프로젝트에서 사용되는 de-facto pastel 표준. fg 는 동일 hue step 900 (contrast ≥12:1).`,
+    night: `<b>Night:</b> VaporWave + Cyberpunk 2077 Title Card + Synthwave Sunset 블렌드. ` +
+      `출처: <a href="https://www.color-hex.com/color-palette/10221" target="_blank">VaporWave (443 favs)</a> · ` +
+      `<a href="https://www.color-hex.com/color-palette/1024181" target="_blank">Cyberpunk 2077</a> · ` +
+      `<a href="https://www.color-hex.com/color-palette/57266" target="_blank">Synthwave Sunset</a>. ` +
+      `RGB/CMY emission 네온 — dark bg 위 LED 발광.`,
+  };
+
+  const grid = document.getElementById('swatch-grid');
+  const badgeRow = document.getElementById('badge-row');
+  const harmony = document.getElementById('harmony');
+  const sourceNote = document.getElementById('source-note');
+  const indicator = document.getElementById('theme-indicator');
+
+  function renderForPalette(paletteName) {
+    const HEX = PALETTE_HEX[paletteName];
+    const SRC = PALETTE_SOURCE[paletteName];
+    grid.innerHTML = '';
+    badgeRow.innerHTML = '';
+    harmony.innerHTML = '';
+
+    CATS.forEach(([cat, label]) => {
+      const div = document.createElement('div');
+      div.className = 'swatch';
+      div.setAttribute('data-cat', cat);
+      div.style.background = `var(--cat-${cat}-bg)`;
+      div.style.color = `var(--cat-${cat}-fg)`;
+      div.innerHTML = `${label}<small>${HEX[cat]}</small><span class="src">${SRC[cat]}</span>`;
+      grid.appendChild(div);
+
+      const span = document.createElement('span');
+      span.className = 'badge';
+      span.setAttribute('data-cat', cat);
+      span.textContent = label;
+      badgeRow.appendChild(span);
+
+      const hdiv = document.createElement('div');
+      hdiv.className = 'lec-block';
+      hdiv.setAttribute('data-cat', cat);
+      hdiv.innerHTML = `<div class="bt">${label}</div><div class="bl">${SRC[cat]}</div>`;
+      harmony.appendChild(hdiv);
+    });
+
+    sourceNote.innerHTML = SOURCE_DESCRIPTION[paletteName];
+    indicator.textContent = paletteName;
+  }
+
+  // Palette toggles
+  document.querySelectorAll('[data-palette]').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('[data-palette]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const p = btn.getAttribute('data-palette');
+      if (p === 'default') {
+        document.documentElement.removeAttribute('data-palette');
+      } else {
+        document.documentElement.setAttribute('data-palette', p);
+      }
+      renderForPalette(p);
+    };
+  });
+
+  // Theme toggle
+  document.getElementById('toggle-theme').onclick = () => {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? null : 'dark';
+    if (next) html.setAttribute('data-theme', next); else html.removeAttribute('data-theme');
+  };
+  document.body.classList.add('cat-colors');
+  document.getElementById('toggle-cat-colors').onclick = (e) => {
+    document.body.classList.toggle('cat-colors');
+    e.currentTarget.classList.toggle('active');
+  };
+
+  renderForPalette('default');
+</script>
+</body>
+</html>
