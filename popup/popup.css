@@ -316,13 +316,17 @@ body {
 .fav-btn.on svg { color: var(--amber-500); fill: currentColor; }
 
 .applied-badge {
-  font-size: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
   font-weight: 700;
-  padding: 1px 6px;
+  padding: 3px 9px;
   border-radius: 999px;
   background: var(--brand-500);
   color: white;
-  line-height: 1.4;
+  line-height: 1;
+  letter-spacing: -0.1px;
 }
 
 .title-line {

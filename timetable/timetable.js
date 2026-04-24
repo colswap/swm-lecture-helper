@@ -650,7 +650,7 @@
     const badges = [];
     if (lec.status === 'A') badges.push('<span class="tag open">접수중</span>');
     else if (lec.status === 'C') badges.push('<span class="tag closed">마감</span>');
-    if (lec.applied) badges.push('<span class="applied-badge">✓ 신청 완료</span>');
+    if (lec.applied) badges.push('<span class="applied-badge">신청 완료</span>');
     // 개설 승인 여부 — 상세 페이지에서 수집된 경우만 표시
     if (lec.isApproved === true) badges.push('<span class="tag approved">✅ 개설 확정</span>');
     else if (lec.isApproved === false) badges.push('<span class="tag pending">⏳ 미승인</span>');
