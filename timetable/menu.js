@@ -173,7 +173,7 @@
     if (pending.length === 0) {
       await window.SWMModal.showAlert({
         title: '캘린더 추가',
-        body: `신청 강의 ${applied.length}개 전부 이미 캘린더에 추가 기록됨.\n\n다시 추가하려면 "기록 초기화" (Console: ${'await chrome.storage.local.remove("gcalPushedSns")'})`,
+        body: `신청 강의 ${applied.length}개 전부 이미 캘린더에 추가된 것으로 표시돼 있어요.\n\n다시 추가하려면 확장의 데이터 초기화 메뉴를 사용하세요.`,
       });
       return;
     }

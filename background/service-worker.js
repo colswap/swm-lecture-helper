@@ -99,40 +99,43 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     const prev = details.previousVersion;
     // v1.16.1 마이그레이션: v1.15.0 regex 가 HH:MM:SS 를 오매칭해 storage 에 박아둔
     // "00:00 ~ HH:MM" / "30:00 ~ ..." 같은 잘못된 lecTime 을 비워서 다음 sync 때 재파싱 유도.
-    try {
-      const { lectures = {} } = await chrome.storage.local.get('lectures');
-      let healed = 0;
-      for (const [sn, lec] of Object.entries(lectures)) {
-        if (!lec || typeof lec !== 'object') continue;
-        const t = lec.lecTime;
-        if (!t) continue;
-        // 01:00~ 이상은 의심 없음. 00:00 으로 시작하는데 끝이 10:00 이상인 경우 — 정상
-        // 강연에서는 거의 없고 v1.15.0 오매칭 (":SS" 의 SS → 분 → 시간 slot) 전형.
-        // h1 > 23 같은 비정상 값도 걸러냄.
-        const m = String(t).match(/^(\d{1,2}):(\d{2})\s*[~\-]\s*(\d{1,2}):(\d{2})$/);
-        if (!m) continue;
-        const h1 = +m[1], h2 = +m[3];
-        const badH1Overflow = h1 > 23;                 // 30:00~ 같은 건 무조건 오매칭
-        const suspectZeroStart = h1 === 0 && h2 >= 10; // 00:00~15:00 오매칭 패턴
-        if (badH1Overflow || suspectZeroStart) {
-          lec.lecTime = '';
-          healed++;
+    // v1.16.2 가드: v1.15.x 에서 올라오는 사용자만 필요. v1.16.x → v1.16.x 는 skip.
+    if (prev && (prev.startsWith('1.15.') || prev.startsWith('1.14.') || prev.startsWith('1.13.'))) {
+      try {
+        const { lectures = {} } = await chrome.storage.local.get('lectures');
+        let healed = 0;
+        for (const [sn, lec] of Object.entries(lectures)) {
+          if (!lec || typeof lec !== 'object') continue;
+          const t = lec.lecTime;
+          if (!t) continue;
+          // 01:00~ 이상은 의심 없음. 00:00 으로 시작하는데 끝이 10:00 이상인 경우 — 정상
+          // 강연에서는 거의 없고 v1.15.0 오매칭 (":SS" 의 SS → 분 → 시간 slot) 전형.
+          // h1 > 23 같은 비정상 값도 걸러냄.
+          const m = String(t).match(/^(\d{1,2}):(\d{2})\s*[~\-]\s*(\d{1,2}):(\d{2})$/);
+          if (!m) continue;
+          const h1 = +m[1], h2 = +m[3];
+          const badH1Overflow = h1 > 23;                 // 30:00~ 같은 건 무조건 오매칭
+          const suspectZeroStart = h1 === 0 && h2 >= 10; // 00:00~15:00 오매칭 패턴
+          if (badH1Overflow || suspectZeroStart) {
+            lec.lecTime = '';
+            healed++;
+          }
         }
+        if (healed > 0) {
+          await chrome.storage.local.set({ lectures });
+          console.log(`SWM Helper: v1.16 migration healed ${healed} stale lecTime entries`);
+        }
+      } catch (e) {
+        console.error('SWM Helper: v1.16 migration error', e);
       }
-      if (healed > 0) {
-        await chrome.storage.local.set({ lectures });
-        console.log(`SWM Helper: v1.16.1 migration healed ${healed} stale lecTime entries`);
-      }
-    } catch (e) {
-      console.error('SWM Helper: v1.16.1 migration error', e);
     }
 
     if (prev && (prev.startsWith('1.16.') || prev.startsWith('1.15.') || prev.startsWith('1.14.') || prev.startsWith('1.13.'))) {
-      chrome.notifications.create('update-1161', {
+      chrome.notifications.create('update-1162', {
         type: 'basic',
         iconUrl: 'icons/icon48.png',
-        title: 'SWM Helper 1.16.1 업데이트',
-        message: '시간 파싱 오류 수정 · 개설 확정 배지 · Google 캘린더 1클릭 · 테마 색 일관성',
+        title: 'SWM Helper 1.16.2 업데이트',
+        message: '마감 포함 시간표 UX · 회귀 수정 · 문구 정비',
         priority: 1,
       });
     }

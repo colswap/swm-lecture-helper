@@ -9,6 +9,15 @@
     document.documentElement.dataset.theme = effective;
   } catch {}
 
+  // v1.16.2: 버전 배지 manifest 자동 동기화 — 하드코딩 회귀 차단.
+  try {
+    const version = chrome.runtime.getManifest().version;
+    const hero = document.getElementById('heroVersion');
+    if (hero) hero.textContent = `v${version}`;
+    const foot = document.getElementById('footVersion');
+    if (foot) foot.textContent = `v${version} · SWM Lecture Helper`;
+  } catch {}
+
   const tourBtn = document.getElementById('startTourBtn');
   if (tourBtn) {
     tourBtn.addEventListener('click', async () => {

@@ -7,7 +7,7 @@
 <sub>팝오버에서 바로 신청·취소 · 풀탭 주간 시간표 · 빈 시간 기반 검색 · 다크 모드</sub>
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oohcbjjaklphbmoeiecddpdfkbadpaan?logo=googlechrome&logoColor=white&label=Chrome%20Web%20Store&style=flat-square)](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)
-[![version](https://img.shields.io/badge/version-1.16.1-blue?style=flat-square)](./manifest.json)
+[![version](https://img.shields.io/badge/version-1.16.2-blue?style=flat-square)](./manifest.json)
 [![license](https://img.shields.io/badge/license-MIT-green?style=flat-square)](#라이선스)
 
 [**스토어에서 설치 →**](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)

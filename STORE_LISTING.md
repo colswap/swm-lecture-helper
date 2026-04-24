@@ -1,4 +1,4 @@
-# Chrome Web Store Listing — SWM Lecture Helper (v1.16.1)
+# Chrome Web Store Listing — SWM Lecture Helper (v1.16.2)
 
 개발자 콘솔에 붙여넣는 복사본. 사용자용 문서 아님.
 

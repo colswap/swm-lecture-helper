@@ -421,8 +421,8 @@
     // 반환: [{sn, lecDate, lecTime, title, mentor, isApproved}] — sn 만 반환하던 이전 API 와 호환 위해
     // 호출부에서 .map(x => x.sn) 으로 순회 가능하되, object 전체로도 사용.
     const applied = new Map(); // sn → partial lecture data
-    const MAX_PAGES = 20;
-    for (let page = 1; page <= MAX_PAGES; page++) {
+    const MAX_APPLIED_PAGES = 20;
+    for (let page = 1; page <= MAX_APPLIED_PAGES; page++) {
       try {
         const resp = await fetchWithRetry(`/sw/mypage/userAnswer/history.do?menuNo=200047&pageIndex=${page}`);
         if (isLoginRedirect(resp)) return null;
@@ -483,7 +483,7 @@
     // calendarData: 모든 달의 캘린더 파편 (SN+날짜+제목 일부만, 상세 수집 제외)
     const listLectures = {};
     const scopeLabel = statusFilter === 'A' ? '접수중' : statusFilter === 'C' ? '마감' : '전체';
-    const MAX_PAGES = 300;
+    const MAX_LIST_PAGES = 300;
     // 루프 전체에 걸친 누적 실패 페이지 수 — retry 에서 복구된 페이지는 제외할 수 없으나
     // (페이지 번호 단위 재시도가 아닌 루프 복귀 방식이므로) transient 루프 tick 카운트로 근사.
     let failedPages = 0;
@@ -492,9 +492,9 @@
 
     let page = 1;
     let done = false;
-    while (!done && page <= MAX_PAGES) {
+    while (!done && page <= MAX_LIST_PAGES) {
       const batch = [];
-      for (let i = 0; i < concurrency && page + i <= MAX_PAGES; i++) {
+      for (let i = 0; i < concurrency && page + i <= MAX_LIST_PAGES; i++) {
         batch.push(fetchListPage(page + i, statusFilter));
       }
       const results = await Promise.all(batch);

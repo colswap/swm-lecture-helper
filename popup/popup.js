@@ -131,7 +131,7 @@
       // 내 신청 탭: 상태 필터 무시 (접수중이든 마감이든 전부 보임)
     }
 
-    // 키워드 검색: v1.15.0 — SWM_QUERY 파서 사용 (prefix-free 경로는 기존 substring 호환)
+    // 키워드 검색: SWM_QUERY 파서 사용 (prefix-free 경로는 기존 substring 호환)
     let ast = null;
     if (window.SWM_QUERY && rawQuery && rawQuery.trim()) {
       try { ast = window.SWM_QUERY.parse(rawQuery); }
@@ -207,7 +207,7 @@
     renderResults(lectures);
   }
 
-  // --- 검색 쿼리 chip 렌더 (v1.15.0 NLS v2 — 자연어 라벨) ---
+  // --- 검색 쿼리 chip 렌더 (자연어 라벨) ---
   const DERIVED_CHIP_LABEL = {
     ai: '🤖 AI/LLM', backend: '⚙️ 백엔드', frontend: '🎨 프론트', mobile: '📱 모바일',
     data: '📊 데이터', cloud: '☁️ 클라우드', devops: '🔧 DevOps', security: '🔒 보안',

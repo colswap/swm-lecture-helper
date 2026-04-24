@@ -6,7 +6,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT = path.join(ROOT, 'swm-lecture-helper-v1.16.1.zip');
+const pkg = require(path.join(ROOT, 'package.json'));
+const OUT = path.join(ROOT, `swm-lecture-helper-v${pkg.version}.zip`);
 
 const FILES = [
   'manifest.json',

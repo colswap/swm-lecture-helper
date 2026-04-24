@@ -1047,6 +1047,8 @@ body.dragging .lec-block { pointer-events: none; }
   color: #78350F;
   font-weight: 700;
 }
+/* v1.16.2 UI-C-01: 즐겨찾기 블록 제목이 우상단 ★ 와 겹치지 않도록 padding-right 확보. */
+.lec-block.favorite .bt { padding-right: 20px; }
 /* ★ 는 실제 버튼 (.fav-unstar) 으로 교체. ::before 는 deprecated. */
 .lec-block.favorite .fav-unstar {
   position: absolute;

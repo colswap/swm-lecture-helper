@@ -1802,16 +1802,18 @@
         favorites = await SWM.getFavorites();
         injectDerivedCategories();
         rebuildCatFilterOptions();
-        // r9-A-1: sync scope 에 맞춰 UI 상태 필터 정합.
-        if (statusFilter === '' || statusFilter === 'all') {
-          filterStatus.value = '';
-        } else if (statusFilter === 'A' || statusFilter === 'C') {
-          filterStatus.value = statusFilter;
+        // r9-A-1 / u5-C1: sync scope 에 맞춰 UI 필터 정합.
+        // 마감 포함 (''/all/C) 으로 동기화 한 사용자는 과거 강연을 보러 왔음 — status·이번주 둘 다 해제.
+        if (statusFilter === '' || statusFilter === 'all' || statusFilter === 'C') {
+          filterStatus.value = statusFilter === 'C' ? 'C' : '';
+          if (thisWeekOnly.checked) thisWeekOnly.checked = false;
+        } else if (statusFilter === 'A') {
+          filterStatus.value = 'A';
         }
         rerenderAll();
       } else {
         console.warn('[SWM timetable] sync fail:', response);
-        button.textContent = response?.error ? '실패 (상세 콘솔)' : '실패 (로그인 확인)';
+        button.textContent = '알 수 없는 오류 — 잠시 후 다시 시도하세요';
       }
     } catch (e) {
       console.error('[SWM timetable] sync error:', e, 'tab:', tab ? { id: tab.id, url: tab.url, status: tab.status } : null);

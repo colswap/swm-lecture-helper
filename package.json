@@ -1,6 +1,6 @@
 {
   "name": "swm-lecture-helper",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "description": "SW마에스트로 (swmaestro.ai) 멘토링/특강 게시판을 위한 Chrome 확장 프로그램.",
   "main": "index.js",
   "directories": {
