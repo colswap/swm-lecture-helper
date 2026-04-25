@@ -2,9 +2,9 @@
 
 # SWM Lecture Helper
 
-**SW마에스트로 강연을 더 빠르게.**
+**SW마에스트로 멘토링·특강을 더 빠르게.**
 
-<sub>팝오버에서 바로 신청·취소 · 풀탭 주간 시간표 · 빈 시간 기반 검색 · 다크 모드</sub>
+검색부터 시간표·알림·캘린더 연동까지, 확장 하나로 끝.
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oohcbjjaklphbmoeiecddpdfkbadpaan?logo=googlechrome&logoColor=white&label=Chrome%20Web%20Store&style=flat-square)](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)
 [![version](https://img.shields.io/badge/version-1.16.2-blue?style=flat-square)](./manifest.json)
@@ -15,146 +15,150 @@
 </div>
 
 <p align="center">
-  <img src="docs/screenshots/1_popup.png" alt="SWM Lecture Helper 팝업" width="640">
+  <img src="docs/screenshots/1_hero.png" alt="SWM Lecture Helper" width="900">
 </p>
 
 ---
 
-## 왜 쓰나
+## 어떤 확장인가요?
 
-SW마에스트로(swmaestro.ai) 멘토링/특강 게시판은 **목록 뷰만** 있어 주간 일정 한눈에 보기 어렵고, 신청하려면 페이지 왕복이 필요합니다.
+SW마에스트로 멘토링·특강을 매번 사이트 들어가서 일일이 찾기 번거로웠다면, 이 확장이 도와줍니다.
 
-이 확장은:
-- 700+ 강연을 **로컬 캐시** 해 즉시 검색
-- **풀탭 주간 시간표** 로 신청 현황 + 즐겨찾기 한 화면에
-- **팝오버 안에서 바로 신청/취소** — 사이트 왕복 없음
-- **빈 시간대 기반 검색** — 드래그로 시간 선택하면 그 시간 가능한 강연만 필터
+브라우저 한쪽에서 강의를 검색하고, 주간 시간표로 한눈에 보고, 클릭 한 번으로 신청·캘린더 추가까지 끝낼 수 있어요.
 
-## 스크린샷
+---
 
-### 자연어 검색 + 시간표
-<img src="docs/screenshots/2_timetable_basic.png" alt="NLS chips + 시간표" width="900">
+## 이렇게 써요
 
-### 빈 시간대 선택 → 매칭 강연 필터
-<img src="docs/screenshots/3_slot_selection.png" alt="시간대 드래그 선택" width="900">
+### 1. 말하듯 써도 알아서 검색
 
-### 팝오버에서 즉시 신청·취소
-<img src="docs/screenshots/4_popover.png" alt="강연 팝오버" width="900">
+`이번주 비대면 AI` 한 줄이면 시간·장소·주제가 자동으로 분리됩니다. 해석된 필터가 칩으로 보여서 의도와 맞는지 바로 확인할 수 있어요.
 
-### 🎨 팔레트 테마 (Google Calendar · 벚꽃 · 파스텔 · 네온)
-<img src="docs/screenshots/5_theme.png" alt="팔레트 테마" width="900">
+<p align="center">
+  <img src="docs/screenshots/2_search.png" alt="자연어 검색" width="900">
+</p>
 
-### 다크 모드
-<img src="docs/screenshots/6_dark_mode.png" alt="다크 모드" width="900">
+### 2. 강의 하나에 모든 동작
 
-## 기능
+블록을 누르면 한 창에서 신청·취소·즐겨찾기·캘린더 추가까지 처리됩니다. 시간이 겹치면 자동으로 충돌 표시도 해요.
 
-### 팝업 (빠른 조회)
-- **키워드 검색** — 제목·멘토명·설명·장소
-- **다중 필터** — 날짜 범위(A~B), 접수 상태, 분류(멘토 특강/자유 멘토링), 장소(비대면/대면)
-- **3개 탭** — 검색 / 즐겨찾기 / 내 신청
-- **★ 즐겨찾기** — 관심 강연 모아보기
-- **이미 시작한 강연 자동 제외** (접수중 탭)
+<p align="center">
+  <img src="docs/screenshots/3_popover.png" alt="강의 팝오버" width="900">
+</p>
 
-### 풀탭 시간표
-팝업 헤더의 **"시간표"** 버튼으로 열기.
+### 3. 가능한 시간만 콕 짚어 검색
 
-- **주간 캘린더** — 월 - 일 × 08:00 - 24:00, 10분 단위 그리드
-- **신청 강연 블록** + **즐겨찾기 반투명 오버레이** (토글)
-- **팝오버** — 블록 클릭 시 카테고리·시간·장소·멘토·설명·인원
-  - ⚡ **즉시 신청** — 팝오버에서 바로 (사이트 왕복 불필요)
-  - 🚫 **신청 취소** — 마찬가지로 바로
-  - 상세페이지 — swmaestro.ai 상세 페이지 새 탭 열기
-- **드래그 시간대 선택** (10분 스냅):
-  - 요일 헤더 클릭 → 그 요일 종일 토글
-  - 우클릭 → 슬롯 개별 제거
-  - **"내 빈 시간 전체"** — 신청 강연 제외하고 빈 슬롯 자동 선택
-  - 매칭: 강연 시간이 선택 슬롯에 *완전 포함* 되어야
-- **날짜 범위 (A~B)** 필터, "이번 주" 빠른 토글
-- **호버 프리뷰** — 검색 결과 hover 시 반투명 후보 블록 + 충돌 경고
+"평일 저녁만 가능한데, 그 시간에 들을 수 있는 강의가 뭐 있지?"
 
-### ⋯ 메뉴 (시간표 우상단)
-- 📅 **iCal 내보내기** — 신청 강연을 `.ics` 로 (Asia/Seoul 시간대)
-- 🖨 **인쇄 · PDF** — 시간표만 깔끔하게
-- 🌓 **테마** — 시스템 / 라이트 / 다크 순환
-- 🗑 **데이터 초기화**
+요일·시간대를 드래그로 선택하면 그 칸에 맞는 강의만 결과에 남습니다. 자주 쓰는 조합은 프리셋으로 저장해 두고 한 번에 불러올 수도 있어요.
 
-### 백그라운드 · 알림
-- **자동 동기화** — 30분 주기 (Chrome + swmaestro.ai 탭 열린 상태)
-- **알림 설정** (⋯ 메뉴 → "알림 설정") — 기본 모두 OFF, 원하는 것만 켜기
-  - 🔔 **신규 강연** — 새 강연 등장 시 데스크톱 알림
-  - ⭐ **즐겨찾기 빈자리** — 만석 → 빈자리 생기면
-  - 👤 **관심 멘토 매치** — 관심 멘토 이름 직접 등록, 그 멘토 새 강연 등장 시
+<p align="center">
+  <img src="docs/screenshots/4_slots.png" alt="빈 시간 슬롯 검색" width="900">
+</p>
 
-## 설치
+### 4. 밤에 봐도 편안하게
 
-### Chrome Web Store (권장)
-[**Chrome Web Store 에서 설치 →**](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)
+시스템 다크 모드를 자동 감지합니다. 카테고리 색·배지·대비를 다크 전용으로 새로 설계했어요.
 
-### 개발자 모드 (직접 로드)
+<p align="center">
+  <img src="docs/screenshots/5_dark.png" alt="다크 모드" width="900">
+</p>
+
+---
+
+## 시작하기
+
+1. [Chrome Web Store 에서 설치](https://chromewebstore.google.com/detail/swm-lecture-helper/oohcbjjaklphbmoeiecddpdfkbadpaan)
+2. [swmaestro.ai 멘토링 페이지](https://www.swmaestro.ai/sw/mypage/mentoLec/list.do?menuNo=200046) 에 로그인
+3. 확장 아이콘을 누르고 **동기화** 한 번 — 그 다음부터는 30분 주기로 자동 업데이트
+
+---
+
+## 더 자세한 기능
+
+<details>
+<summary><b>알림 설정</b></summary>
+
+기본은 모두 꺼져 있습니다. ⋯ 메뉴에서 원하는 것만 켜세요.
+
+- 🔔 **신규 강연** — 새 강연이 등장하면 데스크톱 알림
+- ⭐ **즐겨찾기 빈자리** — 만석이었다가 자리 생기면
+- 👤 **관심 멘토 매치** — 직접 등록한 멘토의 새 강연이 뜨면
+
+</details>
+
+<details>
+<summary><b>시간표 단축키</b></summary>
+
+| 키 | 동작 |
+|---|---|
+| `←` `→` | 이전/다음 주 |
+| `T` | 오늘 주로 이동 |
+| `/` | 검색창에 포커스 |
+| `Esc` | 팝오버 닫기 |
+
+</details>
+
+<details>
+<summary><b>⋯ 메뉴 (시간표 우상단)</b></summary>
+
+- 📅 캘린더 추가 (신청 전체) — Google 캘린더에 한 번에 등록
+- 📥 iCal 내보내기 — `.ics` 파일 (Apple Calendar·Outlook 호환)
+- 🖨 인쇄 / PDF
+- 🌓 다크 모드 / 🎨 시간표 블록 색 테마 (4종)
+- 🗑 데이터 초기화
+
+</details>
+
+<details>
+<summary><b>드래그 시간대 선택 디테일</b></summary>
+
+- 10분 단위 그리드, 부드러운 스냅
+- 요일 헤더 클릭 → 그 요일 종일 토글
+- 우클릭 → 슬롯 개별 제거
+- "내 빈 시간 전체" 버튼 → 신청 강연 사이 빈 시간을 자동으로 채움
+- 매칭 규칙: 강의 시간이 선택 슬롯 안에 **완전히** 들어와야
+
+</details>
+
+---
+
+## 개인정보·보안
+
+- 모든 데이터는 **내 브라우저 안에만** 저장됩니다 (`chrome.storage.local`)
+- 외부 서버 전송 없음 · 분석 없음 · 광고 없음
+- 신청·취소를 누를 때마다 확인 다이얼로그가 뜨고, 명시적으로 승인한 다음에만 swmaestro.ai 에 요청을 보냅니다 (사이트에서 직접 누르는 것과 동일)
+- 확장을 제거하거나 ⋯ 메뉴 → "데이터 초기화" 로 언제든 깔끔하게 정리할 수 있습니다
+
+자세한 내용: [PRIVACY.md](./PRIVACY.md)
+
+---
+
+## 개발자 모드로 직접 로드
 
 ```bash
 git clone https://github.com/colswap/swm-lecture-helper.git
 ```
 
-1. Chrome → `chrome://extensions`
-2. 우측 상단 **개발자 모드** ON
-3. **"압축해제된 확장 프로그램을 로드합니다"** → `swm-lecture-helper` 폴더 선택
+`chrome://extensions` → 우측 상단 **개발자 모드** ON → **"압축해제된 확장 프로그램을 로드합니다"** → 클론한 폴더 선택.
 
-## 사용 흐름
+테스트 실행:
 
-1. [swmaestro.ai 멘토링 페이지](https://www.swmaestro.ai/sw/mypage/mentoLec/list.do?menuNo=200046) 로그인
-2. 확장 아이콘 → **"접수중 동기화"** (최초 1회, 이후 30분 자동)
-3. 팝업에서 검색·필터·★ 즐겨찾기로 탐색
-4. **"시간표"** 버튼 → 풀탭 열기 → 팝오버에서 즉시 신청·취소
+```bash
+node --test test/
+```
 
-## 키보드 단축키 (시간표)
+---
 
-| 키 | 동작 |
-|---|---|
-| `←` / `→` | 이전/다음 주 |
-| `T` | 오늘 |
-| `/` | 검색창 포커스 |
-| `Esc` | 팝오버 닫기 |
+## 변경 이력
 
-## 개인정보 · 보안
+각 버전의 변경 사항은 [CHANGELOG.md](./CHANGELOG.md) 에 정리되어 있습니다.
 
-- 모든 데이터는 `chrome.storage.local` 에만 저장, 외부 서버 전송 없음
-- 강연 목록/상세는 **로그인된 본인 계정 범위 내**에서만 수집
-- **"즉시 신청 / 취소"** 는 `confirm()` 다이얼로그로 명시적 승인 후에만 swmaestro.ai API 호출 (사이트에서 직접 클릭하는 것과 동일)
-- 확장 제거 또는 "데이터 초기화" 로 언제든 삭제
+---
 
-상세: [PRIVACY.md](./PRIVACY.md)
+## 기여 / 라이선스
 
-## 기술 스택
+- 버그 리포트·제안: [Issues](https://github.com/colswap/swm-lecture-helper/issues)
+- MIT © colswap
 
-- Chrome Extension Manifest V3
-- Vanilla JS (프레임워크/번들러 없음)
-- Chrome API: `storage.local`, `alarms`, `notifications`, `tabs`
-- 로컬 저장만, 외부 라이브러리 없음
-
-## 버전 히스토리
-
-| 버전 | 주요 변경 |
-|---|---|
-| **1.15.0** | 자연어 검색 (2-layer 하이브리드: `@멘토 #주제 -제외` + 무-prefix 휴리스틱), chip preview + help popover, Coachmark 투어 (팝업 5스텝 + 시간표 2스텝, SNUTT 스타일 카피), welcome deep-link, ⋯ 메뉴 "투어 다시 보기" |
-| **1.14.1** | shadcn 디자인 토큰, 팝업 간소화 + 검색 아코디언, 18색 카테고리 팔레트, 토글 스위치, 이미지 추출, F3 일정 충돌 감지+대안, 온보딩 (welcome+update toast), 파싱 개행 보존, .ics UID/SEQUENCE |
-| **1.14.0** | 24시간 취소/신청 경고, 적응형 폴링(6h), 주제 카테고리 필터+칩(18종 multi-label), 관심 멘토 알림 |
-| **1.11.0** | 팝오버 즉시 신청/취소 |
-| **1.10.x** | 다크 모드, 팝업 ⋯ 메뉴, hasStarted 필터, 색 분리 |
-| **1.9.x** | "내 빈 시간 전체", 우클릭 슬롯 제거, 인포 블록 |
-| **1.8.x** | 10분 스냅, 완전 포함 매칭, 취소 강연 반영 |
-| **1.3.0~1.7.x** | 풀탭 시간표, iCal, 인쇄, 드래그 시간대 선택 |
-| **1.0.x~1.2.x** | 최초 출시, 팝업 검색/필터, 즐겨찾기 |
-
-## 기여
-
-버그 리포트·제안: [Issues](https://github.com/colswap/swm-lecture-helper/issues)
-
-## 라이선스
-
-MIT © colswap
-
-## 고지
-
-본 확장은 **SW마에스트로 공식 도구가 아니며**, 개인 보조용 비영리 도구입니다. 사이트 이용약관 범위 내에서만 동작합니다.
+본 확장은 **SW마에스트로 공식 도구가 아닙니다.** 개인 보조용 비영리 도구이며, 사이트 이용약관 범위 안에서만 동작합니다.
